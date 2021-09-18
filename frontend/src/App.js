@@ -26,6 +26,7 @@ function App() {
     axios
       .get('http://localhost:4000/sampletext/' + language.toUpperCase())
       .then((response) => {
+        console.log(response);
         setWords(response.data.text.split(' '));
       });
   }, [language]);
