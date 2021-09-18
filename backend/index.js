@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
+const sampleText = require('./sampleText');
+
 const app = express();
 const PORT = 4000;
 
@@ -22,15 +24,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/sampletext/EN', (err, res) => {
+app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
-  res.json({ text: 'This is a sample text in English.' });
-  res.end();
-});
-
-app.get('/sampletext/ZH', (err, res) => {
-  res.status(200);
-  res.json({ text: '我在学习中文。' });
+  res.json({ text: sampleText[req.params.languageCode] });
   res.end();
 });
 
