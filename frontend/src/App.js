@@ -23,17 +23,18 @@ function App() {
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
-      .then((response) => {
-        console.log(response);
-        setWords(response.data.text.split(' '));
-        setPosition(0);
-        setCharPosition(0);
-        setInput('');
-        setWordIndex(0);
-        setInputStatus(STATECODE.READY);
-      });
+    setWords('This is a sample text in English'.split(' '));
+    // axios
+    //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+    //   .then((response) => {
+    //     console.log(response);
+    //     setWords(response.data.text.split(' '));
+    //     setPosition(0);
+    //     setCharPosition(0);
+    //     setInput('');
+    //     setWordIndex(0);
+    //     setInputStatus(STATECODE.READY);
+    //   });
   }, [language]);
 
   return (

@@ -14,6 +14,7 @@ import LanguageSelect from '../../components/LanguageSelect';
 import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
+import KeyboardAssist from '../../components/KeyboardAssist';
 
 import { STATECODE } from '../../constants';
 
@@ -70,6 +71,9 @@ export default function Home() {
             inputStatus={inputStatus}
             setInputStatus={setInputStatus}
           />
+        </Row>
+        <Row>
+          <KeyboardAssist />
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />
