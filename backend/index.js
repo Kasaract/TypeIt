@@ -58,6 +58,10 @@ mongoose.connect(mongoConnectionURL, function(err) {
   //   if (err) throw err;
   //   console.log("1 document inserted");
   // });
+  TypingText.collection.findOne({language: "EN"}).then((result)=> {
+    console.log(result);
+    console.log("found english!");
+  });
 });
 
 app.get('/sampletext/EN', (err, res) => {
@@ -68,6 +72,13 @@ app.get('/sampletext/EN', (err, res) => {
 
 app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
+  TypingText.collection.findOne({language: req.params.languageCode}).then((result)=> {
+    console.log(result);
+    numOfTexts = result["texts"].length;
+    randomIndex = getRandomInt(numOfTexts);
+    res.json({text: result["texts"][randomIndex]});
+  });
+
   res.json({ text: sampleText[req.params.languageCode] });
   res.end();
 });
