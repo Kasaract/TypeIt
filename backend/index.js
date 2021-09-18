@@ -96,4 +96,18 @@ app.post('/addLanguageText', (req, res) => {
   });
 });
 
+app.post('/addUser', (req,res) => {
+  Users.collection.insertOne({username: req.body.username, 
+                              firstname: req.body.firstname,
+                              lastname: req.body.lastname})
+  .then(() => res.end());
+  
+})
+
+// app.post('/userStats', (req, res) => {
+//   wpm = req.body.wpm;
+//   //Users.collection.
+// });
+
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
