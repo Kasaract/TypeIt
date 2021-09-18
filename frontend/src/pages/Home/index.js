@@ -28,7 +28,7 @@ export default function Home() {
   const { setCharPosition } = useContext(CharPositionContext);
   const { setInput } = useContext(InputContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
-  const { setWordIndex } = useContext(WordsContext);
+  const { words, setWordIndex } = useContext(WordsContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
@@ -50,23 +50,29 @@ export default function Home() {
     setShowCompletedModal(false);
   };
 
+  console.log(words);
+
   return (
     <Container className="vh-100">
       <Col className="h-100">
         <Row>
-          <LanguageSelect language={language} setLanguage={setLanguage}/>
+          <LanguageSelect
+            language={language}
+            setLanguage={setLanguage}
+            onReset={onReset}
+          />
         </Row>
         <Row>
           <TypingText
             position={position}
             inputStatus={inputStatus}
-            text={sampleEnglish}
+            text={words.join(' ')}
           />
         </Row>
         <Row>
           <Input
             onCompleted={onCompleted}
-            textLength={sampleEnglish.length}
+            textLength={words.join(' ').length}
             position={position}
             setPosition={setPosition}
             inputStatus={inputStatus}
