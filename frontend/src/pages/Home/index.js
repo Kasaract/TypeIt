@@ -21,7 +21,7 @@ export default function Home() {
     <Container className="vh-100">
       <Col className="h-100">
         <Row>
-          <LanguageSelect language={language}/>
+          <LanguageSelect language={language} setLanguage={setLanguage}/>
         </Row>
         <Row>
           <TypingText
