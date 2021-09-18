@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Row, Modal } from 'react-bootstrap';
 
-import { languageCodes } from '../../languages/languageCodes.js';
+import { languageCodes } from '../../languages/languageCodes';
+import { sampleText } from '../../languages/sampleText';
 
 import './languageSelect.css';
 
@@ -23,10 +24,11 @@ export default function LanguageSelect({ language, setLanguage, onReset }) {
 
   return (
     <>
-      <div>Current Language: {languageCodes[language].name}</div>
-      <Button className="w-auto" onClick={handleShow}>
-        Select Language
-      </Button>
+      <Row className="mt-5 mb-3 px-5">
+        <Button className="w-auto" onClick={handleShow}>
+          {`Language: ${languageCodes[language].name}`}
+        </Button>
+      </Row>
 
       <Modal show={show} onHide={handleClose} dialogClassName="modal-80w">
         <Modal.Header closeButton>
@@ -49,7 +51,8 @@ export default function LanguageSelect({ language, setLanguage, onReset }) {
               return (
                 new RegExp(filter.toLowerCase(), 'g').test(
                   languageCodes[lang].name.toLowerCase()
-                ) && (
+                ) &&
+                lang.toUpperCase() in sampleText && (
                   <Button
                     variant="light"
                     className="p-2 text-start"
@@ -58,6 +61,7 @@ export default function LanguageSelect({ language, setLanguage, onReset }) {
                       fontSize: '1.05rem',
                       backgroundColor: language === lang && 'lightgray',
                     }}
+                    key={lang}
                   >
                     {languageCodes[lang].name}
                   </Button>
