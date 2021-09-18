@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Routes from './Routes';
@@ -18,14 +18,16 @@ function App() {
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
   const [input, setInput] = useState('');
-  const [words, setWords] = useState('');
+  const [words, setWords] = useState([]);
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
 
-  React.useEffect(() => {
-    axios.get('http://localhost:4000/sampletext/' + language.toUpperCase()).then((response) => {
-      setWords(response.data.text.split(' '));
-    })
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+      .then((response) => {
+        setWords(response.data.text.split(' '));
+      });
   }, [language]);
 
   console.log(words);
