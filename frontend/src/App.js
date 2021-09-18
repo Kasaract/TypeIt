@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import Routes from './Routes';
@@ -13,19 +13,20 @@ import {
 
 import { STATECODE } from './constants';
 
-const sampleEnglish =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod';
-
-const sampleChinese = '我爱学习';
-
 function App() {
-  const [language, setLanguage] = useState('');
+  const [language, setLanguage] = useState('en');
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
   const [input, setInput] = useState('');
-  const [words, setWords] = useState(sampleEnglish.split(' '));
+  const [words, setWords] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
+
+  React.useEffect(() => {
+    axios.get('http://localhost:4000/sampletext/' + language.toUpperCase()).then((response) => {
+      setWords(response.data.text.split(' '));
+    })
+  }, [language]);
 
   console.log(words);
   return (
