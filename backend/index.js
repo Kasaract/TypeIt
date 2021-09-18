@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const mongoose = require("mongoose");
 const TypingText = require("./TypingText");
 
+const sampleText = require('./sampleText');
+
 const app = express();
 const PORT = 4000;
 
@@ -58,9 +60,9 @@ app.get('/sampletext/EN', (err, res) => {
   res.end();
 });
 
-app.get('/sampletext/ZH', (err, res) => {
+app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
-  res.json({ text: '我在学习中文。' });
+  res.json({ text: sampleText[req.params.languageCode] });
   res.end();
 });
 
