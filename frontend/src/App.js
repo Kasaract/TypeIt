@@ -28,10 +28,14 @@ function App() {
       .then((response) => {
         console.log(response);
         setWords(response.data.text.split(' '));
+        setPosition(0);
+        setCharPosition(0);
+        setInput('');
+        setWordIndex(0);
+        setInputStatus(STATECODE.READY);
       });
   }, [language]);
 
-  console.log(words);
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>
       <PositionContext.Provider value={{ position, setPosition }}>

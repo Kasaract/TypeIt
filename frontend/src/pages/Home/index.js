@@ -17,11 +17,6 @@ import CompletedModal from '../../components/CompletedModal';
 
 import { STATECODE } from '../../constants';
 
-const sampleEnglish =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod';
-
-const sampleChinese = '我爱学习';
-
 export default function Home() {
   const { language, setLanguage } = useContext(LanguageContext);
   const { position, setPosition } = useContext(PositionContext);
@@ -41,7 +36,6 @@ export default function Home() {
   };
 
   const onCompleted = () => {
-    setInput(''); // Why not working? - Gary
     setShowCompletedModal(true);
   };
 
@@ -49,8 +43,6 @@ export default function Home() {
     onReset();
     setShowCompletedModal(false);
   };
-
-  console.log(words);
 
   return (
     <Container className="vh-100">
