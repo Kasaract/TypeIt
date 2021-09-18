@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 
+export const TimerContext = createContext(0);
+export const TimeRunningConext = createContext(false);
 export const LanguageContext = createContext('');
 export const PositionContext = createContext(0);
 export const CharPositionContext = createContext(0);
