@@ -1,10 +1,17 @@
-import { STATUSCOLOR } from '../../constants';
+// import { useContext } from 'react';
 
-const sample =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+// import { PositionContext, InputStatusContext } from '../../context';
 
-export default function TypingText({ text }) {
+import { STATECODE, STATUSCOLOR } from '../../constants';
+
+export default function TypingText({ text, position, inputStatus }) {
   let color = STATUSCOLOR.CURRENT;
+  if (inputStatus !== STATECODE.INCORRECT) {
+    color = STATUSCOLOR.CURRENT;
+  } else if (inputStatus === STATECODE.INCORRECT) {
+    color = STATUSCOLOR.INCORRECT;
+  }
+
   return (
     <div className="d-flex justify-content-center align-items-center px-5 py-2">
       <div
@@ -19,7 +26,9 @@ export default function TypingText({ text }) {
               backgroundColor: STATUSCOLOR.CORRECT,
               userSelect: 'none',
             }}
-          ></span>
+          >
+            {text.substring(0, position)}
+          </span>
 
           {/* Current character  */}
           <span
@@ -29,10 +38,14 @@ export default function TypingText({ text }) {
               textDecoration: 'underline',
               userSelect: 'none',
             }}
-          ></span>
+          >
+            {text.substring(position, position + 1)}
+          </span>
 
           {/* Have not reached yet */}
-          <span style={{ fontSize: '2rem', userSelect: 'none' }}>{sample}</span>
+          <span style={{ fontSize: '2rem', userSelect: 'none' }}>
+            {text.substring(position + 1)}
+          </span>
         </div>
       </div>
     </div>

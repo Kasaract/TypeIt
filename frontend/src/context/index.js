@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 export const PositionContext = createContext(0);
+export const CharPositionContext = createContext(0);
 export const InputContext = createContext('');
 export const WordsContext = createContext({});
 export const InputStatusContext = createContext(0);
