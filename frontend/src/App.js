@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+
+import Routes from './Routes';
+import {
+  PositionContext,
+  InputContext,
+  WordsContext,
+  InputStatusContext,
+} from './context';
+
+import { STATECODE } from './constants';
 
 function App() {
+  const [position, setPosition] = useState(0);
+  const [input, setInput] = useState('');
+  const [words, setWords] = useState([]);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [inputStatus, setInputStatus] = useState(STATECODE.READY);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PositionContext.Provider value={{ position, setPosition }}>
+      <InputContext.Provider value={{ input, setInput }}>
+        <WordsContext.Provider value={{ words, wordIndex, setWordIndex }}>
+          <InputStatusContext.Provider value={{ inputStatus, setInputStatus }}>
+            <Routes />
+          </InputStatusContext.Provider>
+        </WordsContext.Provider>
+      </InputContext.Provider>
+    </PositionContext.Provider>
   );
 }
 
