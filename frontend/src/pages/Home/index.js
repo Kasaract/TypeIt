@@ -1,8 +1,9 @@
 import { useContext } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 
-import { PositionContext, InputStatusContext } from '../../context';
+import { LanguageContext, PositionContext, InputStatusContext } from '../../context';
 
+import LanguageSelect from '../../components/LanguageSelect';
 import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 
@@ -12,12 +13,16 @@ const sampleEnglish =
 const sampleChinese = '我爱学习';
 
 export default function Home() {
+  const { language, setLanguage } = useContext(LanguageContext);
   const { position, setPosition } = useContext(PositionContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
 
   return (
     <Container className="vh-100">
       <Col className="h-100">
+        <Row>
+          <LanguageSelect language={language}/>
+        </Row>
         <Row>
           <TypingText
             position={position}
