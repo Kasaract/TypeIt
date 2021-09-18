@@ -58,18 +58,31 @@ mongoose.connect(mongoConnectionURL, function(err) {
   //   if (err) throw err;
   //   console.log("1 document inserted");
   // });
+  TypingText.collection.findOne({language: "EN"}).then((result)=> {
+    console.log(result);
+    console.log("found english!");
+  });
 });
 
-app.get('/sampletext/EN', (err, res) => {
-  res.status(200);
-  res.json({ text: 'This is a sample text in English.' });
-  res.end();
-});
+// app.get('/sampletext/EN', (err, res) => {
+//   res.status(200);
+//   res.json({ text: 'This is a sample text in English.' });
+//   res.end();
+// });
 
 app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
-  res.json({ text: sampleText[req.params.languageCode] });
-  res.end();
+  TypingText.collection.findOne({language: req.params.languageCode}).then((result)=> {
+    console.log(result);
+    numOfTexts = result["texts"].length;
+    console.log(numOfTexts);
+    randomIndex = Math.floor(Math.random() * numOfTexts);
+    res.json({text: result["texts"][randomIndex]});
+  }).then(() => {
+    //res.json({ text: sampleText[req.params.languageCode] });
+    res.end();
+  });
 });
+
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
