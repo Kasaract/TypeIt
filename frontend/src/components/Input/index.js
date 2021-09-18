@@ -5,7 +5,7 @@ import { CharPositionContext, WordsContext } from '../../context';
 import { STATECODE } from '../../constants';
 
 export default function Input({
-  onCompleted, // ?
+  onCompleted,
   textLength,
   position,
   setPosition,
