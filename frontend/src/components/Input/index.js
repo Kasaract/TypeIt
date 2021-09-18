@@ -1,7 +1,7 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { FormControl } from 'react-bootstrap';
 
-import { CharPositionContext, WordsContext } from '../../context';
+import { CharPositionContext, InputContext, WordsContext } from '../../context';
 import { STATECODE } from '../../constants';
 
 export default function Input({
@@ -14,8 +14,7 @@ export default function Input({
 }) {
   const { charPosition, setCharPosition } = useContext(CharPositionContext);
   const { words, wordIndex, setWordIndex } = useContext(WordsContext);
-
-  const [input, setInput] = useState('');
+  const { input, setInput } = useContext(InputContext);
 
   const onInputChange = (newInput) => {
     setInput(newInput);

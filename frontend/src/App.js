@@ -27,14 +27,20 @@ function App() {
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
-      .then((response) => {
-        setWords(response.data.text.split(' '));
-      });
+    setWords('This is a sample text in English'.split(' '));
+    // axios
+    //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+    //   .then((response) => {
+    //     console.log(response);
+    //     setWords(response.data.text.split(' '));
+    //     setPosition(0);
+    //     setCharPosition(0);
+    //     setInput('');
+    //     setWordIndex(0);
+    //     setInputStatus(STATECODE.READY);
+    //   });
   }, [language]);
 
-  console.log(words);
   return (
     <TimeRunningConext.Provider value={{ timeRunning, setTimeRunning }}>
       <TimerContext.Provider value={{ time, setTime }}>

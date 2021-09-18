@@ -17,6 +17,7 @@ import LanguageSelect from '../../components/LanguageSelect';
 import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
+import KeyboardAssist from '../../components/KeyboardAssist';
 
 import { STATECODE } from '../../constants';
 
@@ -43,7 +44,6 @@ export default function Home() {
   };
 
   const onCompleted = () => {
-    setInput(''); // Why not working? - Gary
     setShowCompletedModal(true);
   };
 
@@ -51,8 +51,6 @@ export default function Home() {
     onReset();
     setShowCompletedModal(false);
   };
-
-  console.log(words);
 
   return (
     <Container className="vh-100">
@@ -90,6 +88,9 @@ export default function Home() {
             inputStatus={inputStatus}
             setInputStatus={setInputStatus}
           />
+        </Row>
+        <Row>
+          <KeyboardAssist />
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />
