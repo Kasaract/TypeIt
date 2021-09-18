@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require("mongoose");
 const TypingText = require("./TypingText");
+const Users = require("./Users");
 
 const sampleText = require('./sampleText');
 
@@ -26,7 +27,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const mongoConnectionURL = "mongodb+srv://mqliu:9s2qRR3zNXsrWdLm@cluster0.qe9d9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoConnectionURL = "mongodb+srv://mqliu:NdcHyB1LAM22QB9a@cluster0.qe9d9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const databaseName = "TypeIt";
 const options = {
   useNewUrlParser: true,
@@ -48,6 +49,11 @@ mongoose.connect(mongoConnectionURL, function(err) {
 
   if (err) throw err;
   var myobj = { language: "ZH", texts: ["this isnt chinese", "nihao"] };
+  var testUser = {username: "ml", firstname: "machine", lastname: "learning"};
+  // Users.collection.insertOne(testUser, function(err,res){
+  //   if (err) throw err;
+  //   console.log("inserted user");
+  // });
   // TypingText.collection.insertOne(myobj, function(err, res) {
   //   if (err) throw err;
   //   console.log("1 document inserted");
