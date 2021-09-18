@@ -70,6 +70,19 @@ mongoose.connect(mongoConnectionURL, function(err) {
 //   res.end();
 // });
 
+app.get('/sampletext/:languageCode', (req, res) => {
+  res.status(200);
+  TypingText.collection.findOne({language: req.params.languageCode}).then((result)=> {
+    console.log(result);
+    numOfTexts = result["texts"].length;
+    console.log(numOfTexts);
+    randomIndex = Math.floor(Math.random() * numOfTexts);
+    res.json({text: result["texts"][randomIndex]});
+  }).then(() => {
+    res.end();
+  });
+});
+
 app.post('/addLanguageText', (req, res) => {
   res.status(200);
   text = req.body.text;
@@ -82,6 +95,5 @@ app.post('/addLanguageText', (req, res) => {
     });
   });
 });
-
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
