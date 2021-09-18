@@ -22,7 +22,7 @@ export default function Home() {
           <TypingText
             position={position}
             inputStatus={inputStatus}
-            text={sampleChinese}
+            text={sampleEnglish}
           />
         </Row>
         <Row>

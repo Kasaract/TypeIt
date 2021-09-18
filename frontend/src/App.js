@@ -20,7 +20,7 @@ function App() {
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
   const [input, setInput] = useState('');
-  const [words, setWords] = useState(sampleChinese.split(' '));
+  const [words, setWords] = useState(sampleEnglish.split(' '));
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
 
