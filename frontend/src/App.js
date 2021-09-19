@@ -97,28 +97,27 @@ function App() {
   const [errorCount, setErrorCount] = useState(0);
   // const [assist, setAssist] = useState(false);
 
-  useEffect(() => {
+  useEffect(async () => {
     // Update typing model
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
         setModel(models[model]);
-        setWords(models[model].preprocess("English"));
+        // setWords(models[model].preprocess(sampleMorse));
+        // Update typing text
+        await axios
+          .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+          .then((response) => {
+            setWords(models[model].preprocess(response.data.text));
+            setPosition(0);
+            setCharPosition(0);
+            setInput('');
+            setWordIndex(0);
+            setInputStatus(STATECODE.READY);
+          });
         break;
       }
     }
-
-    // Update typing text
-    axios
-      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
-      .then((response) => {
-        setWords(response.data.text.split(' '));
-        setPosition(0);
-        setCharPosition(0);
-        setInput('');
-        setWordIndex(0);
-        setInputStatus(STATECODE.READY);
-      });
-  }, [language]);
+  }, [language, model]);
 
   return (
     <TimeRunningContext.Provider value={{ timeRunning, setTimeRunning }}>
@@ -132,9 +131,11 @@ function App() {
                     value={{ inputStatus, setInputStatus }}
                   >
                     <ModelContext.Provider value={{ model, setModel }}>
-                      <ErrorCountContext.Provider value={{ errorCount, setErrorCount }}>
+                      <ErrorCountContext.Provider
+                        value={{ errorCount, setErrorCount }}
+                      >
                         {/* <AssistContext.Provider value={{ assist, setAssist }}> */}
-                          <Routes />
+                        <Routes />
                         {/* </AssistContext.Provider> */}
                       </ErrorCountContext.Provider>
                     </ModelContext.Provider>
