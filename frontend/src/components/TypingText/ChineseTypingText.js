@@ -1,12 +1,27 @@
+import { useContext, useRef } from 'react';
+import { Overlay, Tooltip } from 'react-bootstrap';
+
+import { WordsContext, InputStatusContext } from '../../context';
+
 import { STATECODE, STATUSCOLOR } from '../../constants';
 
-export default function TypingText({ text, position, inputStatus }) {
-  let color = STATUSCOLOR.CURRENT;
+import { Pinyin } from '../../languages/Chinese/Pinyin';
+
+export default function ChineseTypingText({ text, pinyinAssist }) {
+  const { words, wordIndex } = useContext(WordsContext);
+  const { inputStatus } = useContext(InputStatusContext);
+
+  const target = useRef(null);
+
+  let color;
+
   if (inputStatus !== STATECODE.INCORRECT) {
     color = STATUSCOLOR.CURRENT;
   } else if (inputStatus === STATECODE.INCORRECT) {
     color = STATUSCOLOR.INCORRECT;
   }
+
+  const currentWord = words[wordIndex];
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 py-2">
@@ -23,11 +38,12 @@ export default function TypingText({ text, position, inputStatus }) {
               userSelect: 'none',
             }}
           >
-            {text.substring(0, position)}
+            {text.slice(0, wordIndex).join('')}
           </span>
 
           {/* Current character  */}
           <span
+            ref={target}
             style={{
               fontSize: '2rem',
               backgroundColor: color,
@@ -35,12 +51,21 @@ export default function TypingText({ text, position, inputStatus }) {
               userSelect: 'none',
             }}
           >
-            {text.substring(position, position + 1)}
+            {text[wordIndex]}
+            {currentWord in Pinyin && (
+              <Overlay
+                target={target.current}
+                show={pinyinAssist}
+                placement="top-end"
+              >
+                <Tooltip>{Pinyin[currentWord]}</Tooltip>
+              </Overlay>
+            )}
           </span>
 
           {/* Have not reached yet */}
           <span style={{ fontSize: '2rem', userSelect: 'none' }}>
-            {text.substring(position + 1)}
+            {text.slice(wordIndex + 1).join('')}
           </span>
         </div>
       </div>

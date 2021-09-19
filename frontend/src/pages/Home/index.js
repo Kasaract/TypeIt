@@ -19,6 +19,8 @@ import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
 import KeyboardAssist from '../../components/KeyboardAssist';
 
+import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
+
 import { STATECODE } from '../../constants';
 
 export default function Home() {
@@ -73,11 +75,15 @@ export default function Home() {
           </Col>
         </Row>
         <Row>
-          <TypingText
-            position={position}
-            inputStatus={inputStatus}
-            text={words.join(' ')}
-          />
+          {language === 'zh' ? (
+            <ChineseTypingText text={words} />
+          ) : (
+            <TypingText
+              position={position}
+              inputStatus={inputStatus}
+              text={words.join(' ')}
+            />
+          )}
         </Row>
         <Row>
           <Input
