@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { InputContext } from '../../context';
+import { InputContext, LanguageContext } from '../../context';
 
 export default function KeyboardAssist({
   char,
@@ -10,6 +10,7 @@ export default function KeyboardAssist({
   defaultColor = '#5e5e5e',
 }) {
   const { input, setInput } = useContext(InputContext);
+  const { language, setLanguage } = useContext(LanguageContext);
   const [lastchar, setLastchar] = useState('');
 
   useEffect(() => {
@@ -18,7 +19,10 @@ export default function KeyboardAssist({
     }
   }, [input]);
 
-  let keyToCode = require('./KeyboardMappings/Thai_Keyboard.js');
+  let support = ['en', 'es', 'fr', 'th', 'zh']
+  let keyToCode = require('./KeyboardMappings/en.js');
+  if (support.includes(language))
+    keyToCode = require('./KeyboardMappings/' + language + '.js');
   let codeToKey = {};
   Object.keys(keyToCode.KeyCodes).forEach((key) => {
     let codeArray = keyToCode.KeyCodes[key];
