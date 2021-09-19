@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
 export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
@@ -8,13 +8,25 @@ export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
         setTime((time) => time + 25);
       }, 25);
     }
-  }, [timeRunning]);
+  }, [timeRunning, setTime]);
 
   return (
     <>
       <div>
-        <Button onClick={() => {setTimeRunning(true);}}>Start Timer</Button>
-        <h1>{ Math.floor(time/60000) + ":" + Math.floor(time/1000)%60 + "." + time%1000 }</h1>
+        <Button
+          onClick={() => {
+            setTimeRunning(true);
+          }}
+        >
+          Start Timer
+        </Button>
+        <h1>
+          {Math.floor(time / 60000) +
+            ':' +
+            (Math.floor(time / 1000) % 60) +
+            '.' +
+            (time % 1000)}
+        </h1>
       </div>
     </>
   );
