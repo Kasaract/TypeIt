@@ -6,10 +6,10 @@ export default function KeyboardAssist({
   defaultFillColor = '#ffffff',
   defaultColor = '#5e5e5e',
 }) {
-  let keyToCode = require('./KeyboardMappings/English_QWERTY.js');
+  let keyToCode = require('./KeyboardMappings/French_AZERTY.js');
   let codeToKey = {};
-  Object.keys(keyToCode.English_QWERTY_KeyCodes).forEach(key => {
-    let codeArray = keyToCode.English_QWERTY_KeyCodes[key];
+  Object.keys(keyToCode.KeyCodes).forEach(key => {
+    let codeArray = keyToCode.KeyCodes[key];
     if (codeArray.length === 1) {
       codeToKey[codeArray[0]] = key;
     }
