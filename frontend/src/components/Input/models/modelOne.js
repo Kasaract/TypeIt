@@ -18,8 +18,8 @@ const onInputChange = (
   textLength,
   errorCount,
   setErrorCount,
-  // assist,
-  // setAssist,
+  assist,
+  setAssist,
 ) => {
   // ****** READY ******
 
@@ -34,6 +34,7 @@ const onInputChange = (
     else {
       const inputChar = newInput.charAt(newInput.length - 1);
       const correctChar = words[wordIndex].charAt(charPosition);
+      setAssist(correctChar);
 
       // Type correct character
       if (inputChar === correctChar) {

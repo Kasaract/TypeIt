@@ -19,8 +19,8 @@ export default function Input({
   setInputStatus,
   errorCount,
   setErrorCount,
-  // assist,
-  // setAssist,
+  assist,
+  setAssist,
 }) {
   const { charPosition, setCharPosition } = useContext(CharPositionContext);
   const { words, wordIndex, setWordIndex } = useContext(WordsContext);
@@ -44,8 +44,8 @@ export default function Input({
       textLength,
       errorCount,
       setErrorCount,
-      // assist,
-      // setAssist,
+      assist,
+      setAssist,
     );
   };
 

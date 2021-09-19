@@ -10,4 +10,4 @@ export const WordsContext = createContext({});
 export const InputStatusContext = createContext(0);
 export const ModelContext = createContext();
 export const ErrorCountContext = createContext(0);
-// export const AssistContext = createContext(false);
+export const AssistContext = createContext(false);

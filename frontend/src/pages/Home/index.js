@@ -11,6 +11,7 @@ import {
   WordsContext,
   TimeRunningContext,
   ErrorCountContext,
+  AssistContext,
   // ModelContext,
 } from '../../context';
 
@@ -36,7 +37,7 @@ export default function Home() {
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
   const { errorCount, setErrorCount } = useContext(ErrorCountContext);
-  // const { assist, setAssist } = useContext(AssistContext);
+  const { assist, setAssist } = useContext(AssistContext);
   // const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
@@ -103,8 +104,8 @@ export default function Home() {
             setInputStatus={setInputStatus}
             errorCount={errorCount}
             setErrorCount={setErrorCount}
-            // assist={assist}
-            // setAssist={setAssist}
+            assist={assist}
+            setAssist={setAssist}
           />
         </Row>
         <Row>

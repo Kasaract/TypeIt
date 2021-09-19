@@ -13,7 +13,7 @@ import {
   TimeRunningContext,
   ModelContext,
   ErrorCountContext,
-  // AssistContext,
+  AssistContext,
 } from './context';
 
 import { STATECODE } from './constants';
@@ -95,7 +95,7 @@ function App() {
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
   const [errorCount, setErrorCount] = useState(0);
-  // const [assist, setAssist] = useState(false);
+  const [assist, setAssist] = useState('');
 
   useEffect(() => {
     // Update typing model
@@ -133,9 +133,9 @@ function App() {
                   >
                     <ModelContext.Provider value={{ model, setModel }}>
                       <ErrorCountContext.Provider value={{ errorCount, setErrorCount }}>
-                        {/* <AssistContext.Provider value={{ assist, setAssist }}> */}
+                        <AssistContext.Provider value={{ assist, setAssist }}>
                           <Routes />
-                        {/* </AssistContext.Provider> */}
+                        </AssistContext.Provider>
                       </ErrorCountContext.Provider>
                     </ModelContext.Provider>
                   </InputStatusContext.Provider>
