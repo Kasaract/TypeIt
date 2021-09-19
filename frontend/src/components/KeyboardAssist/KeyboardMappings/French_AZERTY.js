@@ -1,4 +1,4 @@
-export const English_QWERTY_KeyCodes = {
+export const French_AZERTY_KeyCodes = {
 
     // Top Row
     '': ['192', '16R'],
