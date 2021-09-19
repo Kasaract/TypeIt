@@ -28,6 +28,7 @@ function App() {
   const [words, setWords] = useState([]);
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
+  const [errorCount, setErrorCount] = useState(0);
 
   useEffect(() => {
     // Update typing model
@@ -50,6 +51,7 @@ function App() {
         setInput('');
         setWordIndex(0);
         setInputStatus(STATECODE.READY);
+        setErrorCount(0);
       });
   }, [language]);
 

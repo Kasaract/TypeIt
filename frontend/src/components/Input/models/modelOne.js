@@ -13,9 +13,9 @@ const onInputChange = (
   wordIndex,
   setWordIndex,
   onCompleted,
-  textLength
-  // errorCount,
-  // setErrorCount,
+  textLength,
+  errorCount,
+  setErrorCount,
   // setKeyboardAssist
 ) => {
   // ****** READY ******
@@ -62,6 +62,9 @@ const onInputChange = (
   // ****** INCORRECT ******
 
   const onIncorrect = (newInput) => {
+    setErrorCount(errorCount+1);
+    console.log(`errorCount is ${errorCount}`);
+
     // Type wrong character for space
     if (
       newInput.length - 1 < charPosition &&
@@ -74,13 +77,14 @@ const onInputChange = (
     else if (newInput.length - 1 === charPosition) {
       const inputChar = newInput.charAt(newInput.length - 1);
       const correctChar = words[wordIndex].charAt(charPosition);
-
+      errorCount+=1;
+      console.log(`error count is ${errorCount}`);
       // Type correct character
       if (inputChar === correctChar) {
         setPosition(position + 1);
         setCharPosition(charPosition + 1);
         setInputStatus(STATECODE.READY);
-      }
+      } 
     }
 
     // Backspaced characters before typo (previously correct characters)
@@ -118,6 +122,7 @@ const onInputChange = (
 
   // STATE-BASED LOGIC
   setInput(newInput);
+  // errorCount = 0;
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);

@@ -9,3 +9,4 @@ export const InputContext = createContext('');
 export const WordsContext = createContext({});
 export const InputStatusContext = createContext(0);
 export const ModelContext = createContext();
+export const MistakeContext = createContext(0);

@@ -7,6 +7,7 @@ import {
   InputContext,
   WordsContext,
   ModelContext,
+  MistakeContext,
 } from '../../context';
 import { STATECODE } from '../../constants';
 
@@ -25,7 +26,7 @@ export default function Input({
   const { model } = useContext(ModelContext);
 
   const onInputChange = (newInput) => {
-    model.onInputChange(
+    model.onInputChange( // model 1
       newInput,
       setInput,
       inputStatus,
@@ -38,7 +39,8 @@ export default function Input({
       wordIndex,
       setWordIndex,
       onCompleted,
-      textLength
+      textLength,
+      // errorCount,
     );
   };
 
