@@ -11,6 +11,7 @@ import {
   WordsContext,
   TimeRunningContext,
   ErrorCountContext,
+  AssistContext,
   // ModelContext,
 } from '../../context';
 
@@ -26,6 +27,8 @@ import MorseCodeTypingText from '../../components/TypingText/MorseCodeTypingText
 
 import { STATECODE } from '../../constants';
 
+import './Home.css';
+
 export default function Home() {
   const { time, setTime } = useContext(TimerContext);
   const { timeRunning, setTimeRunning } = useContext(TimeRunningContext);
@@ -36,7 +39,7 @@ export default function Home() {
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
   const { errorCount, setErrorCount } = useContext(ErrorCountContext);
-  // const { assist, setAssist } = useContext(AssistContext);
+  const { assist, setAssist } = useContext(AssistContext);
   // const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
@@ -104,16 +107,16 @@ export default function Home() {
             setInputStatus={setInputStatus}
             errorCount={errorCount}
             setErrorCount={setErrorCount}
-            // assist={assist}
-            // setAssist={setAssist}
+            assist={assist}
+            setAssist={setAssist}
           />
         </Row>
-        <Row>
-          {
-            errorCount >= 3 ?
-            (<KeyboardAssist />)
-            : (<></>)
-          }
+        <Row
+          className={`d-flex justify-content-center px-5 py-3 ${
+            errorCount >= 3 ? 'fade-in' : 'fade-out'
+          }`}
+        >
+          {errorCount >= 3 && <KeyboardAssist />}
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} time={time} onHide={onCompletedModalExit} />
