@@ -1,4 +1,5 @@
-export const French_AZERTY_KeyCodes = {
+//export const French_AZERTY_KeyCodes = {
+export const KeyCodes = {
 
     // Top Row
     '': ['192', '16R'],

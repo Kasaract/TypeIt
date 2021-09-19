@@ -1,5 +1,6 @@
 // prettier-ignore
-export const English_QWERTY_KeyCodes = {
+// export const English_QWERTY_KeyCodes = {
+export const KeyCodes = {
 
   // Top Row
   '~': ['192', '16R'],
