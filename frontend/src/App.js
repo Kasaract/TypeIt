@@ -33,7 +33,7 @@ function App() {
     // Update typing model
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
-        setModel(modelGroups[model]);
+        setModel(models[model]);
         // setWords(modelPreprocessing[model](text));
         break;
       }

@@ -24,10 +24,7 @@ export default function Input({
   const { input, setInput } = useContext(InputContext);
   const { model } = useContext(ModelContext);
 
-  console.log('THIS IS MY MODEL');
-  console.log(model);
-
-  const onInputChange = (newInput) =>
+  const onInputChange = (newInput) => {
     model.onInputChange(
       newInput,
       setInput,
@@ -43,6 +40,7 @@ export default function Input({
       onCompleted,
       textLength
     );
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 pt-5">
