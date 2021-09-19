@@ -20,7 +20,7 @@ export default function KeyboardAssist({
     }
   }, [assist]);
 
-  let support = ['en', 'es', 'fr', 'th', 'zh']
+  let support = ['en', 'es', 'fr', 'th', 'zh'];
   let keyToCode = require('./KeyboardMappings/en.js');
   if (support.includes(language))
     keyToCode = require('./KeyboardMappings/' + language + '.js');

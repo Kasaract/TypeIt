@@ -27,6 +27,8 @@ import MorseCodeTypingText from '../../components/TypingText/MorseCodeTypingText
 
 import { STATECODE } from '../../constants';
 
+import './Home.css';
+
 export default function Home() {
   const { time, setTime } = useContext(TimerContext);
   const { timeRunning, setTimeRunning } = useContext(TimeRunningContext);
@@ -108,12 +110,12 @@ export default function Home() {
             setAssist={setAssist}
           />
         </Row>
-        <Row>
-          {
-            errorCount >= 3 ?
-            (<KeyboardAssist />)
-            : (<></>)
-          }
+        <Row
+          className={`d-flex justify-content-center px-5 py-3 ${
+            errorCount >= 3 ? 'fade-in' : 'fade-out'
+          }`}
+        >
+          {errorCount >= 3 && <KeyboardAssist />}
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />
