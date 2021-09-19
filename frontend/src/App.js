@@ -47,10 +47,46 @@ const sampleChinese = [
 const sampleBraile =
   '⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠎⠁⠍⠏⠇⠑ ⠞⠑⠭⠞ ⠊⠝ ⠠⠑⠝⠛⠇⠊⠎⠓⠲ ⠠⠊ ⠁⠍ ⠁ ⠞⠽⠏⠊⠝⠛ ⠏⠗⠕⠛⠗⠁⠍ ⠊⠝⠞⠑⠝⠙⠑⠙ ⠞⠕ ⠓⠑⠇⠏ ⠽⠕⠥ ⠇⠑⠁⠗⠝ ⠓⠕⠺ ⠞⠕ ⠞⠽⠏⠑⠲';
 
+const sampleMorse = [
+  '-',
+  '....',
+  '..',
+  '...',
+  '/',
+  '..',
+  '...',
+  '/',
+  '.-',
+  '/',
+  '...',
+  '.-',
+  '--',
+  '.--.',
+  '.-..',
+  '.',
+  '/',
+  '-',
+  '.',
+  '-..-',
+  '-',
+  '/',
+  '..',
+  '-.',
+  '/',
+  '.',
+  '-.',
+  '--.',
+  '.-..',
+  '..',
+  '...',
+  '....',
+  '.-.-.-',
+];
+
 function App() {
   const [time, setTime] = useState(0);
   const [timeRunning, setTimeRunning] = useState(false);
-  const [language, setLanguage] = useState('zh');
+  const [language, setLanguage] = useState('morse');
   const [model, setModel] = useState(models.modelThree);
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
@@ -66,7 +102,7 @@ function App() {
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
         setModel(models[model]);
-        setWords(models[model].preprocess(sampleChinese));
+        setWords(models[model].preprocess(sampleMorse));
         break;
       }
     }

@@ -10,7 +10,7 @@ import {
   InputContext,
   WordsContext,
   TimeRunningConext,
-  ModelContext,
+  // ModelContext,
 } from '../../context';
 
 import Timer from '../../components/Timer';
@@ -21,6 +21,7 @@ import CompletedModal from '../../components/CompletedModal';
 import KeyboardAssist from '../../components/KeyboardAssist';
 
 import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
+import MorseCodeTypingText from '../../components/TypingText/MorseCodeTypingText';
 
 import { STATECODE } from '../../constants';
 
@@ -33,7 +34,7 @@ export default function Home() {
   const { setInput } = useContext(InputContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
-  const { model } = useContext(ModelContext);
+  // const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
@@ -79,6 +80,8 @@ export default function Home() {
         <Row>
           {language === 'zh' ? (
             <ChineseTypingText text={words} />
+          ) : language === 'morse' ? (
+            <MorseCodeTypingText text={words} />
           ) : (
             <TypingText
               position={position}

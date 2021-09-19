@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { FormControl } from 'react-bootstrap';
 
 import {
-  LanguageContext,
   CharPositionContext,
   InputContext,
   WordsContext,
@@ -18,7 +17,6 @@ export default function Input({
   inputStatus,
   setInputStatus,
 }) {
-  const { language } = useContext(LanguageContext);
   const { charPosition, setCharPosition } = useContext(CharPositionContext);
   const { words, wordIndex, setWordIndex } = useContext(WordsContext);
   const { input, setInput } = useContext(InputContext);
