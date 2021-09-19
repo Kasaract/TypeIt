@@ -5,6 +5,8 @@ import { useContext } from 'react';
 const onInputChange = (
   newInput,
   setInput,
+  timeRunning,
+  setTimeRunning,
   inputStatus,
   setInputStatus,
   position,
@@ -129,6 +131,8 @@ const onInputChange = (
 
   // STATE-BASED LOGIC
   setInput(newInput);
+  if (newInput.length === 1)
+    setTimeRunning(true);
   // errorCount = 0;
   switch (inputStatus) {
     case STATECODE.READY:

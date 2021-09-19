@@ -42,8 +42,8 @@ export default function Home() {
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   const onReset = () => {
-    setTimeRunning(false);
-    setTime(0);
+    setTimeRunning((timeRunning) => false);
+    setTime((time) => 0);
     setPosition(0);
     setCharPosition(0);
     setWordIndex(0);
@@ -53,6 +53,7 @@ export default function Home() {
 
   const onCompleted = () => {
     setShowCompletedModal(true);
+    setTimeRunning((timeRunning) => false);
   };
 
   const onCompletedModalExit = () => {
@@ -115,7 +116,7 @@ export default function Home() {
           }
         </Row>
       </Col>
-      <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />
+      <CompletedModal show={showCompletedModal} time={time} onHide={onCompletedModalExit} />
     </Container>
   );
 }

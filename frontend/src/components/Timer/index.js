@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
+  const [timer, setTimer] = useState(0);
   useEffect(() => {
+    console.log(timeRunning);
     if (timeRunning === true) {
-      setInterval(() => {
-        setTime((time) => time + 25);
-      }, 25);
+      setTimer((timer) => 
+        timer = setInterval(() => {
+          setTime((time) => time + 25);
+      }, 25));
+      console.log(timer);
+    }
+    else {
+      console.log("STOP PLZ");
+      console.log(timer);
+      clearInterval(timer);
     }
   }, [timeRunning, setTime]);
 
