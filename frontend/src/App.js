@@ -10,18 +10,48 @@ import {
   InputContext,
   WordsContext,
   InputStatusContext,
-  TimeRunningConext,
+  TimeRunningContext,
   ModelContext,
+  ErrorCountContext,
+  // AssistContext,
 } from './context';
 
 import { STATECODE } from './constants';
 import { models, modelGroups } from './components/Input/models';
 
+const sampleChinese = [
+  '这',
+  '是',
+  '英文',
+  '的',
+  '示例',
+  '文本',
+  '。',
+  ' ',
+  '我',
+  '是',
+  '一个',
+  '打字',
+  '程序',
+  '，',
+  '旨',
+  '在',
+  '帮助',
+  '您',
+  '学习',
+  '如何',
+  '打字',
+  '。',
+];
+
+const sampleBraile =
+  '⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠎⠁⠍⠏⠇⠑ ⠞⠑⠭⠞ ⠊⠝ ⠠⠑⠝⠛⠇⠊⠎⠓⠲ ⠠⠊ ⠁⠍ ⠁ ⠞⠽⠏⠊⠝⠛ ⠏⠗⠕⠛⠗⠁⠍ ⠊⠝⠞⠑⠝⠙⠑⠙ ⠞⠕ ⠓⠑⠇⠏ ⠽⠕⠥ ⠇⠑⠁⠗⠝ ⠓⠕⠺ ⠞⠕ ⠞⠽⠏⠑⠲';
+
 function App() {
   const [time, setTime] = useState(0);
   const [timeRunning, setTimeRunning] = useState(false);
   const [language, setLanguage] = useState('en');
-  const [model, setModel] = useState(models.modelOne);
+  const [model, setModel] = useState(models.modelThree);
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
   const [input, setInput] = useState('');
@@ -29,34 +59,33 @@ function App() {
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
   const [errorCount, setErrorCount] = useState(0);
+  // const [assist, setAssist] = useState(false);
 
   useEffect(() => {
     // Update typing model
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
         setModel(models[model]);
-        // setWords(modelPreprocessing[model](text));
+        setWords(models[model].preprocess("This is a test statement"));
         break;
       }
     }
 
     // Update typing text
-    setWords('This is a sample text in English'.split(' '));
-    axios
-      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
-      .then((response) => {
-        setWords(response.data.text.split(' '));
-        setPosition(0);
-        setCharPosition(0);
-        setInput('');
-        setWordIndex(0);
-        setInputStatus(STATECODE.READY);
-        setErrorCount(0);
-      });
+    // axios
+    //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+    //   .then((response) => {
+    //     setWords(response.data.text.split(' '));
+    //     setPosition(0);
+    //     setCharPosition(0);
+    //     setInput('');
+    //     setWordIndex(0);
+    //     setInputStatus(STATECODE.READY);
+    //   });
   }, [language]);
 
   return (
-    <TimeRunningConext.Provider value={{ timeRunning, setTimeRunning }}>
+    <TimeRunningContext.Provider value={{ timeRunning, setTimeRunning }}>
       <TimerContext.Provider value={{ time, setTime }}>
         <LanguageContext.Provider value={{ language, setLanguage }}>
           <PositionContext.Provider value={{ position, setPosition }}>
@@ -67,7 +96,11 @@ function App() {
                     value={{ inputStatus, setInputStatus }}
                   >
                     <ModelContext.Provider value={{ model, setModel }}>
-                      <Routes />
+                      <ErrorCountContext.Provider value={{ errorCount, setErrorCount }}>
+                        {/* <AssistContext.Provider value={{ assist, setAssist }}> */}
+                          <Routes />
+                        {/* </AssistContext.Provider> */}
+                      </ErrorCountContext.Provider>
                     </ModelContext.Provider>
                   </InputStatusContext.Provider>
                 </WordsContext.Provider>
@@ -76,7 +109,7 @@ function App() {
           </PositionContext.Provider>
         </LanguageContext.Provider>
       </TimerContext.Provider>
-    </TimeRunningConext.Provider>
+    </TimeRunningContext.Provider>
   );
 }
 

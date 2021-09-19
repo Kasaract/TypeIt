@@ -10,6 +10,7 @@ import {
   InputContext,
   WordsContext,
   TimeRunningConext,
+  ModelContext,
 } from '../../context';
 
 import Timer from '../../components/Timer';
@@ -18,6 +19,8 @@ import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
 import KeyboardAssist from '../../components/KeyboardAssist';
+
+import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
 
 import { STATECODE } from '../../constants';
 
@@ -30,6 +33,7 @@ export default function Home() {
   const { setInput } = useContext(InputContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
+  const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
@@ -73,21 +77,28 @@ export default function Home() {
           </Col>
         </Row>
         <Row>
-          <TypingText
-            position={position}
-            inputStatus={inputStatus}
-            text={words.join(' ')}
-          />
+          {language === 'zh' ? (
+            <ChineseTypingText text={words} />
+          ) : (
+            <TypingText
+              position={position}
+              inputStatus={inputStatus}
+              text={words.join(' ')}
+            />
+          )}
         </Row>
         <Row>
           <Input
             onCompleted={onCompleted}
-            textLength={words.join(' ').length}
+            textLength={language === 'zh' ? words.length : words.join(' ').length}
             position={position}
             setPosition={setPosition}
             inputStatus={inputStatus}
             setInputStatus={setInputStatus}
           />
+        </Row>
+        <Row>
+          <KeyboardAssist />
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />

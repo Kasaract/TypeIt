@@ -1,3 +1,5 @@
+// Korean
+
 import { STATECODE } from '../../../constants';
 
 import { KoreanIntermediate } from '../../../languages/Korean/KoreanIntermediate';
@@ -146,8 +148,6 @@ const onInputChange = (
   // ****** INCORRECT ******
 
   const onIncorrect = (newInput) => {
-    console.log(newInput.length, charPosition);
-
     // Type wrong character for space
     if (
       newInput.length - 1 < charPosition &&
@@ -230,8 +230,6 @@ const onInputChange = (
     }
   };
 
-  console.log(inputStatus);
-
   // STATE-BASED LOGIC
   setInput(newInput);
   switch (inputStatus) {
@@ -257,4 +255,6 @@ const onInputChange = (
 
 export const modelFour = {
   onInputChange: onInputChange,
+  preprocess: (text) => text.split(' '),
+  display: (words) => words.join(' '),
 };
