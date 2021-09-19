@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
   useEffect(() => {
     if (timeRunning === true) {
       setInterval(() => {
-        console.log(time);
-        setTime(time + 25);
+        setTime((time) => time + 25);
       }, 25);
     }
   }, [timeRunning]);
