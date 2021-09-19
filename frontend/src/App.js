@@ -47,6 +47,42 @@ const sampleChinese = [
 const sampleBraile =
   '⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠎⠁⠍⠏⠇⠑ ⠞⠑⠭⠞ ⠊⠝ ⠠⠑⠝⠛⠇⠊⠎⠓⠲ ⠠⠊ ⠁⠍ ⠁ ⠞⠽⠏⠊⠝⠛ ⠏⠗⠕⠛⠗⠁⠍ ⠊⠝⠞⠑⠝⠙⠑⠙ ⠞⠕ ⠓⠑⠇⠏ ⠽⠕⠥ ⠇⠑⠁⠗⠝ ⠓⠕⠺ ⠞⠕ ⠞⠽⠏⠑⠲';
 
+const sampleMorse = [
+  '-',
+  '....',
+  '..',
+  '...',
+  '/',
+  '..',
+  '...',
+  '/',
+  '.-',
+  '/',
+  '...',
+  '.-',
+  '--',
+  '.--.',
+  '.-..',
+  '.',
+  '/',
+  '-',
+  '.',
+  '-..-',
+  '-',
+  '/',
+  '..',
+  '-.',
+  '/',
+  '.',
+  '-.',
+  '--.',
+  '.-..',
+  '..',
+  '...',
+  '....',
+  '.-.-.-',
+];
+
 function App() {
   const [time, setTime] = useState(0);
   const [timeRunning, setTimeRunning] = useState(false);
@@ -66,7 +102,7 @@ function App() {
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
         setModel(models[model]);
-        setWords(models[model].preprocess("This is a test statement"));
+        setWords(models[model].preprocess("English"));
         break;
       }
     }

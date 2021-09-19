@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { InputContext } from '../../context';
+import { InputContext, LanguageContext } from '../../context';
 
 export default function KeyboardAssist({
   char,
@@ -10,6 +10,7 @@ export default function KeyboardAssist({
   defaultColor = '#5e5e5e',
 }) {
   const { input, setInput } = useContext(InputContext);
+  const { language, setLanguage } = useContext(LanguageContext);
   const [lastchar, setLastchar] = useState('');
 
   useEffect(() => {
@@ -18,12 +19,15 @@ export default function KeyboardAssist({
     }
   }, [input]);
 
-  let keyToCode = require('./KeyboardMappings/Thai_Keyboard.js');
+  let support = ['en', 'es', 'fr', 'th', 'zh']
+  let keyToCode = require('./KeyboardMappings/en.js');
+  if (support.includes(language))
+    keyToCode = require('./KeyboardMappings/' + language + '.js');
   let codeToKey = {};
   Object.keys(keyToCode.KeyCodes).forEach((key) => {
     let codeArray = keyToCode.KeyCodes[key];
     if (codeArray.length === 1) {
-      codeToKey[codeArray[0]] = key;
+      codeToKey[codeArray[0]] = key.toUpperCase();
     }
   });
   let xyc = {
@@ -100,7 +104,7 @@ export default function KeyboardAssist({
 
   let deltax = [0, -30, 30, 30, -30];
   let deltay = [0, -30, -30, 30, 30];
-  let size = ['1.5em', '1.25em', '1.25em', '1.25em', '1.25em'];
+  let size = ['2.25em', '1.25em', '1.25em', '1.25em', '1.25em'];
 
   return (
     <svg viewBox="0 0 1590 550" xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +121,7 @@ export default function KeyboardAssist({
           keyStroke = color;
         }
         return (
-          <>
+          <g key={code}>
             <rect
               x={element.x * 110}
               y={element.y * 110}
@@ -130,11 +134,11 @@ export default function KeyboardAssist({
             <text
               x={element.x * 110 + 40 + deltax[index]}
               y={element.y * 110 + 60 + deltay[index]}
-              font-size={size[index]}
+              fontSize={size[index]}
             >
               {codeToKey[code]}
             </text>
-          </>
+          </g>
         );
       })}
     </svg>
