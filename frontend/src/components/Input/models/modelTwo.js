@@ -1,3 +1,5 @@
+// Vietnamese
+
 import { STATECODE } from '../../../constants';
 
 import { VietnameseIntermediate } from '../../../languages/Vietnamese/VietnameseIntermediates';
@@ -188,4 +190,6 @@ const onInputChange = (
 
 export const modelTwo = {
   onInputChange: onInputChange,
+  preprocess: (text) => text.split(' '),
+  display: (words) => words.join(' '),
 };

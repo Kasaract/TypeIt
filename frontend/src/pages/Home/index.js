@@ -10,6 +10,7 @@ import {
   InputContext,
   WordsContext,
   TimeRunningConext,
+  ModelContext,
 } from '../../context';
 
 import Timer from '../../components/Timer';
@@ -32,6 +33,7 @@ export default function Home() {
   const { setInput } = useContext(InputContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
+  const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
@@ -88,7 +90,7 @@ export default function Home() {
         <Row>
           <Input
             onCompleted={onCompleted}
-            textLength={words.join(' ').length}
+            textLength={language === 'zh' ? words.length : words.join(' ').length}
             position={position}
             setPosition={setPosition}
             inputStatus={inputStatus}

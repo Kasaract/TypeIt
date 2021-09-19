@@ -12,6 +12,8 @@ import {
   InputStatusContext,
   TimeRunningConext,
   ModelContext,
+  // ErrorCountContext,
+  // AssistContext,
 } from './context';
 
 import { STATECODE } from './constants';
@@ -42,6 +44,9 @@ const sampleChinese = [
   '。',
 ];
 
+const sampleBraile =
+  '⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠎⠁⠍⠏⠇⠑ ⠞⠑⠭⠞ ⠊⠝ ⠠⠑⠝⠛⠇⠊⠎⠓⠲ ⠠⠊ ⠁⠍ ⠁ ⠞⠽⠏⠊⠝⠛ ⠏⠗⠕⠛⠗⠁⠍ ⠊⠝⠞⠑⠝⠙⠑⠙ ⠞⠕ ⠓⠑⠇⠏ ⠽⠕⠥ ⠇⠑⠁⠗⠝ ⠓⠕⠺ ⠞⠕ ⠞⠽⠏⠑⠲';
+
 function App() {
   const [time, setTime] = useState(0);
   const [timeRunning, setTimeRunning] = useState(false);
@@ -50,22 +55,23 @@ function App() {
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
   const [input, setInput] = useState('');
-  const [words, setWords] = useState(sampleChinese);
+  const [words, setWords] = useState([]);
   const [wordIndex, setWordIndex] = useState(0);
   const [inputStatus, setInputStatus] = useState(STATECODE.READY);
+  // const [errorCount, setErrorCount] = useState(0);
+  // const [assist, setAssist] = useState(false);
 
   useEffect(() => {
     // Update typing model
     for (const model in modelGroups) {
       if (modelGroups[model].includes(language.toUpperCase())) {
         setModel(models[model]);
-        // setWords(modelPreprocessing[model](text));
+        setWords(models[model].preprocess(sampleChinese));
         break;
       }
     }
 
     // Update typing text
-    // setWords('This is a sample text in English'.split(' '));
     // axios
     //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
     //   .then((response) => {

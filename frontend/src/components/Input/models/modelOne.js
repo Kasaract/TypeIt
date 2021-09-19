@@ -135,4 +135,6 @@ const onInputChange = (
 
 export const modelOne = {
   onInputChange: onInputChange,
+  preprocess: (text) => text.split(' '),
+  display: (words) => words.join(' '),
 };

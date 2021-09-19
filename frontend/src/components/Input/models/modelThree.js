@@ -1,3 +1,5 @@
+// Chinese
+
 import { STATECODE } from '../../../constants';
 
 const onInputChange = (
@@ -44,8 +46,6 @@ const onInputChange = (
 
       // Type character
       const correctChar = words[wordIndex];
-      console.log(correctChar);
-      console.log(newInput);
 
       // Type correct character
       if (newInput === correctChar) {
@@ -120,4 +120,6 @@ const onInputChange = (
 
 export const modelThree = {
   onInputChange: onInputChange,
+  preprocess: (text) => text,
+  display: (words) => words,
 };
