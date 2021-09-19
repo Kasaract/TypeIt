@@ -15,6 +15,7 @@ export default function LanguageSelect({ language, setLanguage, onReset }) {
   const handleClick = (lang) => {
     setLanguage(lang);
     setShow(false);
+    setFilter('');
     onReset();
   };
 
