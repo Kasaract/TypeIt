@@ -17,10 +17,13 @@ const onInputChange = (
   wordIndex,
   setWordIndex,
   onCompleted,
-  textLength
-  // errorCount,
-  // setErrorCount,
-  // setKeyboardAssist
+  textLength,
+  timeRunning,
+  setTimeRunning,
+  errorCount,
+  setErrorCount,
+  assist,
+  setAssist
 ) => {
   // ****** READY ******
 
@@ -100,7 +103,6 @@ const onInputChange = (
     else {
       // Type space
       if (newInput.charAt(newInput.length - 1) === ' ') {
-        console.log(' did we make it?');
         setPosition(position + 1);
         setWordIndex(wordIndex + 1);
         setCharPosition(0);
@@ -116,6 +118,10 @@ const onInputChange = (
 
   // STATE-BASED LOGIC
   setInput(newInput);
+  if (newInput.length === 1) {
+    setTimeRunning(true);
+  }
+
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);

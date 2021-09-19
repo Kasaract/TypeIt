@@ -68,12 +68,6 @@ mongoose.connect(mongoConnectionURL, function (err) {
   });
 });
 
-app.get('/sampletext/BRAI', (res) => {
-  res.status(200);
-  res.json({ text: sampleText['BRAI'] });
-  res.end();
-});
-
 app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
   TypingText.collection

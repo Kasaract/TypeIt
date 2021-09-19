@@ -7,7 +7,7 @@ import {
   WordsContext,
   ModelContext,
   ErrorCountContext,
-  TimerContext,
+  TimeRunningContext,
 } from '../../context';
 import { STATECODE } from '../../constants';
 
@@ -27,13 +27,13 @@ export default function Input({
   const { words, wordIndex, setWordIndex } = useContext(WordsContext);
   const { input, setInput } = useContext(InputContext);
   const { model } = useContext(ModelContext);
-  const { timeRunning, setTimeRunning } = useContext(TimerContext);
+  const { timeRunning, setTimeRunning } = useContext(TimeRunningContext);
 
   const onInputChange = (newInput) => {
-    model.onInputChange( // model 1
+    model.onInputChange(
+      // model 1
       newInput,
       setInput,
-      setTimeRunning,
       inputStatus,
       setInputStatus,
       position,
@@ -45,10 +45,12 @@ export default function Input({
       setWordIndex,
       onCompleted,
       textLength,
+      timeRunning,
+      setTimeRunning,
       errorCount,
       setErrorCount,
       assist,
-      setAssist,
+      setAssist
     );
   };
 

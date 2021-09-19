@@ -1,12 +1,8 @@
 import { STATECODE } from '../../../constants';
 
-import { useContext } from 'react';
-
 const onInputChange = (
   newInput,
   setInput,
-  timeRunning,
-  setTimeRunning,
   inputStatus,
   setInputStatus,
   position,
@@ -18,10 +14,12 @@ const onInputChange = (
   setWordIndex,
   onCompleted,
   textLength,
+  timeRunning,
+  setTimeRunning,
   errorCount,
   setErrorCount,
   assist,
-  setAssist,
+  setAssist
 ) => {
   // ****** READY ******
 
@@ -43,7 +41,6 @@ const onInputChange = (
         setPosition(position + 1);
         setCharPosition(charPosition + 1);
         setErrorCount(0);
-        console.log(`ERRPR is ${errorCount}`);
 
         // Type last char of entire text
         if (
@@ -70,7 +67,7 @@ const onInputChange = (
   // ****** INCORRECT ******
 
   const onIncorrect = (newInput) => {
-    setErrorCount(errorCount+1);
+    setErrorCount(errorCount + 1);
     console.log(`errorCount is ${errorCount}`);
 
     // Type wrong character for space
@@ -85,16 +82,14 @@ const onInputChange = (
     else if (newInput.length - 1 === charPosition) {
       const inputChar = newInput.charAt(newInput.length - 1);
       const correctChar = words[wordIndex].charAt(charPosition);
-      errorCount+=1;
-      console.log(`error count is ${errorCount}`);
+      errorCount += 1;
       // Type correct character
       if (inputChar === correctChar) {
         setPosition(position + 1);
         setCharPosition(charPosition + 1);
         setInputStatus(STATECODE.READY);
         setErrorCount(0);
-        console.log(`error set to ${errorCount}`);
-      } 
+      }
     }
 
     // Backspaced characters before typo (previously correct characters)
@@ -132,9 +127,10 @@ const onInputChange = (
 
   // STATE-BASED LOGIC
   setInput(newInput);
-  if (newInput.length === 1)
+  if (newInput.length === 1) {
     setTimeRunning(true);
-  // errorCount = 0;
+  }
+
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);

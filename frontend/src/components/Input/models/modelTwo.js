@@ -17,10 +17,13 @@ const onInputChange = (
   wordIndex,
   setWordIndex,
   onCompleted,
-  textLength
-  // errorCount,
-  // setErrorCount,
-  // setKeyboardAssist
+  textLength,
+  timeRunning,
+  setTimeRunning,
+  errorCount,
+  setErrorCount,
+  assist,
+  setAssist
 ) => {
   // ****** READY ******
 
@@ -170,6 +173,10 @@ const onInputChange = (
 
   // STATE-BASED LOGIC
   setInput(newInput);
+  if (newInput.length === 1) {
+    setTimeRunning(true);
+  }
+
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);
