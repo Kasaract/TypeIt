@@ -15,10 +15,11 @@ export default function KeyboardAssist({
   useEffect(() => {
     if (input.length > 0) {
       setLastchar(input[input.length - 1]);
+      console.log(lastchar);
     }
   }, [input]);
 
-  let keyToCode = require('./KeyboardMappings/English_QWERTY.js');
+  let keyToCode = require('./KeyboardMappings/Thai_Keyboard.js');
   let codeToKey = {};
   Object.keys(keyToCode.KeyCodes).forEach(key => {
     let codeArray = keyToCode.KeyCodes[key];

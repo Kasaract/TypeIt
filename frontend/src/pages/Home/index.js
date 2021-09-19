@@ -89,6 +89,9 @@ export default function Home() {
             setInputStatus={setInputStatus}
           />
         </Row>
+        <Row>
+          <KeyboardAssist />
+        </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />
     </Container>
