@@ -3,17 +3,21 @@ import axios from 'axios';
 
 import Routes from './Routes';
 import {
+  TimerContext,
   LanguageContext,
   PositionContext,
   CharPositionContext,
   InputContext,
   WordsContext,
   InputStatusContext,
+  TimeRunningConext,
 } from './context';
 
 import { STATECODE } from './constants';
 
 function App() {
+  const [time, setTime] = useState(0);
+  const [timeRunning, setTimeRunning] = useState(false);
   const [language, setLanguage] = useState('en');
   const [position, setPosition] = useState(0);
   const [charPosition, setCharPosition] = useState(0);
@@ -38,19 +42,23 @@ function App() {
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
-      <PositionContext.Provider value={{ position, setPosition }}>
-        <CharPositionContext.Provider value={{ charPosition, setCharPosition }}>
-          <InputContext.Provider value={{ input, setInput }}>
-            <WordsContext.Provider value={{ words, wordIndex, setWordIndex }}>
-              <InputStatusContext.Provider value={{ inputStatus, setInputStatus }}>
-                <Routes />
-              </InputStatusContext.Provider>
-            </WordsContext.Provider>
-          </InputContext.Provider>
-        </CharPositionContext.Provider>
-      </PositionContext.Provider>
-    </LanguageContext.Provider>
+    <TimeRunningConext.Provider value={{ timeRunning, setTimeRunning }}>
+      <TimerContext.Provider value={{ time, setTime }}>
+        <LanguageContext.Provider value={{ language, setLanguage }}>
+          <PositionContext.Provider value={{ position, setPosition }}>
+            <CharPositionContext.Provider value={{ charPosition, setCharPosition }}>
+              <InputContext.Provider value={{ input, setInput }}>
+                <WordsContext.Provider value={{ words, wordIndex, setWordIndex }}>
+                  <InputStatusContext.Provider value={{ inputStatus, setInputStatus }}>
+                    <Routes />
+                  </InputStatusContext.Provider>
+                </WordsContext.Provider>
+              </InputContext.Provider>
+            </CharPositionContext.Provider>
+          </PositionContext.Provider>
+        </LanguageContext.Provider>
+      </TimerContext.Provider>
+    </TimeRunningConext.Provider>
   );
 }
 

@@ -73,11 +73,15 @@ mongoose.connect(mongoConnectionURL, function(err) {
 app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
   TypingText.collection.findOne({language: req.params.languageCode}).then((result)=> {
-    console.log(result);
-    numOfTexts = result["texts"].length;
-    console.log(numOfTexts);
-    randomIndex = Math.floor(Math.random() * numOfTexts);
-    res.json({text: result["texts"][randomIndex]});
+    console.log(`result is : ${result}`);
+    console.log(`wanted language: ${req.params.languageCode}`);
+    if (result === null){
+      res.json({text: "This language is not yet supported."});
+    } else {
+      numOfTexts = result["texts"].length;
+      randomIndex = Math.floor(Math.random() * numOfTexts);
+      res.json({text: result["texts"][randomIndex]});
+    }
   }).then(() => {
     res.end();
   });

@@ -2,14 +2,17 @@ import { useContext, useState } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 
 import {
+  TimerContext,
   LanguageContext,
   PositionContext,
   CharPositionContext,
   InputStatusContext,
   InputContext,
   WordsContext,
+  TimeRunningConext,
 } from '../../context';
 
+import Timer from '../../components/Timer';
 import LanguageSelect from '../../components/LanguageSelect';
 import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
@@ -19,6 +22,8 @@ import KeyboardAssist from '../../components/KeyboardAssist';
 import { STATECODE } from '../../constants';
 
 export default function Home() {
+  const { time, setTime } = useContext(TimerContext);
+  const { timeRunning, setTimeRunning } = useContext(TimeRunningConext);
   const { language, setLanguage } = useContext(LanguageContext);
   const { position, setPosition } = useContext(PositionContext);
   const { setCharPosition } = useContext(CharPositionContext);
@@ -29,6 +34,8 @@ export default function Home() {
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   const onReset = () => {
+    setTimeRunning(false);
+    setTime(0);
     setPosition(0);
     setCharPosition(0);
     setWordIndex(0);
@@ -49,11 +56,21 @@ export default function Home() {
     <Container className="vh-100">
       <Col className="h-100">
         <Row>
-          <LanguageSelect
-            language={language}
-            setLanguage={setLanguage}
-            onReset={onReset}
-          />
+          <Col>
+            <LanguageSelect
+              language={language}
+              setLanguage={setLanguage}
+              onReset={onReset}
+            />
+          </Col>
+          <Col className="justify-content-end">
+            <Timer
+              time={time}
+              setTime={setTime}
+              timeRunning={timeRunning}
+              setTimeRunning={setTimeRunning}
+            />
+          </Col>
         </Row>
         <Row>
           <TypingText
