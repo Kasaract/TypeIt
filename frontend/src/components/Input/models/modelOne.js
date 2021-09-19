@@ -1,5 +1,7 @@
 import { STATECODE } from '../../../constants';
 
+import { useContext } from 'react';
+
 const onInputChange = (
   newInput,
   setInput,
@@ -16,7 +18,8 @@ const onInputChange = (
   textLength,
   errorCount,
   setErrorCount,
-  // setKeyboardAssist
+  // assist,
+  // setAssist,
 ) => {
   // ****** READY ******
 
@@ -36,6 +39,8 @@ const onInputChange = (
       if (inputChar === correctChar) {
         setPosition(position + 1);
         setCharPosition(charPosition + 1);
+        setErrorCount(0);
+        console.log(`ERRPR is ${errorCount}`);
 
         // Type last char of entire text
         if (
@@ -84,6 +89,8 @@ const onInputChange = (
         setPosition(position + 1);
         setCharPosition(charPosition + 1);
         setInputStatus(STATECODE.READY);
+        setErrorCount(0);
+        console.log(`error set to ${errorCount}`);
       } 
     }
 

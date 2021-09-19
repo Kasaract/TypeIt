@@ -9,7 +9,8 @@ import {
   InputStatusContext,
   InputContext,
   WordsContext,
-  TimeRunningConext,
+  TimeRunningContext,
+  ErrorCountContext,
   ModelContext,
 } from '../../context';
 
@@ -26,13 +27,15 @@ import { STATECODE } from '../../constants';
 
 export default function Home() {
   const { time, setTime } = useContext(TimerContext);
-  const { timeRunning, setTimeRunning } = useContext(TimeRunningConext);
+  const { timeRunning, setTimeRunning } = useContext(TimeRunningContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const { position, setPosition } = useContext(PositionContext);
   const { setCharPosition } = useContext(CharPositionContext);
   const { setInput } = useContext(InputContext);
   const { inputStatus, setInputStatus } = useContext(InputStatusContext);
   const { words, setWordIndex } = useContext(WordsContext);
+  const { errorCount, setErrorCount } = useContext(ErrorCountContext);
+  // const { assist, setAssist } = useContext(AssistContext);
   const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
@@ -95,10 +98,18 @@ export default function Home() {
             setPosition={setPosition}
             inputStatus={inputStatus}
             setInputStatus={setInputStatus}
+            errorCount={errorCount}
+            setErrorCount={setErrorCount}
+            // assist={assist}
+            // setAssist={setAssist}
           />
         </Row>
         <Row>
-          <KeyboardAssist />
+          {
+            errorCount >= 3 ?
+            (<KeyboardAssist />)
+            : (<></>)
+          }
         </Row>
       </Col>
       <CompletedModal show={showCompletedModal} onHide={onCompletedModalExit} />

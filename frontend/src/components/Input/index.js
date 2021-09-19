@@ -7,7 +7,7 @@ import {
   InputContext,
   WordsContext,
   ModelContext,
-  MistakeContext,
+  ErrorCountContext,
 } from '../../context';
 import { STATECODE } from '../../constants';
 
@@ -18,6 +18,10 @@ export default function Input({
   setPosition,
   inputStatus,
   setInputStatus,
+  errorCount,
+  setErrorCount,
+  // assist,
+  // setAssist,
 }) {
   const { language } = useContext(LanguageContext);
   const { charPosition, setCharPosition } = useContext(CharPositionContext);
@@ -40,7 +44,10 @@ export default function Input({
       setWordIndex,
       onCompleted,
       textLength,
-      // errorCount,
+      errorCount,
+      setErrorCount,
+      // assist,
+      // setAssist,
     );
   };
 
