@@ -1,3 +1,6 @@
+import { useContext, useEffect, useState } from 'react';
+import { InputContext } from '../../context';
+
 export default function KeyboardAssist({
   char,
   keyCodeMapping,
@@ -6,7 +9,16 @@ export default function KeyboardAssist({
   defaultFillColor = '#ffffff',
   defaultColor = '#5e5e5e',
 }) {
-  let keyToCode = require('./KeyboardMappings/French_AZERTY.js');
+  const { input, setInput } = useContext(InputContext);
+  const [lastchar, setLastchar] = useState('');
+
+  useEffect(() => {
+    if (input.length > 0) {
+      setLastchar(input[input.length - 1]);
+    }
+  }, [input]);
+
+  let keyToCode = require('./KeyboardMappings/English_QWERTY.js');
   let codeToKey = {};
   Object.keys(keyToCode.KeyCodes).forEach(key => {
     let codeArray = keyToCode.KeyCodes[key];
@@ -96,9 +108,16 @@ export default function KeyboardAssist({
         Object.keys(xyc).map((code) => {
           let element = xyc[code];
           let index = 0;
+          let keyFill = defaultFillColor, keyStroke = defaultColor;
+          console.log(lastchar);
+          console.log(keyToCode.KeyCodes[lastchar]);
+          if (keyToCode.KeyCodes[lastchar] !== undefined && keyToCode.KeyCodes[lastchar].includes(code)) {
+              keyFill = fillColor;
+              keyStroke = color;
+          }
           return (
             <>
-              <rect x={element.x*110} y={element.y*110} width={element.w*100} height="100" fill="#ffffff" fillOpacity="0" stroke="#000000" rx="15"/>
+              <rect x={element.x*110} y={element.y*110} width={element.w*100} height="100" fill={keyFill} stroke={keyStroke} rx="15"/>
               <text x={element.x*110 + 40 + deltax[index]} y={element.y*110 + 60 + deltay[index]} font-size={size[index]}>{codeToKey[code]}</text>
             </>
           );
