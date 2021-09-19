@@ -37,7 +37,7 @@ export default function Home() {
   const { words, setWordIndex } = useContext(WordsContext);
   const { errorCount, setErrorCount } = useContext(ErrorCountContext);
   // const { assist, setAssist } = useContext(AssistContext);
-  const { model } = useContext(ModelContext);
+  // const { model } = useContext(ModelContext);
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 

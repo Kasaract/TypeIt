@@ -108,16 +108,16 @@ function App() {
     }
 
     // Update typing text
-    // axios
-    //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
-    //   .then((response) => {
-    //     setWords(response.data.text.split(' '));
-    //     setPosition(0);
-    //     setCharPosition(0);
-    //     setInput('');
-    //     setWordIndex(0);
-    //     setInputStatus(STATECODE.READY);
-    //   });
+    axios
+      .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+      .then((response) => {
+        setWords(response.data.text.split(' '));
+        setPosition(0);
+        setCharPosition(0);
+        setInput('');
+        setWordIndex(0);
+        setInputStatus(STATECODE.READY);
+      });
   }, [language]);
 
   return (
