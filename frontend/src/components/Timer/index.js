@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 
-export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
+export default function Timer({ time, setTime, timeRunning }) {
   const [timer, setTimer] = useState(0);
   useEffect(() => {
     if (timeRunning === true) {
@@ -14,7 +14,7 @@ export default function Timer({ time, setTime, timeRunning, setTimeRunning }) {
     } else {
       clearInterval(timer);
     }
-  }, [timeRunning, setTime]);
+  }, [timer, timeRunning, setTime]);
 
   return (
     <div>

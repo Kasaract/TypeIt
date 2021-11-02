@@ -29,7 +29,6 @@ export const Pinyin = {
   冰淇凌: 'bīngqílíng',
   真: 'zhēn',
   好: 'hào',
-  吃: 'chī',
   时候: 'shíhòu',
   睡觉: 'shuìjiào',
   不能: 'bùnéng',

@@ -1,22 +1,29 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Form, Row, Modal } from 'react-bootstrap';
+
+import { ACTIONS } from '../../actions';
 
 import { languageCodes } from '../../languages/languageCodes';
 import { sampleText } from '../../languages/sampleText';
 
 import './languageSelect.css';
 
-export default function LanguageSelect({ language, setLanguage, onReset }) {
+export default function LanguageSelect() {
   const [filter, setFilter] = useState('');
   const [show, setShow] = useState(false);
+
+  const language = useSelector((state) => state.language);
+
+  const dispatch = useDispatch();
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleClick = (lang) => {
-    setLanguage(lang);
-    setShow(false);
+    dispatch({ type: ACTIONS.CHANGELANGUAGE, payload: lang });
     setFilter('');
-    onReset();
+    setShow(false);
   };
 
   const onFilterChange = (newFilter) => {

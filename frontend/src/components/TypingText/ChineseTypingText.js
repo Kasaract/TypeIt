@@ -1,17 +1,23 @@
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Overlay, Tooltip } from 'react-bootstrap';
 
-import { WordsContext, InputStatusContext } from '../../context';
+// import { WordsContext, InputStatusContext } from '../../context';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
 
 import { Pinyin } from '../../languages/Chinese/Pinyin';
 
-export default function ChineseTypingText({ text, pinyinAssist }) {
-  const { words, wordIndex } = useContext(WordsContext);
-  const { inputStatus } = useContext(InputStatusContext);
+export default function ChineseTypingText({ pinyinAssist }) {
+  // const { words, wordIndex } = useContext(WordsContext);
+  // const { inputStatus } = useContext(InputStatusContext);
+  const words = useSelector((state) => state.words);
+  const wordIndex = useSelector((state) => state.wordIndex);
+  const inputStatus = useSelector((state) => state.inputStatus);
 
   const target = useRef(null);
+
+  const currentWord = words[wordIndex];
 
   let color;
 
@@ -20,8 +26,6 @@ export default function ChineseTypingText({ text, pinyinAssist }) {
   } else if (inputStatus === STATECODE.INCORRECT) {
     color = STATUSCOLOR.INCORRECT;
   }
-
-  const currentWord = words[wordIndex];
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 py-2">
@@ -38,7 +42,7 @@ export default function ChineseTypingText({ text, pinyinAssist }) {
               userSelect: 'none',
             }}
           >
-            {text.slice(0, wordIndex).join('')}
+            {words.slice(0, wordIndex).join('')}
           </span>
 
           {/* Current character  */}
@@ -51,7 +55,7 @@ export default function ChineseTypingText({ text, pinyinAssist }) {
               userSelect: 'none',
             }}
           >
-            {text[wordIndex]}
+            {words[wordIndex]}
             {currentWord in Pinyin && (
               <Overlay
                 target={target.current}
@@ -65,7 +69,7 @@ export default function ChineseTypingText({ text, pinyinAssist }) {
 
           {/* Have not reached yet */}
           <span style={{ fontSize: '2rem', userSelect: 'none' }}>
-            {text.slice(wordIndex + 1).join('')}
+            {words.slice(wordIndex + 1).join('')}
           </span>
         </div>
       </div>
