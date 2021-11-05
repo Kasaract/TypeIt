@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormControl } from 'react-bootstrap';
 
 import { STATECODE } from '../../constants';
+import { ACTIONS } from '../../actions';
 
 export default function Input({ onCompleted }) {
   const model = useSelector((state) => state.model);
@@ -16,6 +17,13 @@ export default function Input({ onCompleted }) {
   const dispatch = useDispatch();
 
   const onInputChange = (newInput) => {
+    // Consider moving this to onInputChange to augment more data
+    const { data, timeStamp } = newInput.nativeEvent;
+    dispatch({
+      type: ACTIONS.EVENTLOG,
+      payload: { type: 'input state', input: data, timeStamp },
+    });
+
     model.onInputChange(
       newInput.target.value,
       inputStatus,
@@ -27,8 +35,12 @@ export default function Input({ onCompleted }) {
     );
   };
 
-  const onKeyPress = (keystroke) => {
-    console.log(keystroke);
+  const onKeyDown = (keystroke) => {
+    const { code, shiftKey, timeStamp } = keystroke.nativeEvent;
+    dispatch({
+      type: ACTIONS.EVENTLOG,
+      payload: { type: 'keystroke', code, shiftKey, timeStamp },
+    });
   };
 
   return (
@@ -42,8 +54,7 @@ export default function Input({ onCompleted }) {
         }}
         value={input}
         onChange={(e) => onInputChange(e)}
-        // o={(e) => onKeyUp(e)}
-        onKeyPressCapture={(e) => onKeyPress(e)}
+        onKeyDown={(e) => onKeyDown(e)}
         aria-label="Username"
       />
     </div>

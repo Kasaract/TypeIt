@@ -4,7 +4,7 @@
 import { ACTIONS } from '../actions';
 
 import { models } from '../components/Input/models';
-import { sampleChinese2 } from '../languages/sampleText';
+import { sampleChinese } from '../languages/sampleText';
 import { STATECODE } from '../constants';
 
 const initialState = {
@@ -13,8 +13,9 @@ const initialState = {
   position: 0,
   charPosition: 0,
   input: '',
-  words: sampleChinese2,
+  words: sampleChinese[Math.floor(Math.random() * 3)],
   wordIndex: 0,
+  typingStatus: false,
   inputStatus: STATECODE.READY,
   errorCount: 0,
   assist: '',
@@ -95,6 +96,7 @@ const rootReducer = (state = initialState, action) => {
     case ACTIONS.EVENTLOG:
       return {
         ...state,
+        eventLog: [...state.eventLog, action.payload],
       };
 
     default:

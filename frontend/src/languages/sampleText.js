@@ -151,7 +151,7 @@ export const sampleMorse = [
 export const sampleBraile =
   '⠠⠞⠓⠊⠎ ⠊⠎ ⠁ ⠎⠁⠍⠏⠇⠑ ⠞⠑⠭⠞ ⠊⠝ ⠠⠑⠝⠛⠇⠊⠎⠓⠲ ⠠⠊ ⠁⠍ ⠁ ⠞⠽⠏⠊⠝⠛ ⠏⠗⠕⠛⠗⠁⠍ ⠊⠝⠞⠑⠝⠙⠑⠙ ⠞⠕ ⠓⠑⠇⠏ ⠽⠕⠥ ⠇⠑⠁⠗⠝ ⠓⠕⠺ ⠞⠕ ⠞⠽⠏⠑⠲';
 
-export const sampleChinese = [
+const chinese1 = [
   '这',
   '是',
   '英文',
@@ -176,7 +176,16 @@ export const sampleChinese = [
   '。',
 ];
 
-export const sampleChinese2 = [
+const chinese2 = [
+  '你好',
+  '，',
+  ' ',
+  '我',
+  '正在',
+  '学习',
+  '中文',
+  '。',
+  ' ',
   '你好',
   '，',
   ' ',
@@ -186,3 +195,21 @@ export const sampleChinese2 = [
   '中文',
   '。',
 ];
+
+const chinese3 = [
+  '大家',
+  '好',
+  '，',
+  '我',
+  '的',
+  '名字',
+  '是',
+  '。',
+  '我',
+  '是',
+  '一',
+  '名',
+  '护士',
+];
+
+export const sampleChinese = [chinese1, chinese2, chinese3];

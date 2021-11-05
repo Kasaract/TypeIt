@@ -38,4 +38,9 @@ export const Pinyin = {
   得: 'dé',
   做: 'zuò',
   作业: 'zuo yè',
+
+  // Chinese3
+  大家: 'dàjiā',
+  名: 'míng',
+  护士: 'hùshì',
 };

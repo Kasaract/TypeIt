@@ -14,6 +14,7 @@ export default function ChineseTypingText({ pinyinAssist }) {
   const words = useSelector((state) => state.words);
   const wordIndex = useSelector((state) => state.wordIndex);
   const inputStatus = useSelector((state) => state.inputStatus);
+  const typingStatus = useSelector((state) => state.typingStatus);
 
   const target = useRef(null);
 
@@ -28,51 +29,67 @@ export default function ChineseTypingText({ pinyinAssist }) {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center px-5 py-2">
-      <div
-        className="p-3"
-        style={{ border: '.15rem solid #636363', borderRadius: '.5rem' }}
-      >
-        <div style={{ fontFamily: 'Roboto' }}>
-          {/* Correct  */}
-          <span
-            style={{
-              fontSize: '2rem',
-              backgroundColor: STATUSCOLOR.CORRECT,
-              userSelect: 'none',
-            }}
-          >
-            {words.slice(0, wordIndex).join('')}
-          </span>
+    <>
+      <div className="d-flex justify-content-center align-items-center px-5 py-2">
+        <div
+          className="p-3"
+          style={{
+            position: 'absolute',
+            border: '.15rem solid #636363',
+            borderRadius: '.5rem',
+            fontSize: '2rem',
+            backgroundColor: STATUSCOLOR.CORRECT,
+            userSelect: 'none',
+            // color: STATUSCOLOR.CORRECT,
+          }}
+        >
+          Overlay
+        </div>
+        <div
+          className="p-3"
+          style={{ border: '.15rem solid #636363', borderRadius: '.5rem' }}
+        >
+          <div style={{ fontFamily: 'Roboto' }}>
+            {/* Correct  */}
+            <span
+              style={{
+                fontSize: '2rem',
+                backgroundColor: STATUSCOLOR.CORRECT,
+                userSelect: 'none',
+              }}
+            >
+              {words.slice(0, wordIndex).join('')}
+            </span>
 
-          {/* Current character  */}
-          <span
-            ref={target}
-            style={{
-              fontSize: '2rem',
-              backgroundColor: color,
-              textDecoration: 'underline',
-              userSelect: 'none',
-            }}
-          >
-            {words[wordIndex]}
-            {currentWord in Pinyin && (
-              <Overlay
-                target={target.current}
-                show={pinyinAssist}
-                placement="top-end"
-              >
-                <Tooltip>{Pinyin[currentWord]}</Tooltip>
-              </Overlay>
-            )}
-          </span>
+            {/* Current character  */}
+            <span
+              ref={target}
+              style={{
+                fontSize: '2rem',
+                backgroundColor: color,
+                textDecoration: 'underline',
+                userSelect: 'none',
+              }}
+            >
+              {words[wordIndex]}
+              {currentWord in Pinyin && (
+                <Overlay
+                  target={target.current}
+                  show={pinyinAssist}
+                  placement="top-end"
+                >
+                  <Tooltip>{Pinyin[currentWord]}</Tooltip>
+                </Overlay>
+              )}
+            </span>
 
-          {/* Have not reached yet */}
-          <span style={{ fontSize: '2rem', userSelect: 'none' }}>
-            {words.slice(wordIndex + 1).join('')}
-          </span>
+            {/* Have not reached yet */}
+            <span style={{ fontSize: '2rem', userSelect: 'none' }}>
+              {words.slice(wordIndex + 1).join('')}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
