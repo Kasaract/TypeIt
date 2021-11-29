@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const TypingText = require('./TypingText');
 const Users = require('./Users');
+const EventLogs = require('./EventLogs');
 
 const sampleText = require('./sampleText');
 
@@ -28,12 +29,11 @@ app.use((req, res, next) => {
 });
 
 const mongoConnectionURL =
-  'mongodb+srv://mqliu:NdcHyB1LAM22QB9a@cluster0.qe9d9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const databaseName = 'TypeIt';
+  'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: databaseName,
+  dbName: 'UserEventLogs',
 };
 
 mongoose
@@ -43,15 +43,14 @@ mongoose
 
 mongoose.connect(mongoConnectionURL, function (err) {
   if (err) throw err;
-  TypingText.findOne({ language: 'ZH', texts: ['this isnt chinese', 'nihao'] })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
+  // TypingText.findOne({ language: 'ZH', texts: ['this isnt chinese', 'nihao'] })
+  //   .then((result) => {
+  //     console.log(result);
+  //   })
+  //   .catch((err) => {
+  //     res.status(400).json({ message: err.message });
+  //   });
 
-  if (err) throw err;
   var myobj = { language: 'ZH', texts: ['this isnt chinese', 'nihao'] };
   var testUser = { username: 'ml', firstname: 'machine', lastname: 'learning' };
   // Users.collection.insertOne(testUser, function(err,res){
@@ -62,10 +61,10 @@ mongoose.connect(mongoConnectionURL, function (err) {
   //   if (err) throw err;
   //   console.log("1 document inserted");
   // });
-  TypingText.collection.findOne({ language: 'EN' }).then((result) => {
-    console.log(result);
-    console.log('found english!');
-  });
+  // TypingText.collection.findOne({ language: 'EN' }).then((result) => {
+  //   console.log(result);
+  //   console.log('found english!');
+  // });
 });
 
 app.get('/sampletext/:languageCode', (req, res) => {
@@ -107,6 +106,14 @@ app.post('/addUser', (req, res) => {
       username: req.body.username,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
+    })
+    .then(() => res.end());
+});
+
+app.post('/eventlog', (req, res) => {
+  EventLogs.collection
+    .insertOne({
+      events: req.body.events,
     })
     .then(() => res.end());
 });

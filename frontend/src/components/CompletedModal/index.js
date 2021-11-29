@@ -1,6 +1,16 @@
 import { Modal } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function CompletedModal({ show, time, onHide }) {
+  const eventLog = useSelector((state) => state.eventLog);
+
+  const postEventLog = async () => {
+    await axios
+      .post('http://localhost:4000/eventlog', { events: eventLog })
+      .then((res) => console.log(res));
+  };
+
   return (
     <Modal
       show={show}
@@ -13,11 +23,15 @@ export default function CompletedModal({ show, time, onHide }) {
       <Modal.Header closeButton>
         <Modal.Title>Completed Title</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Congrats, you've reached the end! Time: {Math.floor(time / 60000) +
-            ':' +
-            (Math.floor(time / 1000) % 60) +
-            '.' +
-            (time % 1000)}</Modal.Body>
+      <Modal.Body>
+        Congrats, you've reached the end!
+        <button
+          // onClick={() => navigator.clipboard.writeText(JSON.stringify(eventLog))}
+          onClick={() => postEventLog()}
+        >
+          Submit Event Log
+        </button>
+      </Modal.Body>
     </Modal>
   );
 }

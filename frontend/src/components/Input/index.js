@@ -1,5 +1,6 @@
 // Diff match patch
 
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormControl } from 'react-bootstrap';
 
@@ -7,39 +8,97 @@ import { STATECODE } from '../../constants';
 import { ACTIONS } from '../../actions';
 
 export default function Input({ onCompleted }) {
+  const start = useSelector((state) => state.start);
   const model = useSelector((state) => state.model);
   const words = useSelector((state) => state.words);
-  const wordIndex = useSelector((state) => state.wordIndex);
+  const position = useSelector((state) => state.position);
   const charPosition = useSelector((state) => state.charPosition);
   const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
+  const pinyinAssist = useSelector((state) => state.pinyinAssist);
+  const pinyinAssistFeature = useSelector((state) => state.pinyinAssistFeature);
+  const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
+  const eventLog = useSelector((state) => state.eventLog);
 
   const dispatch = useDispatch();
+
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+    if (start && pinyinAssistFeature) {
+      interval = setInterval(() => {
+        setTimer((time) => time + 1);
+        if (timer > pinyinAssistDelay && !pinyinAssist) {
+          dispatch({
+            type: ACTIONS.PINYINASSISTON,
+            payload: { type: 'PINYINASSIST', input: words[position] },
+          });
+        }
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [
+    start,
+    timer,
+    words,
+    position,
+    pinyinAssist,
+    pinyinAssistFeature,
+    pinyinAssistDelay,
+    dispatch,
+  ]);
 
   const onInputChange = (newInput) => {
     // Consider moving this to onInputChange to augment more data
     const { data, timeStamp } = newInput.nativeEvent;
+
+    if (!start) {
+      dispatch({
+        type: ACTIONS.START,
+        payload: {
+          type: 'START',
+          timeStamp,
+        },
+      });
+    }
+
     dispatch({
       type: ACTIONS.EVENTLOG,
-      payload: { type: 'input state', input: data, timeStamp },
+      payload: {
+        type: 'INPUT STATE',
+        input: data,
+        timeStamp,
+      },
     });
 
     model.onInputChange(
       newInput.target.value,
+      timeStamp,
       inputStatus,
+      position,
       charPosition,
       words,
-      wordIndex,
       onCompleted,
+      setTimer,
       dispatch
     );
+    console.log(eventLog);
   };
 
   const onKeyDown = (keystroke) => {
     const { code, shiftKey, timeStamp } = keystroke.nativeEvent;
     dispatch({
       type: ACTIONS.EVENTLOG,
-      payload: { type: 'keystroke', code, shiftKey, timeStamp },
+      payload: {
+        type: 'KEYSTROKE',
+        code,
+        shiftKey,
+        timeStamp,
+      },
     });
   };
 

@@ -43,14 +43,14 @@ export default function Home() {
           <Col>
             <LanguageSelect />
           </Col>
-          <Col className="justify-content-end">
-            {/* <Timer
+          {/* <Col className="justify-content-end">
+            <Timer
               time={time}
               setTime={setTime}
               timeRunning={timeRunning}
               setTimeRunning={setTimeRunning}
-            /> */}
-          </Col>
+            />
+          </Col> */}
         </Row>
         <Row>
           {/* {language === 'zh' ? ( */}

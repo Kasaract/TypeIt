@@ -212,4 +212,41 @@ const chinese3 = [
   '护士',
 ];
 
-export const sampleChinese = [chinese1, chinese2, chinese3];
+const chinese4 = [
+  '今天',
+  '很',
+  '累',
+  '我',
+  '问',
+  '他',
+  '为什么',
+  '他',
+  '说',
+  '昨天',
+  '晚上',
+  '睡',
+  '得',
+  '太',
+  '晚',
+  '了',
+  '。',
+  '我',
+  '觉得',
+  '很',
+  '奇怪',
+  '，',
+  '因为',
+  '他',
+  '昨天',
+  '晚上',
+  '点',
+  '就',
+  '说',
+  '要',
+  '睡觉',
+  '了',
+];
+
+// export const sampleChinese = [chinese1, chinese2, chinese3, chinese4];
+export const sampleChinese = [chinese4];
+export const ignoreWarning = [chinese1, chinese2, chinese3];

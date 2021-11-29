@@ -2,23 +2,17 @@ import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Overlay, Tooltip } from 'react-bootstrap';
 
-// import { WordsContext, InputStatusContext } from '../../context';
-
 import { STATECODE, STATUSCOLOR } from '../../constants';
 
 import { Pinyin } from '../../languages/Chinese/Pinyin';
 
-export default function ChineseTypingText({ pinyinAssist }) {
-  // const { words, wordIndex } = useContext(WordsContext);
-  // const { inputStatus } = useContext(InputStatusContext);
+export default function ChineseTypingText() {
   const words = useSelector((state) => state.words);
-  const wordIndex = useSelector((state) => state.wordIndex);
+  const position = useSelector((state) => state.position);
   const inputStatus = useSelector((state) => state.inputStatus);
-  const typingStatus = useSelector((state) => state.typingStatus);
+  const pinyinAssist = useSelector((state) => state.pinyinAssist);
 
   const target = useRef(null);
-
-  const currentWord = words[wordIndex];
 
   let color;
 
@@ -31,7 +25,7 @@ export default function ChineseTypingText({ pinyinAssist }) {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center px-5 py-2">
-        <div
+        {/* <div
           className="p-3"
           style={{
             position: 'absolute',
@@ -44,7 +38,7 @@ export default function ChineseTypingText({ pinyinAssist }) {
           }}
         >
           Overlay
-        </div>
+        </div> */}
         <div
           className="p-3"
           style={{ border: '.15rem solid #636363', borderRadius: '.5rem' }}
@@ -58,7 +52,7 @@ export default function ChineseTypingText({ pinyinAssist }) {
                 userSelect: 'none',
               }}
             >
-              {words.slice(0, wordIndex).join('')}
+              {words.substring(0, position)}
             </span>
 
             {/* Current character  */}
@@ -71,21 +65,21 @@ export default function ChineseTypingText({ pinyinAssist }) {
                 userSelect: 'none',
               }}
             >
-              {words[wordIndex]}
-              {currentWord in Pinyin && (
+              {words[position]}
+              {words[position] in Pinyin && (
                 <Overlay
                   target={target.current}
                   show={pinyinAssist}
                   placement="top-end"
                 >
-                  <Tooltip>{Pinyin[currentWord]}</Tooltip>
+                  <Tooltip>{Pinyin[words[position]]}</Tooltip>
                 </Overlay>
               )}
             </span>
 
             {/* Have not reached yet */}
             <span style={{ fontSize: '2rem', userSelect: 'none' }}>
-              {words.slice(wordIndex + 1).join('')}
+              {words.substring(position + 1, words.length)}
             </span>
           </div>
         </div>
