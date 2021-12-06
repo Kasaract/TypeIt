@@ -30,14 +30,14 @@ const onInputChange = (
         type: ACTIONS.EVENTLOG,
         payload: { type: 'CORRECT', word: words[charPosition], timeStamp },
       });
-      dispatch({ type: ACTIONS.NEXTSENTENCE });
+      dispatch({ type: ACTIONS.NEXTCHARACTER });
 
       if (charPosition === words.length - 1) {
         onCompleted();
         dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.END }); // Should actually make input be disabled to protect from unwanted behavior
       }
     } else if (words[charPosition] === '，' && newInput === '，') {
-      dispatch({ type: ACTIONS.NEXTSENTENCE });
+      dispatch({ type: ACTIONS.NEXTCHARACTER });
       if (charPosition === words.length - 1) {
         onCompleted();
         dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.END }); // Should actually make input be disabled to protect from unwanted behavior
@@ -51,11 +51,13 @@ const onInputChange = (
       // TODO: Bug for repeated characters
       dispatch({ type: ACTIONS.BACKSPACE });
     }
-    // Typing single period
-    else if (newInput === '。' && words[position] === '。') {
-      dispatch({ type: ACTIONS.RESETINPUT });
-      newInput = '';
-    } else {
+
+    // Typing single period resets the input
+    // else if (newInput === '。' && words[position] === '。') {
+    //   dispatch({ type: ACTIONS.RESETINPUT });
+    //   newInput = '';
+    // }
+    else {
       // Type character(s)
       for (let i = charPosition; i < filteredInput.length; i++) {
         // Correct character
@@ -66,9 +68,9 @@ const onInputChange = (
           dispatch({
             type: ACTIONS.NEXTCHARACTER,
           });
-          if (filteredInput[i] === '。') {
-            dispatch({ type: ACTIONS.RESETINPUT });
-          }
+          // if (filteredInput[i] === '。') {
+          //   dispatch({ type: ACTIONS.RESETINPUT });
+          // }
         }
         // Incorrect character
         else {

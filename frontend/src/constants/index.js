@@ -7,7 +7,8 @@ export const STATECODE = {
 };
 
 export const STATUSCOLOR = {
-  CURRENT: '#dedede',
+  // CURRENT: '#dedede',
+  CURRENT: '#f5e98e',
   IDLE: 'white',
   INPROGRESS: '#dedede',
   INITIALPROGRESS: '#dedede',

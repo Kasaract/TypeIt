@@ -61,7 +61,7 @@ export default function ChineseTypingText() {
               style={{
                 fontSize: '2rem',
                 backgroundColor: color,
-                textDecoration: 'underline',
+                fontWeight: 'bold',
                 userSelect: 'none',
               }}
             >

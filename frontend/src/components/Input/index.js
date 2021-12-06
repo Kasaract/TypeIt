@@ -106,11 +106,13 @@ export default function Input({ onCompleted }) {
     <div className="d-flex justify-content-center align-items-center px-5 pt-5">
       <FormControl
         style={{
-          borderColor: 'black',
-          borderRadius: '1rem',
-          fontSize: '1.75rem',
+          border: '.15rem solid #636363',
+          borderRadius: '0.5rem',
+          fontFamily: 'Roboto',
+          fontSize: '2rem',
           backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
         }}
+        className="px-3"
         value={input}
         onChange={(e) => onInputChange(e)}
         onKeyDown={(e) => onKeyDown(e)}
