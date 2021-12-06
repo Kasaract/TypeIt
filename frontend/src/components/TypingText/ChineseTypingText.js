@@ -69,10 +69,12 @@ export default function ChineseTypingText() {
               {words[position] in Pinyin && (
                 <Overlay
                   target={target.current}
-                  show={pinyinAssist}
+                  show={pinyinAssist > 0}
                   placement="top-end"
                 >
-                  <Tooltip>{Pinyin[words[position]]}</Tooltip>
+                  <Tooltip>
+                    {Pinyin[words[position]].substring(0, pinyinAssist)}
+                  </Tooltip>
                 </Overlay>
               )}
             </span>

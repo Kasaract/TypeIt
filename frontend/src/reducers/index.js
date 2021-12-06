@@ -6,6 +6,7 @@ import { ACTIONS } from '../actions';
 import { models } from '../components/Input/models';
 import { sampleChinese } from '../languages/sampleText';
 import { STATECODE } from '../constants';
+import { Pinyin } from '../languages/Chinese/Pinyin';
 
 const text = sampleChinese[Math.floor(Math.random() * 1)];
 
@@ -20,9 +21,9 @@ const initialState = {
   typingStatus: false,
   inputStatus: STATECODE.READY,
   errorCount: 0,
-  pinyinAssistFeature: false,
-  pinyinAssistDelay: 3,
-  pinyinAssist: false,
+  pinyinAssistMessage: false,
+  pinyinAssistDelay: 2,
+  pinyinAssist: 0,
   eventLog: [],
 };
 
@@ -58,6 +59,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         position: state.position + 1,
         charPosition: state.charPosition + 1,
+        pinyinAssist: 0,
       };
 
     case ACTIONS.SPACE:
@@ -90,23 +92,29 @@ const rootReducer = (state = initialState, action) => {
         inputStatus: action.payload,
       };
 
-    case ACTIONS.PINYINASSISTON:
+    // case ACTIONS.PINYINASSISTON:
+    //   return {
+    //     ...state,
+    //     pinyinAssist: true,
+    //     eventLog: [...state.eventLog, action.payload],
+    //   };
+
+    // case ACTIONS.PINYINASSISTOFF:
+    //   return {
+    //     ...state,
+    //     pinyinAssist: false,
+    //   };
+
+    case ACTIONS.PINYINASSISTMESSAGE:
       return {
         ...state,
-        pinyinAssist: true,
-        eventLog: [...state.eventLog, action.payload],
+        pinyinAssistMessage: !state.pinyinAssistMessage,
       };
 
-    case ACTIONS.PINYINASSISTOFF:
+    case ACTIONS.PINYINASSISTMESSAGEOFF:
       return {
         ...state,
-        pinyinAssist: false,
-      };
-
-    case ACTIONS.PINYINASSISTFEATURE:
-      return {
-        ...state,
-        pinyinAssistFeature: !state.pinyinAssistFeature,
+        pinyinAssistMessage: false,
       };
 
     case ACTIONS.PINYINASSISTDELAY:
@@ -114,7 +122,24 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pinyinAssistDelay: action.payload,
       };
-
+    case ACTIONS.PINYINASSISTHINT:
+      if (state.pinyinAssist < Pinyin[state.words[state.position]].length) {
+        return {
+          ...state,
+          pinyinAssist: state.pinyinAssist + 1,
+          eventLog: [
+            ...state.eventLog,
+            {
+              type: 'HINT',
+              word: state.words[state.position],
+              pinyin: Pinyin[state.words[state.position]],
+              timestamp: action.payload.timeStamp,
+            },
+          ],
+        };
+      } else {
+        return { ...state };
+      }
     case ACTIONS.RESET:
       return {
         ...state,
@@ -123,6 +148,7 @@ const rootReducer = (state = initialState, action) => {
         input: '',
         inputStatus: STATECODE.READY,
         start: false,
+        pinyinAssist: 0,
       };
 
     case ACTIONS.COMPLETE:

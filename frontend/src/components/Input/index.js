@@ -15,10 +15,10 @@ export default function Input({ onCompleted }) {
   const charPosition = useSelector((state) => state.charPosition);
   const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
-  const pinyinAssist = useSelector((state) => state.pinyinAssist);
-  const pinyinAssistFeature = useSelector((state) => state.pinyinAssistFeature);
+  // const pinyinAssist = useSelector((state) => state.pinyinAssist);
+  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
   const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
-  // const eventLog = useSelector((state) => state.eventLog);
+  const eventLog = useSelector((state) => state.eventLog);
 
   const dispatch = useDispatch();
 
@@ -26,13 +26,13 @@ export default function Input({ onCompleted }) {
 
   useEffect(() => {
     let interval = null;
-    if (start && pinyinAssistFeature) {
+    if (start) {
       interval = setInterval(() => {
         setTimer((time) => time + 1);
-        if (timer > pinyinAssistDelay && !pinyinAssist) {
+        if (timer > pinyinAssistDelay && !pinyinAssistMessage) {
           dispatch({
-            type: ACTIONS.PINYINASSISTON,
-            payload: { type: 'PINYINASSIST', input: words[position] },
+            type: ACTIONS.PINYINASSISTMESSAGE,
+            // payload: { type: 'PINYINASSIST', input: words[position] },
           });
         }
       }, 1000);
@@ -46,8 +46,7 @@ export default function Input({ onCompleted }) {
     timer,
     words,
     position,
-    pinyinAssist,
-    pinyinAssistFeature,
+    pinyinAssistMessage,
     pinyinAssistDelay,
     dispatch,
   ]);
@@ -92,14 +91,21 @@ export default function Input({ onCompleted }) {
   const lastChar = new RegExp("[0-9a-zA-Z']", 'g');
 
   const onKeyDown = (e) => {
+    const { code, shiftKey, timeStamp } = e.nativeEvent;
     if (
       e.code === 'Backspace' &&
       inputStatus === STATECODE.READY &&
       !lastChar.test(e.target.value.charAt(input.length - 1))
     ) {
       e.preventDefault();
+    } else if (e.code === 'Equal') {
+      dispatch({
+        type: ACTIONS.PINYINASSISTHINT,
+        payload: { timeStamp },
+      });
+      console.log(eventLog);
+      e.preventDefault();
     } else {
-      const { code, shiftKey, timeStamp } = e.nativeEvent;
       dispatch({
         type: ACTIONS.EVENTLOG,
         payload: {

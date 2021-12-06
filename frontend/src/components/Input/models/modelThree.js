@@ -20,7 +20,7 @@ const onInputChange = (
   const onReady = (newInput) => {
     const filteredInput = newInput.replace(/[0-9a-zA-Z']+/, '');
 
-    dispatch({ type: ACTIONS.PINYINASSISTOFF });
+    dispatch({ type: ACTIONS.PINYINASSISTMESSAGEOFF });
     setTimer(0);
 
     // Does this even work? - Gary 11/22

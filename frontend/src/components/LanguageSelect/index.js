@@ -14,8 +14,8 @@ export default function LanguageSelect() {
   const [show, setShow] = useState(false);
 
   const language = useSelector((state) => state.language);
-  const pinyinAssistFeature = useSelector((state) => state.pinyinAssistFeature);
-  const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
+  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
+  // const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
 
   const dispatch = useDispatch();
 
@@ -32,13 +32,13 @@ export default function LanguageSelect() {
     setFilter(newFilter);
   };
 
-  const handlePinyinAssistFeature = () => {
-    dispatch({ type: ACTIONS.PINYINASSISTFEATURE });
-  };
+  // const handlePinyinAssistFeature = () => {
+  //   dispatch({ type: ACTIONS.PINYINASSISTMESSAGE });
+  // };
 
-  const handlePinyinAssistDelay = (newDelay) => {
-    dispatch({ type: ACTIONS.PINYINASSISTDELAY, payload: newDelay });
-  };
+  // const handlePinyinAssistDelay = (newDelay) => {
+  //   dispatch({ type: ACTIONS.PINYINASSISTDELAY, payload: newDelay });
+  // };
 
   return (
     <>
@@ -47,13 +47,17 @@ export default function LanguageSelect() {
           {`Language: ${languageCodes[language].name}`}
         </Button>
 
-        <div className="w-25">
+        {pinyinAssistMessage && (
+          <h4 className="w-auto mb-0 mt-auto">Stuck? Type '=' for a hint</h4>
+        )}
+
+        {/* <div className="w-25">
           <div className="form-check form-switch">
             <input
               className="form-check-input"
               type="checkbox"
               id="pinyinAssist"
-              checked={pinyinAssistFeature}
+              checked={pinyinAssistMessage}
               onChange={handlePinyinAssistFeature}
             />
             <label className="form-check-label" htmlFor="pinyinAssist">
@@ -61,7 +65,7 @@ export default function LanguageSelect() {
             </label>
           </div>
           <Form.Select
-            disabled={!pinyinAssistFeature}
+            disabled={!pinyinAssistMessage}
             onChange={(e) => handlePinyinAssistDelay(e.target.value)}
           >
             <option value={pinyinAssistDelay}>{`${pinyinAssistDelay} s`}</option>
@@ -71,7 +75,7 @@ export default function LanguageSelect() {
               </option>
             ))}
           </Form.Select>
-        </div>
+        </div> */}
       </Row>
 
       <Modal show={show} onHide={handleClose} dialogClassName="modal-80w">
