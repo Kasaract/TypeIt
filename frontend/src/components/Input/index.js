@@ -18,7 +18,7 @@ export default function Input({ onCompleted }) {
   const pinyinAssist = useSelector((state) => state.pinyinAssist);
   const pinyinAssistFeature = useSelector((state) => state.pinyinAssistFeature);
   const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
-  const eventLog = useSelector((state) => state.eventLog);
+  // const eventLog = useSelector((state) => state.eventLog);
 
   const dispatch = useDispatch();
 
@@ -52,9 +52,9 @@ export default function Input({ onCompleted }) {
     dispatch,
   ]);
 
-  const onInputChange = (newInput) => {
+  const onInputChange = (e) => {
     // Consider moving this to onInputChange to augment more data
-    const { data, timeStamp } = newInput.nativeEvent;
+    const { data, timeStamp } = e.nativeEvent;
 
     if (!start) {
       dispatch({
@@ -76,7 +76,7 @@ export default function Input({ onCompleted }) {
     });
 
     model.onInputChange(
-      newInput.target.value,
+      e.target.value,
       timeStamp,
       inputStatus,
       position,
@@ -86,20 +86,30 @@ export default function Input({ onCompleted }) {
       setTimer,
       dispatch
     );
-    console.log(eventLog);
+    // console.log(eventLog);
   };
 
-  const onKeyDown = (keystroke) => {
-    const { code, shiftKey, timeStamp } = keystroke.nativeEvent;
-    dispatch({
-      type: ACTIONS.EVENTLOG,
-      payload: {
-        type: 'KEYSTROKE',
-        code,
-        shiftKey,
-        timeStamp,
-      },
-    });
+  const lastChar = new RegExp("[0-9a-zA-Z']", 'g');
+
+  const onKeyDown = (e) => {
+    if (
+      e.code === 'Backspace' &&
+      inputStatus === STATECODE.READY &&
+      !lastChar.test(e.target.value.charAt(input.length - 1))
+    ) {
+      e.preventDefault();
+    } else {
+      const { code, shiftKey, timeStamp } = e.nativeEvent;
+      dispatch({
+        type: ACTIONS.EVENTLOG,
+        payload: {
+          type: 'KEYSTROKE',
+          code,
+          shiftKey,
+          timeStamp,
+        },
+      });
+    }
   };
 
   return (

@@ -48,15 +48,15 @@ export default function LanguageSelect() {
         </Button>
 
         <div className="w-25">
-          <div class="form-check form-switch">
+          <div className="form-check form-switch">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               id="pinyinAssist"
               checked={pinyinAssistFeature}
               onChange={handlePinyinAssistFeature}
             />
-            <label class="form-check-label" for="pinyinAssist">
+            <label className="form-check-label" htmlFor="pinyinAssist">
               Pinyin Assist
             </label>
           </div>
@@ -66,7 +66,9 @@ export default function LanguageSelect() {
           >
             <option value={pinyinAssistDelay}>{`${pinyinAssistDelay} s`}</option>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-              <option value={n}>{n} s</option>
+              <option value={n} key={n}>
+                {n} s
+              </option>
             ))}
           </Form.Select>
         </div>
