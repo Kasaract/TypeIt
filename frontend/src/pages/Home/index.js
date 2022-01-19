@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
 
 import { ACTIONS } from '../../actions';
@@ -17,6 +17,8 @@ import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
 import './Home.css';
 
 export default function Home() {
+  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
+
   const dispatch = useDispatch();
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
@@ -69,6 +71,11 @@ export default function Home() {
             )}
           
           */}
+        </Row>
+        <Row className="">
+          {pinyinAssistMessage && (
+            <h4 className="w-auto my-3 mx-auto">Stuck? Type '=' for a hint</h4>
+          )}
         </Row>
         <Row>
           <Input onCompleted={onCompleted} />

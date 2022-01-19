@@ -14,7 +14,6 @@ export default function LanguageSelect() {
   const [show, setShow] = useState(false);
 
   const language = useSelector((state) => state.language);
-  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
   // const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
 
   const dispatch = useDispatch();
@@ -46,10 +45,6 @@ export default function LanguageSelect() {
         <Button className="w-auto" onClick={handleShow}>
           {`Language: ${languageCodes[language].name}`}
         </Button>
-
-        {pinyinAssistMessage && (
-          <h4 className="w-auto mb-0 mt-auto">Stuck? Type '=' for a hint</h4>
-        )}
 
         {/* <div className="w-25">
           <div className="form-check form-switch">

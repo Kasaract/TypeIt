@@ -1,10 +1,12 @@
 // Diff match patch
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormControl } from 'react-bootstrap';
+import { Editable, Slate, withReact } from 'slate-react';
+import { createEditor } from 'slate';
+// import { FormControl } from 'react-bootstrap';
 
-import { STATECODE } from '../../constants';
+import { STATECODE, STATUSCOLOR } from '../../constants';
 import { ACTIONS } from '../../actions';
 
 export default function Input({ onCompleted }) {
@@ -20,25 +22,29 @@ export default function Input({ onCompleted }) {
   const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
   const eventLog = useSelector((state) => state.eventLog);
 
+  const [editor] = useState(() => withReact(createEditor()));
+
   const dispatch = useDispatch();
+
+  const inputBox = useRef();
 
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     let interval = null;
-    if (start) {
-      interval = setInterval(() => {
-        setTimer((time) => time + 1);
-        if (timer > pinyinAssistDelay && !pinyinAssistMessage) {
-          dispatch({
-            type: ACTIONS.PINYINASSISTMESSAGE,
-            // payload: { type: 'PINYINASSIST', input: words[position] },
-          });
-        }
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
+    // if (start) {
+    //   interval = setInterval(() => {
+    //     setTimer((time) => time + 1);
+    //     if (timer > pinyinAssistDelay && !pinyinAssistMessage) {
+    //       dispatch({
+    //         type: ACTIONS.PINYINASSISTMESSAGE,
+    //         // payload: { type: 'PINYINASSIST', input: words[position] },
+    //       });
+    //     }
+    //   }, 1000);
+    // } else {
+    //   clearInterval(interval);
+    // }
 
     return () => clearInterval(interval);
   }, [
@@ -53,7 +59,11 @@ export default function Input({ onCompleted }) {
 
   const onInputChange = (e) => {
     // Consider moving this to onInputChange to augment more data
-    const { data, timeStamp } = e.nativeEvent;
+    // const { timeStamp } = e.nativeEvent;
+    const timeStamp = 0;
+    // const inputState = inputBox.current.innerText;
+    const inputState = e;
+    console.log('Current input state', inputState);
 
     if (!start) {
       dispatch({
@@ -65,17 +75,19 @@ export default function Input({ onCompleted }) {
       });
     }
 
-    dispatch({
-      type: ACTIONS.EVENTLOG,
-      payload: {
-        type: 'INPUT STATE',
-        input: data,
-        timeStamp,
-      },
-    });
+    // dispatch({
+    //   type: ACTIONS.EVENTLOG,
+    //   payload: {
+    //     type: 'INPUT STATE',
+    //     input: inputState,
+    //     timeStamp,
+    //   },
+    // });
+
+    // onKeyDown();
 
     model.onInputChange(
-      e.target.value,
+      inputState,
       timeStamp,
       inputStatus,
       position,
@@ -88,7 +100,7 @@ export default function Input({ onCompleted }) {
     // console.log(eventLog);
   };
 
-  const lastChar = new RegExp("[0-9a-zA-Z']", 'g');
+  const lastChar = new RegExp("[0-9a-zA-Z']");
 
   const onKeyDown = (e) => {
     const { code, shiftKey, timeStamp } = e.nativeEvent;
@@ -119,8 +131,9 @@ export default function Input({ onCompleted }) {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center px-5 pt-5">
-      <FormControl
+    <div className="d-flex justify-content-center align-items-center px-5 flex-column">
+      {/* <input
+        type="text"
         style={{
           border: '.15rem solid #636363',
           borderRadius: '0.5rem',
@@ -128,12 +141,69 @@ export default function Input({ onCompleted }) {
           fontSize: '2rem',
           backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
         }}
-        className="px-3"
+        className="px-3 w-100"
         value={input}
         onChange={(e) => onInputChange(e)}
         onKeyDown={(e) => onKeyDown(e)}
-        aria-label="Username"
-      />
+      /> */}
+      <h3>{input}</h3>
+      {/* {console.log('INPUT', input.split(''))} */}
+      {/* <div
+        contentEditable
+        ref={inputBox}
+        style={{
+          border: '.15rem solid #636363',
+          borderRadius: '0.5rem',
+          fontFamily: 'Roboto',
+          fontSize: '2rem',
+          // backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
+        }}
+        className="px-3 w-100"
+        onInput={(e) => onInputChange(e)}
+      >
+        {input.split('').map((char, i) => {
+          if (lastChar.test(char) || inputStatus !== STATECODE.INCORRECT) {
+            return <span>{char}</span>;
+          } else {
+            return (
+              <span
+                style={{
+                  backgroundColor:
+                    words.charAt(i) === char
+                      ? STATUSCOLOR.CORRECT
+                      : STATUSCOLOR.INCORRECT,
+                }}
+              >
+                {char}
+              </span>
+            );
+          }
+        })}
+      </div> */}
+
+      <Slate
+        editor={editor}
+        value={[{ type: 'paragraph', children: [{ text: input }] }]}
+        onChange={(e) => onInputChange(e[0].children[0].text)} // Parse out the desired text
+      >
+        <Editable
+          className="px-3 w-100"
+          style={{
+            border: '.15rem solid #636363',
+            borderRadius: '0.5rem',
+            fontFamily: 'Roboto',
+            fontSize: '2rem',
+            // backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
+          }}
+        />
+      </Slate>
     </div>
   );
 }
+
+// Notes -
+//  - Hint is peripheral
+//  - Over the shoulder test
+//   - Not clear that you can press hint more than once
+//   - Add to pop-up?
+//   - ask what they're thinking

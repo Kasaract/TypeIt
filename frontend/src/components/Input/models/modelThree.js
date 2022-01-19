@@ -18,8 +18,6 @@ const onInputChange = (
   // ****** READY ******
 
   const onReady = (newInput) => {
-    const filteredInput = newInput.replace(/[0-9a-zA-Z']+/, '');
-
     dispatch({ type: ACTIONS.PINYINASSISTMESSAGEOFF });
     setTimer(0);
 
@@ -46,7 +44,7 @@ const onInputChange = (
     // Backspace
     else if (
       position - 2 >= 0 &&
-      filteredInput.charAt(filteredInput.length - 1) === words[position - 2] // Very strange indexing
+      newInput.charAt(newInput.length - 1) === words[position - 2] // Very strange indexing
     ) {
       // TODO: Bug for repeated characters
       dispatch({ type: ACTIONS.BACKSPACE });
@@ -59,16 +57,16 @@ const onInputChange = (
     // }
     else {
       // Type character(s)
-      for (let i = charPosition; i < filteredInput.length; i++) {
+      for (let i = charPosition; i < newInput.length - 1; i++) {
         // Correct character
         if (
           position < words.length &&
-          filteredInput[i] === words[position + i - charPosition]
+          newInput[i + 1] === words[position + i - charPosition] // The i + 1 is due to a strange indexing by SlateJS
         ) {
           dispatch({
             type: ACTIONS.NEXTCHARACTER,
           });
-          // if (filteredInput[i] === '。') {
+          // if (newInput[i] === '。') {
           //   dispatch({ type: ACTIONS.RESETINPUT });
           // }
         }
@@ -84,9 +82,9 @@ const onInputChange = (
       }
 
       if (
-        position + filteredInput.length - charPosition === words.length &&
-        filteredInput.charAt(filteredInput.length - 1) ===
-          words[position + filteredInput.length - charPosition - 1]
+        position + newInput.length - charPosition === words.length &&
+        newInput.charAt(newInput.length - 1) ===
+          words[position + newInput.length - charPosition - 1]
       ) {
         // Attempt to add timer - Gary 11/22
         // dispatch({
