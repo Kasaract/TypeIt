@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Editable, Slate, withReact } from 'slate-react';
-import { createEditor } from 'slate';
-// import { FormControl } from 'react-bootstrap';
+import { Transforms, createEditor, Text } from 'slate';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
 import { ACTIONS } from '../../actions';
@@ -23,6 +22,24 @@ export default function Input({ onCompleted }) {
   const eventLog = useSelector((state) => state.eventLog);
 
   const [editor] = useState(() => withReact(createEditor()));
+
+  // const Leaf = ({ attributes, children, leaf }) => {
+  //   if (inputStatus === STATECODE.INCORRECT) {
+  //     return (
+  //       <span
+  //         {...attributes}
+  //         style={{
+  //           backgroundColor:
+  //             leaf.correct === true ? STATUSCOLOR.INCORRECT : STATUSCOLOR.CORRECT,
+  //         }}
+  //       >
+  //         {children}
+  //       </span>
+  //     );
+  //   }
+
+  //   return <span {...attributes}>{children}</span>;
+  // };
 
   const dispatch = useDispatch();
 
@@ -58,12 +75,10 @@ export default function Input({ onCompleted }) {
   ]);
 
   const onInputChange = (e) => {
+    console.log('onInputChange', e);
     // Consider moving this to onInputChange to augment more data
-    // const { timeStamp } = e.nativeEvent;
     const timeStamp = 0;
-    // const inputState = inputBox.current.innerText;
     const inputState = e;
-    console.log('Current input state', inputState);
 
     if (!start) {
       dispatch({
@@ -132,68 +147,39 @@ export default function Input({ onCompleted }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 flex-column">
-      {/* <input
-        type="text"
-        style={{
-          border: '.15rem solid #636363',
-          borderRadius: '0.5rem',
-          fontFamily: 'Roboto',
-          fontSize: '2rem',
-          backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
-        }}
-        className="px-3 w-100"
-        value={input}
-        onChange={(e) => onInputChange(e)}
-        onKeyDown={(e) => onKeyDown(e)}
-      /> */}
-      <h3>{input}</h3>
-      {/* {console.log('INPUT', input.split(''))} */}
-      {/* <div
-        contentEditable
-        ref={inputBox}
-        style={{
-          border: '.15rem solid #636363',
-          borderRadius: '0.5rem',
-          fontFamily: 'Roboto',
-          fontSize: '2rem',
-          // backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
-        }}
-        className="px-3 w-100"
-        onInput={(e) => onInputChange(e)}
-      >
-        {input.split('').map((char, i) => {
-          if (lastChar.test(char) || inputStatus !== STATECODE.INCORRECT) {
-            return <span>{char}</span>;
-          } else {
-            return (
-              <span
-                style={{
-                  backgroundColor:
-                    words.charAt(i) === char
-                      ? STATUSCOLOR.CORRECT
-                      : STATUSCOLOR.INCORRECT,
-                }}
-              >
-                {char}
-              </span>
-            );
-          }
-        })}
-      </div> */}
-
       <Slate
         editor={editor}
-        value={[{ type: 'paragraph', children: [{ text: input }] }]}
-        onChange={(e) => onInputChange(e[0].children[0].text)} // Parse out the desired text
+        value={[{ type: 'paragraph', children: [{ text: '' }] }]} // Input is array of leaves
+        onChange={(e) => {
+          console.log('onChange', e);
+          onInputChange(e[0].children[0].text);
+        }} // Most recent character gets added to last leaf
       >
         <Editable
+          autoFocus
           className="px-3 w-100"
           style={{
             border: '.15rem solid #636363',
             borderRadius: '0.5rem',
             fontFamily: 'Roboto',
             fontSize: '2rem',
-            // backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
+            backgroundColor: inputStatus === STATECODE.INCORRECT && '#faa7a7',
+          }}
+          onKeyDown={(e) => {
+            if (inputStatus === STATECODE.READY && e.key === 'Backspace') {
+              e.preventDefault();
+            }
+
+            // This is a hack since there is a delay by 1 state change in SlateJS
+            // Would be preferred if there was a way to not handle state change in
+            // onKeyDown
+            if (
+              e.key === 'Backspace' &&
+              words.substring(0, position) ===
+                input.replace(/\uFEFF/g, '').slice(0, -1)
+            ) {
+              dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
+            }
           }}
         />
       </Slate>

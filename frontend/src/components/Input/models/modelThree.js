@@ -18,6 +18,12 @@ const onInputChange = (
   // ****** READY ******
 
   const onReady = (newInput) => {
+    // When you type in Chinese, a blank zero-width character gets added in a seemingly random
+    // position, at least for Windows keyboards. To avoid undeterministic behavior, filter occurs here.
+    // Unsure if cause is Microsoft or SlateJS.
+    // - Gary 01/19/22
+    newInput = newInput.replace(/\uFEFF/g, '');
+
     dispatch({ type: ACTIONS.PINYINASSISTMESSAGEOFF });
     setTimer(0);
 
@@ -42,13 +48,13 @@ const onInputChange = (
       }
     }
     // Backspace
-    else if (
-      position - 2 >= 0 &&
-      newInput.charAt(newInput.length - 1) === words[position - 2] // Very strange indexing
-    ) {
-      // TODO: Bug for repeated characters
-      dispatch({ type: ACTIONS.BACKSPACE });
-    }
+    // else if (
+    //   position - 2 >= 0 &&
+    //   newInput.charAt(newInput.length - 1) === words[position - 2] // Very strange indexing
+    // ) {
+    //   // TODO: Bug for repeated characters
+    //   dispatch({ type: ACTIONS.BACKSPACE });
+    // }
 
     // Typing single period resets the input
     // else if (newInput === '。' && words[position] === '。') {
@@ -57,27 +63,25 @@ const onInputChange = (
     // }
     else {
       // Type character(s)
-      for (let i = charPosition; i < newInput.length - 1; i++) {
+      for (let i = charPosition; i < newInput.length; i++) {
         // Correct character
         if (
           position < words.length &&
-          newInput[i + 1] === words[position + i - charPosition] // The i + 1 is due to a strange indexing by SlateJS
+          newInput[i] === words[position + i - charPosition]
         ) {
           dispatch({
             type: ACTIONS.NEXTCHARACTER,
           });
-          // if (newInput[i] === '。') {
-          //   dispatch({ type: ACTIONS.RESETINPUT });
-          // }
         }
         // Incorrect character
         else {
           dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
-          dispatch({
-            type: ACTIONS.EVENTLOG,
-            payload: { type: 'INCORRECT', word: words[position], timeStamp },
-          });
-          break;
+          // dispatch({
+          //   type: ACTIONS.EVENTLOG,
+          //   payload: { type: 'INCORRECT', word: words[position], timeStamp },
+          // });
+
+          break; // No need to check rest of characters if at least one is incorrect
         }
       }
 
@@ -108,6 +112,7 @@ const onInputChange = (
   // ****** INCORRECT ******
 
   const onIncorrect = (newInput) => {
+    console.log('incorrect', newInput);
     // Clear input field
     if (newInput === '') {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
@@ -144,6 +149,7 @@ const onInputChange = (
   //   setTimeRunning(true);
   // }
 
+  console.log('inputStatus?', inputStatus);
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);
