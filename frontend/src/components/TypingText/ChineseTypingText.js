@@ -25,20 +25,6 @@ export default function ChineseTypingText() {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center px-5 py-2">
-        {/* <div
-          className="p-3"
-          style={{
-            position: 'absolute',
-            border: '.15rem solid #636363',
-            borderRadius: '.5rem',
-            fontSize: '2rem',
-            backgroundColor: STATUSCOLOR.CORRECT,
-            userSelect: 'none',
-            // color: STATUSCOLOR.CORRECT,
-          }}
-        >
-          Overlay
-        </div> */}
         <div
           className="p-3"
           style={{ border: '.15rem solid #636363', borderRadius: '.5rem' }}
@@ -71,9 +57,11 @@ export default function ChineseTypingText() {
                   target={target.current}
                   show={pinyinAssist > 0}
                   placement="top-end"
+                  transition={false}
                 >
-                  <Tooltip>
-                    {Pinyin[words[position]].substring(0, pinyinAssist)}
+                  <Tooltip style={{ fontSize: '1.25rem' }}>
+                    {Pinyin[words[position]].substring(0, pinyinAssist) +
+                      '_'.repeat(Pinyin[words[position]].length - pinyinAssist)}
                   </Tooltip>
                 </Overlay>
               )}

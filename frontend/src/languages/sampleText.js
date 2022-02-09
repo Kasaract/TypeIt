@@ -247,6 +247,26 @@ const chinese4 = [
   '了',
 ];
 
+const chinese5 = [
+  '2022年北京冬季奥运会即将开幕，与去年的东京夏季奥运会一样，这场为期半个月的国际体育赛事仍摆脱不了新冠疫情的阴影，但北京还面临一项额外的压力——国际社会抵制冬奥的呼声。',
+];
+
+const chinese6 = [
+  '目前只有一种野生动物确认被人类感染新冠病毒：白尾鹿，美国和加拿大对白尾鹿进行采样检测证实白尾鹿被感染，但科学家担心在其他没有检测的地方，野生动物也会从人类感染到新冠病毒。',
+];
+
+const chinese7 = [
+  '他告诉媒体，关于即将发生入侵的种种警告使得乌克兰的经济处于危险之中。周四（1月27日），美国总统拜登说，他相信俄罗斯可能在下个月攻击乌克兰。然而，俄罗斯否认计划入侵乌克兰。周五俄国外交部长说莫斯科不希望有战争发生。',
+];
+
 // export const sampleChinese = [chinese1, chinese2, chinese3, chinese4];
 export const sampleChinese = [chinese4];
-export const ignoreWarning = [chinese1, chinese2, chinese3];
+export const ignoreWarning = [
+  chinese1,
+  chinese2,
+  chinese3,
+  chinese4,
+  chinese5,
+  chinese6,
+  chinese7,
+];

@@ -17,7 +17,8 @@ import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
 import './Home.css';
 
 export default function Home() {
-  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
+  const start = useSelector((state) => state.start);
+  // const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
 
   const dispatch = useDispatch();
 
@@ -72,10 +73,17 @@ export default function Home() {
           
           */}
         </Row>
-        <Row className="">
-          {pinyinAssistMessage && (
-            <h4 className="w-auto my-3 mx-auto">Stuck? Type '=' for a hint</h4>
+        <Row style={{ height: '2.5rem' }}>
+          {/* When adding support for other languages, might need to turn back on state */}
+          {/* {pinyinAssistMessage && ( */}
+          {!start ? (
+            <h3 className="w-auto my-auto mx-auto">Press Enter to start</h3>
+          ) : (
+            <p className="w-auto my-auto mx-auto text-muted">
+              Stuck? Type '=' for a hint
+            </p>
           )}
+          {/* )} */}
         </Row>
         <Row>
           <Input onCompleted={onCompleted} />

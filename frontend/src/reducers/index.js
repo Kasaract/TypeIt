@@ -127,15 +127,15 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           pinyinAssist: state.pinyinAssist + 1,
-          eventLog: [
-            ...state.eventLog,
-            {
-              type: 'HINT',
-              word: state.words[state.position],
-              pinyin: Pinyin[state.words[state.position]],
-              timestamp: action.payload.timeStamp,
-            },
-          ],
+          // eventLog: [
+          //   ...state.eventLog,
+          //   {
+          //     type: 'HINT',
+          //     word: state.words[state.position],
+          //     pinyin: Pinyin[state.words[state.position]],
+          //     timestamp: action.payload.timeStamp,
+          //   },
+          // ],
         };
       } else {
         return { ...state };

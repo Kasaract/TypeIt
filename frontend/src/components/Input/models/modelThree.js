@@ -149,7 +149,7 @@ const onInputChange = (
   //   setTimeRunning(true);
   // }
 
-  console.log('inputStatus?', inputStatus);
+  // console.log('inputStatus?', inputStatus);
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);
