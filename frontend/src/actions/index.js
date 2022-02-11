@@ -17,5 +17,7 @@ export const ACTIONS = {
   RESET: 'RESET',
   COMPLETE: 'COMPLETE',
   CHANGELANGUAGE: 'CHANGELANGUAGE',
+  // Timer related actions
+  UPDATETIME: 'UPDATETIME',
   EVENTLOG: 'EVENTLOG',
 };

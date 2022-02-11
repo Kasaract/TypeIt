@@ -4,7 +4,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 
 import { ACTIONS } from '../../actions';
 
-// import Timer from '../../components/Timer';
+import Timer from '../../components/Timer';
 import LanguageSelect from '../../components/LanguageSelect';
 // import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
@@ -46,14 +46,14 @@ export default function Home() {
           <Col>
             <LanguageSelect />
           </Col>
-          {/* <Col className="justify-content-end">
+          <Col className="justify-content-end">
             <Timer
-              time={time}
-              setTime={setTime}
-              timeRunning={timeRunning}
-              setTimeRunning={setTimeRunning}
+            // time={time}
+            // setTime={setTime}
+            // timeRunning={timeRunning}
+            // setTimeRunning={setTimeRunning}
             />
-          </Col> */}
+          </Col>
         </Row>
         <Row>
           {/* {language === 'zh' ? ( */}

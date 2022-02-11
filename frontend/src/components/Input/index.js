@@ -16,9 +16,10 @@ export default function Input({ onCompleted }) {
   const charPosition = useSelector((state) => state.charPosition);
   const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
+  const time = useSelector((state) => state.time);
   // const pinyinAssist = useSelector((state) => state.pinyinAssist);
-  const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
-  const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
+  // const pinyinAssistMessage = useSelector((state) => state.pinyinAssistMessage);
+  // const pinyinAssistDelay = useSelector((state) => state.pinyinAssistDelay);
   // const eventLog = useSelector((state) => state.eventLog);
 
   const [editor] = useState(() => withReact(createEditor()));
@@ -63,49 +64,33 @@ export default function Input({ onCompleted }) {
 
   const dispatch = useDispatch();
 
-  const [timer, setTimer] = useState(0);
-
   useEffect(() => {
     let interval = null;
-    // if (start) {
-    //   interval = setInterval(() => {
-    //     setTimer((time) => time + 1);
-    //     if (timer > pinyinAssistDelay && !pinyinAssistMessage) {
-    //       dispatch({
-    //         type: ACTIONS.PINYINASSISTMESSAGE,
-    //         // payload: { type: 'PINYINASSIST', input: words[position] },
-    //       });
-    //     }
-    //   }, 1000);
-    // } else {
-    //   clearInterval(interval);
-    // }
+    let lastUpdateTime = Date.now();
+    if (start) {
+      interval = setInterval(() => {
+        const now = Date.now();
+        const deltaTime = now - lastUpdateTime;
+        lastUpdateTime = now;
+        dispatch({ type: ACTIONS.UPDATETIME, payload: deltaTime });
+        console.log(time);
+        if (time < 500) {
+          clearInterval(interval);
+          dispatch({ type: ACTIONS.END });
+          return;
+        }
+      }, 500);
+    } else {
+      clearInterval(interval);
+    }
 
     return () => clearInterval(interval);
-  }, [
-    start,
-    timer,
-    words,
-    position,
-    pinyinAssistMessage,
-    pinyinAssistDelay,
-    dispatch,
-  ]);
+  }, [start, time, dispatch]);
 
   const onInputChange = (e) => {
     // Consider moving this to onInputChange to augment more data
     const timeStamp = 0;
     const inputState = e;
-
-    // if (!start) {
-    //   dispatch({
-    //     type: ACTIONS.START,
-    //     payload: {
-    //       type: 'START',
-    //       timeStamp,
-    //     },
-    //   });
-    // }
 
     // dispatch({
     //   type: ACTIONS.EVENTLOG,
@@ -116,8 +101,6 @@ export default function Input({ onCompleted }) {
     //   },
     // });
 
-    // onKeyDown();
-
     model.onInputChange(
       inputState,
       timeStamp,
@@ -126,7 +109,6 @@ export default function Input({ onCompleted }) {
       charPosition,
       words,
       onCompleted,
-      setTimer,
       dispatch
     );
     // console.log(eventLog);
@@ -138,7 +120,6 @@ export default function Input({ onCompleted }) {
       dispatch({
         type: ACTIONS.START,
         payload: {
-          // type: 'START',
           // timeStamp,
         },
       });
@@ -177,6 +158,7 @@ export default function Input({ onCompleted }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 flex-column">
+      {start}
       <Slate
         editor={editor}
         value={[{ type: 'paragraph', children: [{ text: '' }] }]} // Input is array of leaves
@@ -186,6 +168,7 @@ export default function Input({ onCompleted }) {
       >
         <Editable
           autoFocus
+          readOnly={!start}
           className="px-3 w-100"
           style={{
             border: '.15rem solid #636363',
@@ -208,10 +191,3 @@ export default function Input({ onCompleted }) {
 //   - Not clear that you can press hint more than once
 //   - Add to pop-up?
 //   - ask what they're thinking
-
-// Decorations for highlighting
-// Concepts of Ranges - points to subsection of text node
-// -- can set attributes (such as highlighting)
-//  Decorate function is passed in?
-// Markdown preview?
-//

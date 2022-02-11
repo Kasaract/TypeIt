@@ -12,7 +12,6 @@ const onInputChange = (
   charPosition,
   words,
   onCompleted,
-  setTimer,
   dispatch
 ) => {
   // ****** READY ******
@@ -25,7 +24,6 @@ const onInputChange = (
     newInput = newInput.replace(/\uFEFF/g, '');
 
     dispatch({ type: ACTIONS.PINYINASSISTMESSAGEOFF });
-    setTimer(0);
 
     // Does this even work? - Gary 11/22
     // Maybe add support for question mark?

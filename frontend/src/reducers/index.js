@@ -24,6 +24,7 @@ const initialState = {
   pinyinAssistMessage: false,
   pinyinAssistDelay: 2,
   pinyinAssist: 0,
+  time: 3000, // milliseconds
   eventLog: [],
 };
 
@@ -165,6 +166,12 @@ const rootReducer = (state = initialState, action) => {
         charPosition: 0,
         input: '',
         inputStatus: STATECODE.READY,
+      };
+
+    case ACTIONS.UPDATETIME:
+      return {
+        ...state,
+        time: state.start ? state.time - action.payload : state.time,
       };
 
     case ACTIONS.EVENTLOG:
