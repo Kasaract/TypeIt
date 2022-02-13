@@ -11,7 +11,7 @@ import { Pinyin } from '../languages/Chinese/Pinyin';
 const text = sampleChinese[Math.floor(Math.random() * 1)];
 
 const initialState = {
-  start: false,
+  start: true,
   language: 'zh',
   model: models.modelThree,
   position: 0,
@@ -21,10 +21,8 @@ const initialState = {
   typingStatus: false,
   inputStatus: STATECODE.READY,
   errorCount: 0,
-  pinyinAssistMessage: false,
-  pinyinAssistDelay: 2,
   pinyinAssist: 0,
-  time: 3000, // milliseconds
+  time: 10000, // milliseconds
   eventLog: [],
 };
 
@@ -93,36 +91,6 @@ const rootReducer = (state = initialState, action) => {
         inputStatus: action.payload,
       };
 
-    // case ACTIONS.PINYINASSISTON:
-    //   return {
-    //     ...state,
-    //     pinyinAssist: true,
-    //     eventLog: [...state.eventLog, action.payload],
-    //   };
-
-    // case ACTIONS.PINYINASSISTOFF:
-    //   return {
-    //     ...state,
-    //     pinyinAssist: false,
-    //   };
-
-    case ACTIONS.PINYINASSISTMESSAGE:
-      return {
-        ...state,
-        pinyinAssistMessage: !state.pinyinAssistMessage,
-      };
-
-    case ACTIONS.PINYINASSISTMESSAGEOFF:
-      return {
-        ...state,
-        pinyinAssistMessage: false,
-      };
-
-    case ACTIONS.PINYINASSISTDELAY:
-      return {
-        ...state,
-        pinyinAssistDelay: action.payload,
-      };
     case ACTIONS.PINYINASSISTHINT:
       if (state.pinyinAssist < Pinyin[state.words[state.position]].length) {
         return {
@@ -169,6 +137,7 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case ACTIONS.UPDATETIME:
+      console.log('POSITION', state.position);
       return {
         ...state,
         time: state.start ? state.time - action.payload : state.time,

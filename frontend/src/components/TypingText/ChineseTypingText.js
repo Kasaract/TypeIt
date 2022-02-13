@@ -59,9 +59,14 @@ export default function ChineseTypingText() {
                   placement="top-end"
                   transition={false}
                 >
-                  <Tooltip style={{ fontSize: '1.25rem' }}>
-                    {Pinyin[words[position]].substring(0, pinyinAssist) +
-                      '_'.repeat(Pinyin[words[position]].length - pinyinAssist)}
+                  <Tooltip>
+                    <div style={{ fontSize: '1.25rem' }}>
+                      {Pinyin[words[position]].substring(0, pinyinAssist) +
+                        '_'.repeat(Pinyin[words[position]].length - pinyinAssist)}
+                    </div>
+                    <div style={{ fontSize: '0.75rem' }}>
+                      ({Pinyin[words[position]].length - pinyinAssist}) hints left
+                    </div>
                   </Tooltip>
                 </Overlay>
               )}
