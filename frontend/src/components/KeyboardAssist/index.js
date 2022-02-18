@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { AssistContext, InputContext, LanguageContext } from '../../context';
+import { useEffect, useState } from 'react';
+// import { AssistContext, InputContext, LanguageContext } from '../../context';
 
 export default function KeyboardAssist({
   char,
@@ -9,16 +9,16 @@ export default function KeyboardAssist({
   defaultFillColor = '#ffffff',
   defaultColor = '#5e5e5e',
 }) {
-  const { input, setInput } = useContext(InputContext);
-  const { language, setLanguage } = useContext(LanguageContext);
-  const { assist, setAssist } = useContext(AssistContext);
+  // const { input, setInput } = useContext(InputContext);
+  // const { language, setLanguage } = useContext(LanguageContext);
+  // const { assist, setAssist } = useContext(AssistContext);
   const [lastchar, setLastchar] = useState('');
 
-  useEffect(() => {
-    if (assist.length > 0) {
-      setLastchar(assist);
-    }
-  }, [assist]);
+  // useEffect(() => {
+  //   if (assist.length > 0) {
+  //     setLastchar(assist);
+  //   }
+  // }, [assist]);
 
   let support = ['en', 'es', 'fr', 'th', 'zh'];
   let keyToCode = require('./KeyboardMappings/ko.js');

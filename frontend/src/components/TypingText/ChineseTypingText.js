@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Overlay, Tooltip } from 'react-bootstrap';
 
@@ -14,6 +14,8 @@ export default function ChineseTypingText() {
 
   const target = useRef(null);
 
+  const [hint, setHint] = useState([]);
+
   let color;
 
   if (inputStatus !== STATECODE.INCORRECT) {
@@ -21,6 +23,14 @@ export default function ChineseTypingText() {
   } else if (inputStatus === STATECODE.INCORRECT) {
     color = STATUSCOLOR.INCORRECT;
   }
+
+  useEffect(() => {
+    let pinyin = Pinyin[words[position]];
+    let word =
+      pinyin.substring(0, pinyinAssist) + '_'.repeat(pinyin.length - pinyinAssist);
+    word = word.split('').join(' ');
+    setHint(word);
+  }, [position, pinyinAssist]);
 
   return (
     <>
@@ -61,11 +71,17 @@ export default function ChineseTypingText() {
                 >
                   <Tooltip>
                     <div style={{ fontSize: '1.25rem' }}>
-                      {Pinyin[words[position]].substring(0, pinyinAssist) +
-                        '_'.repeat(Pinyin[words[position]].length - pinyinAssist)}
+                      {/* {Pinyin[words[position]].substring(0, pinyinAssist) +
+                        '_'.repeat(Pinyin[words[position]].length - pinyinAssist)} */}
+                      {hint}
                     </div>
-                    <div style={{ fontSize: '0.75rem' }}>
-                      ({Pinyin[words[position]].length - pinyinAssist}) hints left
+                    <div
+                      style={{
+                        fontSize: '0.75rem',
+                        color: hint.includes('_') ? 'white' : 'black',
+                      }}
+                    >
+                      {"Press '=' for more hints"}
                     </div>
                   </Tooltip>
                 </Overlay>

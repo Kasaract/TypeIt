@@ -73,7 +73,7 @@ export default function Home() {
             <h3 className="w-auto my-auto mx-auto">Press Enter to start</h3>
           ) : (
             <p className="w-auto my-auto mx-auto text-muted">
-              Stuck? Type '=' for a hint
+              Stuck? Press '=' for a hint
             </p>
           )}
           {/* )} */}
@@ -90,6 +90,7 @@ export default function Home() {
           {errorCount >= 3 && <KeyboardAssist />}
           <KeyboardAssist />
         </Row> */}
+        {/* <KeyboardAssist /> */}
       </Col>
       <CompletedModal
         show={showCompletedModal}

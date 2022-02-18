@@ -88,23 +88,23 @@ export default function Input({ onCompleted }) {
 
   useEffect(() => {
     let interval = null;
-    // let lastUpdateTime = Date.now();
-    // if (start) {
-    //   interval = setInterval(() => {
-    //     const now = Date.now();
-    //     const deltaTime = now - lastUpdateTime;
-    //     lastUpdateTime = now;
-    //     dispatch({ type: ACTIONS.UPDATETIME, payload: deltaTime }); // Clearing input bug happening here! (Non deterministic?)
-    //     //   console.log(time);
-    //     //   if (time < 500) {
-    //     //     clearInterval(interval);
-    //     //     dispatch({ type: ACTIONS.END });
-    //     //     return;
-    //     //   }
-    //   }, 500);
-    // } else {
-    //   clearInterval(interval);
-    // }
+    let lastUpdateTime = Date.now();
+    if (start) {
+      interval = setInterval(() => {
+        const now = Date.now();
+        const deltaTime = now - lastUpdateTime;
+        lastUpdateTime = now;
+        dispatch({ type: ACTIONS.UPDATETIME, payload: deltaTime }); // Clearing input bug happening here! (Non deterministic?)
+        //   console.log(time);
+        //   if (time < 500) {
+        //     clearInterval(interval);
+        //     dispatch({ type: ACTIONS.END });
+        //     return;
+        //   }
+      }, 500);
+    } else {
+      clearInterval(interval);
+    }
 
     return () => clearInterval(interval);
   }, []);
@@ -171,7 +171,6 @@ export default function Input({ onCompleted }) {
       >
         <Editable
           autoFocus={start}
-          // readOnly={!start}
           className="px-3 w-100"
           style={{
             border: '.15rem solid #636363',

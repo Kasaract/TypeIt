@@ -11,7 +11,7 @@ import { Pinyin } from '../languages/Chinese/Pinyin';
 const text = sampleChinese[Math.floor(Math.random() * 1)];
 
 const initialState = {
-  start: true,
+  start: false,
   language: 'zh',
   model: models.modelThree,
   position: 0,
