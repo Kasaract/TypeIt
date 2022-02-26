@@ -23,7 +23,7 @@ const initialState = {
   inputStatus: STATECODE.READY, // Current state of input correctness
   errorCount: 0, // DEPRECATED - Keep track of number of errors
   pinyinAssist: 0, // Number of letters to reveal in Pinyin assist
-  resetInput: () => {},
+  resetInput: () => {}, // SlateJS function to reset input - updated when Slate editor is initialized
   time: 10000, // BROKEN - Remaining time to type excerpt
   eventLog: [], // Log of typing events
 };
