@@ -137,7 +137,6 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case ACTIONS.UPDATETIME:
-      console.log('POSITION', state.position);
       return {
         ...state,
         time: state.start ? state.time - action.payload : state.time,

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Overlay, Tooltip } from 'react-bootstrap';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
+import { ACTIONS } from '../../actions';
 
 import { Pinyin } from '../../languages/Chinese/Pinyin';
 
@@ -11,6 +12,8 @@ export default function ChineseTypingText() {
   const position = useSelector((state) => state.position);
   const inputStatus = useSelector((state) => state.inputStatus);
   const pinyinAssist = useSelector((state) => state.pinyinAssist);
+
+  const dispatch = useDispatch();
 
   const target = useRef(null);
 
@@ -29,7 +32,20 @@ export default function ChineseTypingText() {
     let word =
       pinyin.substring(0, pinyinAssist) + '_'.repeat(pinyin.length - pinyinAssist);
     word = word.split('').join(' ');
+    // let timeStamp = Date.now();
     setHint(word);
+    if (pinyinAssist > 0) {
+      dispatch({
+        type: ACTIONS.EVENTLOG,
+        payload: {
+          type: 'HINT',
+          word: words[position],
+          pinyin,
+          progress: pinyinAssist,
+          timeStamp: Date.now(),
+        },
+      });
+    }
   }, [position, pinyinAssist]);
 
   return (

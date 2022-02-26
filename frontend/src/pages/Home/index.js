@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
 
@@ -18,10 +18,52 @@ import './Home.css';
 
 export default function Home() {
   const start = useSelector((state) => state.start);
+  const eventLog = useSelector((state) => state.eventLog);
 
   const dispatch = useDispatch();
 
   const [showCompletedModal, setShowCompletedModal] = useState(false);
+
+  // const [time, setTime] = useState(10);
+  // const [isActive, setIsActive] = useState(false);
+
+  // const toggleTime = () => {
+  //   setIsActive(!isActive);
+  // };
+
+  // const inputToggleTime = () => toggleTime();
+
+  // useEffect(() => {
+  //   let interval = null;
+  //   if (isActive) {
+  //     interval = setInterval(() => {
+  //       setTime((time) => time + 1);
+  //     }, 1000);
+  //   } else if (!isActive && seconds !== 0) {
+  //     clearInterval(interval);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [isActive, seconds]);
+
+  // useEffect(() => {
+  //   let interval = null;
+  //   if (isActive) {
+  //     interval = setInterval(() => {
+  //       // if (time > 0) {
+  //       setTime((time) => time - 1);
+  //       // } else {
+  //       //   //     dispatch({ type: ACTIONS.END });
+  //       //   //     return;
+  //       //   clearInterval(interval);
+  //       // }
+  //       //   }
+  //     }, 1000);
+  //   } else {
+  //     clearInterval(interval);
+  //   }
+
+  //   return () => clearInterval(interval);
+  // }, [time, isActive]);
 
   const onReset = () => {
     dispatch({ type: ACTIONS.RESET });
@@ -46,7 +88,8 @@ export default function Home() {
             <LanguageSelect />
           </Col>
           <Col className="justify-content-end">
-            <Timer />
+            {/* <Timer /> */}
+            {/* <h1>{time}s</h1> */}
           </Col>
         </Row>
         <Row>
@@ -92,6 +135,7 @@ export default function Home() {
         </Row> */}
         {/* <KeyboardAssist /> */}
       </Col>
+      {/* {JSON.stringify(eventLog)} */}
       <CompletedModal
         show={showCompletedModal}
         // time={time}

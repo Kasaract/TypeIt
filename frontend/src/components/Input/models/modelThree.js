@@ -31,16 +31,24 @@ const onInputChange = (
         newInput[i] === words[position + i - charPosition]
       ) {
         dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: {
+            type: 'CORRECT',
+            word: words[position + i - charPosition],
+            timeStamp,
+          },
+        });
+        dispatch({
           type: ACTIONS.NEXTCHARACTER,
         });
       }
       // Incorrect character
       else {
+        dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: { type: 'INCORRECT', word: words[position], timeStamp },
+        });
         dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
-        // dispatch({
-        //   type: ACTIONS.EVENTLOG,
-        //   payload: { type: 'INCORRECT', word: words[position], timeStamp },
-        // });
 
         break; // No need to check if at least one is incorrect
       }
@@ -87,7 +95,6 @@ const onInputChange = (
     }
   };
 
-  console.log('SHOULD BE NEW INPUT', newInput);
   // STATE-BASED LOGIC
   dispatch({ type: ACTIONS.INPUT, payload: newInput });
 

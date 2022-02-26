@@ -18,20 +18,22 @@ export default function Input({ onCompleted }) {
   const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
   const time = useSelector((state) => state.time);
-  // const eventLog = useSelector((state) => state.eventLog);
+  const eventLog = useSelector((state) => state.eventLog);
 
   const [editor] = useState(() => withReact(createEditor()));
 
   const dispatch = useDispatch();
 
-  useHotkeys('enter', () => {
-    dispatch({
-      type: ACTIONS.START,
-      payload: {
-        // timeStamp,
-      },
-    });
-  });
+  // useHotkeys('enter', () => {
+  //   let now = Date.now();
+  //   // toggleTime();
+  //   dispatch({
+  //     type: ACTIONS.START,
+  //     payload: {
+  //       timeStamp: now,
+  //     },
+  //   });
+  // });
 
   const Leaf = ({ attributes, children, leaf }) => {
     return (
@@ -52,6 +54,7 @@ export default function Input({ onCompleted }) {
   };
 
   const decorate = useCallback(
+    // Maybe copy over the Slate example. It's cleaner code.
     ([node, path]) => {
       const ranges = [];
 
@@ -86,32 +89,9 @@ export default function Input({ onCompleted }) {
     [words]
   );
 
-  useEffect(() => {
-    let interval = null;
-    let lastUpdateTime = Date.now();
-    if (start) {
-      interval = setInterval(() => {
-        const now = Date.now();
-        const deltaTime = now - lastUpdateTime;
-        lastUpdateTime = now;
-        dispatch({ type: ACTIONS.UPDATETIME, payload: deltaTime }); // Clearing input bug happening here! (Non deterministic?)
-        //   console.log(time);
-        //   if (time < 500) {
-        //     clearInterval(interval);
-        //     dispatch({ type: ACTIONS.END });
-        //     return;
-        //   }
-      }, 500);
-    } else {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, []);
-
   const onInputChange = (e) => {
     // Consider moving this to onInputChange to augment more data
-    const timeStamp = 0;
+    const timeStamp = Date.now();
     const inputState = e;
 
     // dispatch({
@@ -133,7 +113,7 @@ export default function Input({ onCompleted }) {
       onCompleted,
       dispatch
     );
-    // console.log(eventLog);
+    console.log(eventLog);
   };
 
   const onKeyDown = (e) => {
@@ -142,7 +122,8 @@ export default function Input({ onCompleted }) {
       dispatch({
         type: ACTIONS.START,
         payload: {
-          // timeStamp,
+          type: 'START',
+          timeStamp: Date.now(),
         },
       });
     }

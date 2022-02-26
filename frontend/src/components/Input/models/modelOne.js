@@ -68,7 +68,6 @@ const onInputChange = (
 
   const onIncorrect = (newInput) => {
     setErrorCount(errorCount + 1);
-    console.log(`errorCount is ${errorCount}`);
 
     // Type wrong character for space
     if (
