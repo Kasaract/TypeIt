@@ -28,23 +28,25 @@ export default function ChineseTypingText() {
   }
 
   useEffect(() => {
-    let pinyin = Pinyin[words[position]];
-    let word =
-      pinyin.substring(0, pinyinAssist) + '_'.repeat(pinyin.length - pinyinAssist);
-    word = word.split('').join(' ');
-    // let timeStamp = Date.now();
-    setHint(word);
-    if (pinyinAssist > 0) {
-      dispatch({
-        type: ACTIONS.EVENTLOG,
-        payload: {
-          type: 'HINT',
-          word: words[position],
-          pinyin,
-          progress: pinyinAssist,
-          timeStamp: Date.now(),
-        },
-      });
+    if (position < words.length) {
+      let pinyin = Pinyin[words[position]];
+      let word =
+        pinyin.substring(0, pinyinAssist) + '_'.repeat(pinyin.length - pinyinAssist);
+      word = word.split('').join(' ');
+      // let timeStamp = Date.now();
+      setHint(word);
+      if (pinyinAssist > 0) {
+        dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: {
+            type: 'HINT',
+            word: words[position],
+            pinyin,
+            progress: pinyinAssist,
+            timeStamp: Date.now(),
+          },
+        });
+      }
     }
   }, [position, pinyinAssist]);
 

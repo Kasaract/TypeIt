@@ -19,10 +19,11 @@ import './Home.css';
 export default function Home() {
   const start = useSelector((state) => state.start);
   const eventLog = useSelector((state) => state.eventLog);
+  const completed = useSelector((state) => state.completed);
 
   const dispatch = useDispatch();
 
-  const [showCompletedModal, setShowCompletedModal] = useState(false);
+  // const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   // const [time, setTime] = useState(10);
   // const [isActive, setIsActive] = useState(false);
@@ -65,19 +66,22 @@ export default function Home() {
   //   return () => clearInterval(interval);
   // }, [time, isActive]);
 
-  const onReset = () => {
-    dispatch({ type: ACTIONS.RESET });
-  };
+  // const onReset = () => {
+  //   dispatch({ type: ACTIONS.RESET });
+  // };
 
   const onCompleted = () => {
     // setTimeRunning(false);
     // setTime(0);
-    setShowCompletedModal(true);
+    // setShowCompletedModal(true);
+    dispatch({ type: ACTIONS.COMPLETE });
   };
 
   const onCompletedModalExit = () => {
-    onReset();
-    setShowCompletedModal(false);
+    // onReset();
+    // setShowCompletedModal(false);
+
+    dispatch({ type: ACTIONS.RESET });
   };
 
   return (
@@ -137,7 +141,7 @@ export default function Home() {
       </Col>
       {/* {JSON.stringify(eventLog)} */}
       <CompletedModal
-        show={showCompletedModal}
+        show={completed}
         // time={time}
         onHide={onCompletedModalExit}
       />

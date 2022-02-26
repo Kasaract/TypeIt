@@ -11,19 +11,21 @@ import { Pinyin } from '../languages/Chinese/Pinyin';
 const text = sampleChinese[Math.floor(Math.random() * 1)];
 
 const initialState = {
-  start: false,
-  language: 'zh',
-  model: models.modelThree,
-  position: 0,
-  charPosition: 0,
-  input: '',
-  words: text.join(''),
-  typingStatus: false,
-  inputStatus: STATECODE.READY,
-  errorCount: 0,
-  pinyinAssist: 0,
-  time: 10000, // milliseconds
-  eventLog: [],
+  start: false, // Has user started typing?
+  completed: false, // Has user reached end of excerpt?
+  language: 'zh', // Language code
+  model: models.modelThree, // Feedback mechanism based on langauge
+  position: 0, // Which character are they at?
+  charPosition: 0, // DEPRECATED
+  input: '', // Current user input
+  words: text.join(''), // DEPRECATED
+  typingStatus: false, // DEPRECATED
+  inputStatus: STATECODE.READY, // Current state of input correctness
+  errorCount: 0, // DEPRECATED - Keep track of number of errors
+  pinyinAssist: 0, // Number of letters to reveal in Pinyin assist
+  resetInput: () => {},
+  time: 10000, // BROKEN - Remaining time to type excerpt
+  eventLog: [], // Log of typing events
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -38,6 +40,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         start: false,
+        completed: true,
         eventLog: [...state.eventLog, action.payload],
       };
     case ACTIONS.INPUT:
@@ -96,15 +99,6 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           pinyinAssist: state.pinyinAssist + 1,
-          // eventLog: [
-          //   ...state.eventLog,
-          //   {
-          //     type: 'HINT',
-          //     word: state.words[state.position],
-          //     pinyin: Pinyin[state.words[state.position]],
-          //     timestamp: action.payload.timeStamp,
-          //   },
-          // ],
         };
       } else {
         return { ...state };
@@ -117,13 +111,21 @@ const rootReducer = (state = initialState, action) => {
         input: '',
         inputStatus: STATECODE.READY,
         start: false,
+        completed: false,
         pinyinAssist: 0,
+      };
+
+    case ACTIONS.SET_RESETINPUT:
+      return {
+        ...state,
+        resetInput: action.payload,
       };
 
     case ACTIONS.COMPLETE:
       return {
         ...state,
         start: false,
+        completed: true,
       };
 
     case ACTIONS.CHANGELANGUAGE:

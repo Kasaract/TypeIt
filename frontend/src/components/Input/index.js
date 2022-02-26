@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Editable, Slate, withReact } from 'slate-react';
-import { Text, createEditor } from 'slate';
+import { Text, Transforms, Editor, createEditor } from 'slate';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
@@ -20,9 +20,24 @@ export default function Input({ onCompleted }) {
   const time = useSelector((state) => state.time);
   const eventLog = useSelector((state) => state.eventLog);
 
+  // const [editor] = useState(() => withReact(createEditor()));
   const [editor] = useState(() => withReact(createEditor()));
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ACTIONS.SET_RESETINPUT,
+      payload: () => {
+        Transforms.delete(editor, {
+          at: {
+            anchor: Editor.start(editor, []),
+            focus: Editor.end(editor, []),
+          },
+        });
+      },
+    });
+  }, [editor]);
 
   // useHotkeys('enter', () => {
   //   let now = Date.now();
@@ -64,7 +79,7 @@ export default function Input({ onCompleted }) {
         let offset = 0;
         let wordIndex = 0;
 
-        parts.forEach((part, i) => {
+        parts.forEach((part) => {
           if (part.charCodeAt(0) === 65279) {
             ranges.push({
               anchor: { path, offset: offset },
@@ -90,18 +105,8 @@ export default function Input({ onCompleted }) {
   );
 
   const onInputChange = (e) => {
-    // Consider moving this to onInputChange to augment more data
     const timeStamp = Date.now();
     const inputState = e;
-
-    // dispatch({
-    //   type: ACTIONS.EVENTLOG,
-    //   payload: {
-    //     type: 'INPUT STATE',
-    //     input: inputState,
-    //     timeStamp,
-    //   },
-    // });
 
     model.onInputChange(
       inputState,
@@ -135,6 +140,15 @@ export default function Input({ onCompleted }) {
         dispatch({
           type: ACTIONS.PINYINASSISTHINT,
         });
+      } else {
+        dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: {
+            type: 'INPUT',
+            input: e.key,
+            timeStamp: Date.now(),
+          },
+        });
       }
     }
   };
@@ -145,7 +159,12 @@ export default function Input({ onCompleted }) {
       {inputStatus}
       <Slate
         editor={editor}
-        value={[{ type: 'paragraph', children: [{ text: '' }] }]} // Input is array of leaves
+        value={[
+          {
+            type: 'paragraph',
+            children: [{ text: '' }],
+          },
+        ]} // Input is array of leaves
         onChange={(e) => {
           onInputChange(e[0].children[0].text);
         }} // Most recent character gets added to last leaf
@@ -167,10 +186,3 @@ export default function Input({ onCompleted }) {
     </div>
   );
 }
-
-// Notes -
-//  - Hint is peripheral
-//  - Over the shoulder test
-//   - Not clear that you can press hint more than once
-//   - Add to pop-up?
-//   - ask what they're thinking

@@ -23,6 +23,8 @@ const onInputChange = (
     // Unsure if cause is Microsoft or SlateJS.
     // - Gary 01/19/22
 
+    let isIncorrect = false;
+
     // Type character(s)
     for (let i = charPosition; i < newInput.length; i++) {
       // Correct character
@@ -38,19 +40,21 @@ const onInputChange = (
             timeStamp,
           },
         });
-        dispatch({
-          type: ACTIONS.NEXTCHARACTER,
-        });
+        if (!isIncorrect) {
+          dispatch({
+            type: ACTIONS.NEXTCHARACTER,
+          });
+        }
       }
+
       // Incorrect character
       else {
+        isIncorrect = true; // Mark input as incorrect, but continue to check remaining characters
+        dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
         dispatch({
           type: ACTIONS.EVENTLOG,
           payload: { type: 'INCORRECT', word: words[position], timeStamp },
         });
-        dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
-
-        break; // No need to check if at least one is incorrect
       }
     }
 
@@ -67,12 +71,12 @@ const onInputChange = (
       //     timeStamp,
       //   },
       // });
-      onCompleted();
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.END });
       dispatch({
         type: ACTIONS.EVENTLOG,
         payload: { type: 'END', timeStamp },
       });
+      onCompleted();
       // dispatch({ type: ACTIONS.RESETINPUT });
     }
   };
