@@ -14,12 +14,15 @@ import CompletedModal from '../../components/CompletedModal';
 import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
 // import MorseCodeTypingText from '../../components/TypingText/MorseCodeTypingText';
 
+import { getNewExcerpt } from '../../reducers/getNewExcerpt';
+
 import './Home.css';
 
 export default function Home() {
   const start = useSelector((state) => state.start);
   const eventLog = useSelector((state) => state.eventLog);
   const completed = useSelector((state) => state.completed);
+  const language = useSelector((state) => state.language);
 
   const dispatch = useDispatch();
 
@@ -33,6 +36,10 @@ export default function Home() {
   // };
 
   // const inputToggleTime = () => toggleTime();
+  useEffect(() => {
+    const getNewExcerptThunk = getNewExcerpt(language);
+    dispatch(getNewExcerptThunk);
+  }, [dispatch]);
 
   // useEffect(() => {
   //   let interval = null;

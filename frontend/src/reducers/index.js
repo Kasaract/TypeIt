@@ -1,14 +1,10 @@
 // TO-DO: Split up reducers
 // import { combineReducers } from 'redux';
-
 import { ACTIONS } from '../actions';
 
 import { models } from '../components/Input/models';
-import { sampleChinese } from '../languages/sampleText';
 import { STATECODE } from '../constants';
 import { Pinyin } from '../languages/Chinese/Pinyin';
-
-const text = sampleChinese[Math.floor(Math.random() * 1)];
 
 const initialState = {
   start: false, // Has user started typing?
@@ -18,7 +14,7 @@ const initialState = {
   position: 0, // Which character are they at?
   charPosition: 0, // DEPRECATED
   input: '', // Current user input
-  words: text.join(''), // DEPRECATED
+  words: '', // Text excerpt (str)
   typingStatus: false, // DEPRECATED
   inputStatus: STATECODE.READY, // Current state of input correctness
   errorCount: 0, // DEPRECATED - Keep track of number of errors
@@ -47,6 +43,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         input: action.payload,
+      };
+
+    case ACTIONS.NEWEXCERPT:
+      return {
+        ...state,
+        words: action.payload,
       };
 
     case ACTIONS.NEXTSENTENCE:

@@ -30,6 +30,7 @@ export default function LanguageSelect() {
     setFilter(newFilter);
   };
 
+  console.log('LANGUAGE', language);
   return (
     <>
       <Row className="d-flex justify-content-between mt-5 mb-3 px-5">

@@ -23,6 +23,12 @@ export default function CompletedModal({ show, time, onHide }) {
     });
   };
 
+  const onNewExcerpt = () => {
+    dispatch({
+      type: ACTIONS.NEWEXCERPT,
+    });
+  };
+
   return (
     <Modal
       show={show}
@@ -51,7 +57,9 @@ export default function CompletedModal({ show, time, onHide }) {
           >
             Practice Again
           </Button>
-          <Button size="sm">New Excerpt</Button>
+          <Button size="sm" onClick={() => onNewExcerpt()}>
+            New Excerpt
+          </Button>
         </div>
       </Modal.Body>
     </Modal>
