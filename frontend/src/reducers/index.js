@@ -97,7 +97,9 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case ACTIONS.PINYINASSISTHINT:
-      if (state.pinyinAssist < Pinyin[state.words[state.position]].length) {
+      if (
+        state.pinyinAssist < Pinyin[state.words[state.position]]['pinyin'].length
+      ) {
         return {
           ...state,
           pinyinAssist: state.pinyinAssist + 1,
@@ -115,6 +117,7 @@ const rootReducer = (state = initialState, action) => {
         start: false,
         completed: false,
         pinyinAssist: 0,
+        eventLog: [],
       };
 
     case ACTIONS.SET_RESETINPUT:

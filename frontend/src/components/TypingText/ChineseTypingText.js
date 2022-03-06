@@ -29,7 +29,7 @@ export default function ChineseTypingText() {
 
   useEffect(() => {
     if (position < words.length) {
-      let pinyin = Pinyin[words[position]];
+      let pinyin = Pinyin[words[position]]['pinyin'];
       let word =
         pinyin.substring(0, pinyinAssist) + '_'.repeat(pinyin.length - pinyinAssist);
       word = word.split('').join(' ');

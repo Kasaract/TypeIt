@@ -2,11 +2,14 @@ import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
+import { getNewExcerpt } from '../../reducers/getNewExcerpt';
+
 import { ACTIONS } from '../../actions';
 
 export default function CompletedModal({ show, time, onHide }) {
   const eventLog = useSelector((state) => state.eventLog);
   const resetInput = useSelector((state) => state.resetInput);
+  const language = useSelector((state) => state.language);
 
   const dispatch = useDispatch();
 
@@ -24,9 +27,9 @@ export default function CompletedModal({ show, time, onHide }) {
   };
 
   const onNewExcerpt = () => {
-    dispatch({
-      type: ACTIONS.NEWEXCERPT,
-    });
+    const getNewExcerptThunk = getNewExcerpt(language);
+    dispatch(getNewExcerptThunk);
+    resetInput();
   };
 
   return (
@@ -43,9 +46,9 @@ export default function CompletedModal({ show, time, onHide }) {
       </Modal.Header>
       <Modal.Body className="d-flex justify-content-between p-3">
         <Button
-          // onClick={() => navigator.clipboard.writeText(JSON.stringify(eventLog))}
+          onClick={() => navigator.clipboard.writeText(JSON.stringify(eventLog))}
           size="sm"
-          onClick={() => postEventLog()}
+          // onClick={() => postEventLog()}
         >
           Submit Event Log
         </Button>

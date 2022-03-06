@@ -4,7 +4,6 @@ import React from 'react';
 import Routes from './Routes';
 
 function App() {
-  console.log('Hello world!');
   // useEffect(async () => {
   //   // Update typing model
   //   for (const model in modelGroups) {

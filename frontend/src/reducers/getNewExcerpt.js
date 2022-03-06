@@ -8,5 +8,6 @@ export function getNewExcerpt(language) {
       'http://localhost:4000/textExcerpt/' + language
     );
     dispatch({ type: ACTIONS.NEWEXCERPT, payload: response.data.join('') });
+    dispatch({ type: ACTIONS.RESET });
   };
 }

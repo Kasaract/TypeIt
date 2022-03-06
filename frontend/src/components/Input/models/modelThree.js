@@ -71,7 +71,9 @@ const onInputChange = (
       //     timeStamp,
       //   },
       // });
-      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.END });
+
+      // STATE CODE END is deprecated
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
       dispatch({
         type: ACTIONS.EVENTLOG,
         payload: { type: 'END', timeStamp },
