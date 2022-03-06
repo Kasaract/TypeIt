@@ -11,6 +11,7 @@ import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
 // import KeyboardAssist from '../../components/KeyboardAssist';
 
+import TypingText from '../../components/TypingText';
 import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
 // import MorseCodeTypingText from '../../components/TypingText/MorseCodeTypingText';
 
@@ -39,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     const getNewExcerptThunk = getNewExcerpt(language);
     dispatch(getNewExcerptThunk);
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   // useEffect(() => {
   //   let interval = null;
@@ -104,8 +105,7 @@ export default function Home() {
           </Col>
         </Row>
         <Row>
-          {/* {language === 'zh' ? ( */}
-          <ChineseTypingText />
+          {language === 'zh' ? <ChineseTypingText /> : <TypingText />}
 
           {/*
           
