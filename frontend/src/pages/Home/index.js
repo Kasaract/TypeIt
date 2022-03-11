@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
+import jwt from 'jsonwebtoken';
 
 import { ACTIONS } from '../../actions';
 
@@ -27,6 +29,8 @@ export default function Home() {
 
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   // const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   // const [time, setTime] = useState(10);
@@ -36,11 +40,21 @@ export default function Home() {
   //   setIsActive(!isActive);
   // };
 
-  // const inputToggleTime = () => toggleTime();
   useEffect(() => {
-    const getNewExcerptThunk = getNewExcerpt(language);
-    dispatch(getNewExcerptThunk);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user = jwt.decode(token);
+      if (!user) {
+        localStorage.removeItem('token');
+        history.replace('/login');
+      } else {
+        const getNewExcerptThunk = getNewExcerpt(language);
+        dispatch(getNewExcerptThunk);
+      }
+    }
   }, [dispatch, language]);
+
+  // const inputToggleTime = () => toggleTime();
 
   // useEffect(() => {
   //   let interval = null;

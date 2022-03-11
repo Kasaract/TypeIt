@@ -2,18 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 const TypingText = require('./models/TypingText');
-const Users = require('./models/Users');
+const Users = require('./models/user');
 const EventLogs = require('./models/EventLogs');
 
 const sampleText = require('./sampleText');
 
+const authRouter = require('./routes/authRouter');
 const textExcerptRouter = require('./routes/textExcerptRouter');
 
 const app = express();
 const PORT = 4000;
 
 app.use(helmet());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,20 +34,22 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/auth', authRouter);
 app.use('/textExcerpt', textExcerptRouter);
 
 const mongoConnectionURL =
-  'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  // 'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  'mongodb://localhost:27017/typeit-dev';
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: 'UserEventLogs',
+  dbName: 'TypeIt',
 };
 
-// mongoose
-//   .connect(mongoConnectionURL, options)
-//   .then(() => console.log('Connected.'))
-//   .catch((error) => console.log(`Error connecting to MongoDB ${error}`));
+mongoose
+  .connect(mongoConnectionURL, options)
+  .then(() => console.log('Connected to MongoDB.'))
+  .catch((error) => console.log(`Error connecting to MongoDB ${error}`));
 
 // mongoose.connect(mongoConnectionURL, function (err) {
 //   if (err) throw err;
