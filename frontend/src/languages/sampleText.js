@@ -363,7 +363,7 @@ const german17 = [
   'Einmal in Wittdün angekommen, rollt man mit dem Fahrrad auf die Insel. Der Besucher folgt dem Fahrradweg zur Vogelkoje, der zu großen Teilen recht windgeschützt durch einen dichten Kiefernwald führt.',
 ];
 
-const DETextExcerpts = [
+export const DETextExcerpts = [
   german1,
   german2,
   german3,

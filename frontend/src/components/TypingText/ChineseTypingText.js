@@ -48,7 +48,7 @@ export default function ChineseTypingText() {
         });
       }
     }
-  }, [position, pinyinAssist]);
+  }, [position, pinyinAssist, dispatch, words]);
 
   return (
     <>

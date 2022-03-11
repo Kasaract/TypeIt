@@ -76,7 +76,7 @@ export default function Login() {
     <div className="container vh-100">
       <div className="mt-auto">
         <div className="row h-100 d-flex justify-content-center">
-          <div className="col-md-4" style={{ marginTop: '15rem' }}>
+          <div className="col-md-4" style={{ marginTop: '7.5rem' }}>
             <h1 className="text-center mb-5">TypeIt</h1>
             <h3 className="text-center mb-3">Login</h3>
             <form id="loginform" onSubmit={loginSubmit}>

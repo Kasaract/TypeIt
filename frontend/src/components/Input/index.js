@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Editable, Slate, withReact } from 'slate-react';
 import { Text, Transforms, Editor, createEditor } from 'slate';
-import { useHotkeys } from 'react-hotkeys-hook';
+// import { useHotkeys } from 'react-hotkeys-hook';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
 import { ACTIONS } from '../../actions';
@@ -15,9 +15,9 @@ export default function Input({ onCompleted }) {
   const words = useSelector((state) => state.words);
   const position = useSelector((state) => state.position);
   const charPosition = useSelector((state) => state.charPosition);
-  const input = useSelector((state) => state.input);
+  // const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
-  const time = useSelector((state) => state.time);
+  // const time = useSelector((state) => state.time);
   const eventLog = useSelector((state) => state.eventLog);
 
   // const [editor] = useState(() => withReact(createEditor()));
@@ -37,7 +37,7 @@ export default function Input({ onCompleted }) {
         });
       },
     });
-  }, [editor]);
+  }, [editor, dispatch]);
 
   // useHotkeys('enter', () => {
   //   let now = Date.now();

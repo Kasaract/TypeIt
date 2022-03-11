@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 import { ACTIONS } from '../../actions';
 
-import Timer from '../../components/Timer';
+// import Timer from '../../components/Timer';
 import LanguageSelect from '../../components/LanguageSelect';
 // import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
@@ -23,7 +23,7 @@ import './Home.css';
 
 export default function Home() {
   const start = useSelector((state) => state.start);
-  const eventLog = useSelector((state) => state.eventLog);
+  // const eventLog = useSelector((state) => state.eventLog);
   const completed = useSelector((state) => state.completed);
   const language = useSelector((state) => state.language);
 
@@ -51,8 +51,10 @@ export default function Home() {
         const getNewExcerptThunk = getNewExcerpt(language);
         dispatch(getNewExcerptThunk);
       }
+    } else {
+      history.replace('/');
     }
-  }, [dispatch, language]);
+  }, [dispatch, language, history]);
 
   // const inputToggleTime = () => toggleTime();
 

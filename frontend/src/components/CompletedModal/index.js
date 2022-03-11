@@ -1,6 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 
@@ -13,11 +12,11 @@ export default function CompletedModal({ show, time, onHide }) {
 
   const dispatch = useDispatch();
 
-  const postEventLog = async () => {
-    await axios
-      .post('http://localhost:4000/eventlog', { events: eventLog })
-      .then((res) => console.log(res));
-  };
+  // const postEventLog = async () => {
+  //   await axios
+  //     .post('http://localhost:4000/eventlog', { events: eventLog })
+  //     .then((res) => console.log(res));
+  // };
 
   const onPracticeAgain = () => {
     resetInput();
@@ -58,10 +57,10 @@ export default function CompletedModal({ show, time, onHide }) {
             size="sm"
             onClick={() => onPracticeAgain()}
           >
-            Practice Again
+            Repeat Excerpt
           </Button>
           <Button size="sm" onClick={() => onNewExcerpt()}>
-            New Excerpt
+            Do Another Excerpt
           </Button>
         </div>
       </Modal.Body>
