@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 
@@ -16,10 +17,18 @@ export default function CompletedModal({ show, time }) {
 
   const dispatch = useDispatch();
 
+  useHotkeys('enter', () => {
+    onNewExcerpt();
+  });
+
+  useHotkeys('r', () => {
+    onPracticeAgain();
+  });
+
   const [stats, setStats] = useState({
-    speed: 'a',
-    time: 'b',
-    accuracy: 'c',
+    speed: '0',
+    time: '0',
+    accuracy: '100',
     numHints: 0,
   });
 
@@ -82,10 +91,10 @@ export default function CompletedModal({ show, time }) {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>Congrats, you've reached the end!</Modal.Title>
+        <Modal.Title as="h3">Results</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="p-3">
-        <div className="d-flex ms-3 my-3">
+      <Modal.Body>
+        <div className="d-flex ms-3 mb-3">
           <div className="me-5">
             {['Speed:', 'Time:', 'Accuracy:', 'Number of Hints:'].map((label, i) => (
               <h5 key={i}>{label}</h5>
@@ -111,10 +120,12 @@ export default function CompletedModal({ show, time }) {
             size="sm"
             onClick={() => onPracticeAgain()}
           >
-            Repeat Excerpt
+            <h6 className="mb-1">Repeat Excerpt</h6>
+            <div style={{ fontSize: '0.75rem' }}>(Press R)</div>
           </Button>
           <Button size="sm" onClick={() => onNewExcerpt()}>
-            Do Another Excerpt
+            <h6 className="mb-1">New Excerpt</h6>
+            <div style={{ fontSize: '0.75rem' }}>(Press Enter)</div>
           </Button>
         </div>
       </Modal.Body>
