@@ -50,6 +50,7 @@ const onInputChange = (
       // Incorrect character
       else {
         isIncorrect = true; // Mark input as incorrect, but continue to check remaining characters
+        dispatch({ type: ACTIONS.ERROR, payload: i }); // Keep track of word position where error is made
         dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
         dispatch({
           type: ACTIONS.EVENTLOG,

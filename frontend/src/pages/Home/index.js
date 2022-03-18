@@ -52,7 +52,7 @@ export default function Home() {
         dispatch(getNewExcerptThunk);
       }
     } else {
-      history.replace('/');
+      history.replace('/login');
     }
   }, [dispatch, language, history]);
 
@@ -101,12 +101,12 @@ export default function Home() {
     dispatch({ type: ACTIONS.COMPLETE });
   };
 
-  const onCompletedModalExit = () => {
-    // onReset();
-    // setShowCompletedModal(false);
+  // const onCompletedModalExit = () => {
+  //   // onReset();
+  //   // setShowCompletedModal(false);
 
-    dispatch({ type: ACTIONS.RESET });
-  };
+  //   dispatch({ type: ACTIONS.RESET });
+  // };
 
   return (
     <Container className="vh-100">
@@ -166,7 +166,7 @@ export default function Home() {
       <CompletedModal
         show={completed}
         // time={time}
-        onHide={onCompletedModalExit}
+        // onHide={onCompletedModalExit}
       />
     </Container>
   );

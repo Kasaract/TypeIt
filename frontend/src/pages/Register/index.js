@@ -3,7 +3,7 @@
  * https://codesandbox.io/s/v4tv2?file=/src/App.js:0-40
  */
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Register() {
@@ -108,7 +108,9 @@ export default function Register() {
                 Register
               </button>
               <div className="form-group">
-                <p className="text-center">Already a user? Login here!</p>
+                <p className="text-center">
+                  Already a user? Login <Link to="/login">here</Link>!
+                </p>
               </div>
             </form>
           </div>

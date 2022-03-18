@@ -17,7 +17,8 @@ authRouter.post('/login', async (req, res) => {
       {
         username: user.username,
       },
-      'secret123'
+      'secret123',
+      { expiresIn: '3h' }
     );
     res.status(200).send({ user: token });
   } else {
@@ -26,8 +27,6 @@ authRouter.post('/login', async (req, res) => {
 });
 
 authRouter.post('/register', async (req, res) => {
-  // console.log('Hello from reg', req);
-  // res.status(200).send({ message: 'hi' });
   console.log('Registering User...');
   try {
     const user = await User.create({

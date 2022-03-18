@@ -155,8 +155,6 @@ export default function Input({ onCompleted }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 flex-column">
-      {start ? 'true ' : 'false '}
-      {inputStatus}
       <Slate
         editor={editor}
         value={[

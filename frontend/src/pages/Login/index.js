@@ -3,6 +3,7 @@
  * https://codesandbox.io/s/v4tv2?file=/src/App.js:0-40
  */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Login() {
@@ -119,7 +120,9 @@ export default function Login() {
                 Sign In
               </button>
               <div className="form-group">
-                <p className="text-center">Not a user? Register here!</p>
+                <p className="text-center">
+                  Not a user? Register <Link to="/register">here</Link>!
+                </p>
               </div>
             </form>
           </div>

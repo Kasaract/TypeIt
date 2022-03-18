@@ -17,7 +17,8 @@ const initialState = {
   words: '', // Text excerpt (str)
   typingStatus: false, // DEPRECATED
   inputStatus: STATECODE.READY, // Current state of input correctness
-  errorCount: 0, // DEPRECATED - Keep track of number of errors
+  errorPositions: [], // Keep track of word positions where errors occurred
+  hintCount: 0, // Keep track of how many hints user requested when typing an excerpt
   pinyinAssist: 0, // Number of letters to reveal in Pinyin assist
   resetInput: () => {}, // SlateJS function to reset input - updated when Slate editor is initialized
   time: 10000, // BROKEN - Remaining time to type excerpt
@@ -103,6 +104,7 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           pinyinAssist: state.pinyinAssist + 1,
+          hintCount: state.hintCount + 1,
         };
       } else {
         return { ...state };
@@ -114,11 +116,23 @@ const rootReducer = (state = initialState, action) => {
         charPosition: 0,
         input: '',
         inputStatus: STATECODE.READY,
+        errorPositions: [],
+        hintCount: 0,
         start: false,
         completed: false,
         pinyinAssist: 0,
         eventLog: [],
       };
+
+    case ACTIONS.ERROR:
+      if (state.errorPositions.includes(action.payload)) {
+        return state;
+      } else {
+        return {
+          ...state,
+          errorPositions: [...state.errorPositions, action.payload],
+        };
+      }
 
     case ACTIONS.SET_RESETINPUT:
       return {
