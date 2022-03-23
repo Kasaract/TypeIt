@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "cd client && npm i && npm i --only=dev --no-shrinkwrap && npm run build",
     "start": "nodemon index.js"
   },
   "author": "",

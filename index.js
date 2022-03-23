@@ -40,8 +40,8 @@ app.use('/auth', authRouter);
 app.use('/textExcerpt', textExcerptRouter);
 
 const mongoConnectionURL =
-  // 'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-  'mongodb://localhost:27017/typeit-dev';
+  'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+// 'mongodb://localhost:27017/typeit-dev';
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
