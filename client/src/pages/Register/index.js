@@ -3,18 +3,20 @@
  * https://codesandbox.io/s/v4tv2?file=/src/App.js:0-40
  */
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login() {
-  const [password, setPassword] = useState('');
+export default function Register() {
   const [username, setUsername] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  const onLogin = () => {
+  const history = useHistory();
+
+  const onRegister = () => {
     axios
-      .post('http://localhost:4000/auth/login', { username, password })
+      .post('http://localhost:4000/auth/register', { username, password })
       .then((res) => {
         console.log(res);
         if ('error' in res.data) {
@@ -27,13 +29,7 @@ export default function Login() {
             setPasswordError(err.msg);
           }
         } else {
-          if (res.data.user) {
-            localStorage.setItem('token', res.data.user);
-            alert('Login successful!');
-            window.location.href = '/home';
-          } else {
-            alert('Login unsuccessful. Please check your username or password.');
-          }
+          history.push('/login');
         }
       })
       .catch((err) => {
@@ -41,7 +37,7 @@ export default function Login() {
       });
   };
 
-  const handleValidation = (event) => {
+  const handleValidation = () => {
     let formIsValid = true;
 
     if (username.length < 3) {
@@ -65,11 +61,11 @@ export default function Login() {
     return formIsValid;
   };
 
-  const loginSubmit = (e) => {
+  const registrationSubmit = (e) => {
     e.preventDefault();
     const isValid = handleValidation();
     if (isValid) {
-      onLogin();
+      onRegister();
     }
   };
 
@@ -79,11 +75,12 @@ export default function Login() {
         <div className="row h-100 d-flex justify-content-center">
           <div className="col-md-4" style={{ marginTop: '7.5rem' }}>
             <h1 className="text-center mb-5">TypeIt</h1>
-            <h3 className="text-center mb-3">Login</h3>
-            <form id="loginform" onSubmit={loginSubmit}>
+            <h3 className="text-center mb-3">Register</h3>
+            <form id="registrationform" onSubmit={registrationSubmit}>
               <div className="form-group mb-2">
                 <label className="fs-4">Username</label>
                 <input
+                  autoFocus
                   className="form-control"
                   id="UsernameInput"
                   name="UsernameInput"
@@ -95,7 +92,7 @@ export default function Login() {
                   {usernameError}
                 </small>
               </div>
-              <div className="form-group mb-2">
+              <div className="form-group mb-4">
                 <label className="fs-4">Password</label>
                 <input
                   type="password"
@@ -108,20 +105,12 @@ export default function Login() {
                   {passwordError}
                 </small>
               </div>
-              <div className="form-group form-check mb-3">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label className="form-check-label">Stay signed in</label>
-              </div>
               <button type="submit" className="btn btn-primary w-100 fs-5 mb-3">
-                Sign In
+                Register
               </button>
               <div className="form-group">
                 <p className="text-center">
-                  Not a user? Register <Link to="/register">here</Link>!
+                  Already a user? Login <Link to="/login">here</Link>!
                 </p>
               </div>
             </form>

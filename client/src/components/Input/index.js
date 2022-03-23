@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Editable, Slate, withReact } from 'slate-react';
 import { Text, Transforms, Editor, createEditor } from 'slate';
+import { ReactEditor } from 'slate-react';
 // import { useHotkeys } from 'react-hotkeys-hook';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
@@ -24,6 +25,10 @@ export default function Input({ onCompleted }) {
   const [editor] = useState(() => withReact(createEditor()));
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    ReactEditor.focus(editor);
+  }, []);
 
   useEffect(() => {
     dispatch({
@@ -122,7 +127,7 @@ export default function Input({ onCompleted }) {
   };
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter' && !start) {
+    if (!start) {
       e.preventDefault();
       dispatch({
         type: ACTIONS.START,
@@ -132,6 +137,7 @@ export default function Input({ onCompleted }) {
         },
       });
     }
+
     if (start) {
       if (inputStatus === STATECODE.READY && e.key === 'Backspace') {
         e.preventDefault();
@@ -168,7 +174,8 @@ export default function Input({ onCompleted }) {
         }} // Most recent character gets added to last leaf
       >
         <Editable
-          autoFocus={start}
+          autoFocus
+          placeholder="Start typing here..."
           className="px-3 w-100"
           style={{
             border: '.15rem solid #636363',

@@ -11,7 +11,7 @@ import LanguageSelect from '../../components/LanguageSelect';
 // import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
-// import KeyboardAssist from '../../components/KeyboardAssist';
+import KeyboardAssist from '../../components/KeyboardAssist';
 
 import TypingText from '../../components/TypingText';
 import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
@@ -139,13 +139,9 @@ export default function Home() {
         </Row>
         <Row style={{ height: '2.5rem' }}>
           {/* When adding support for other languages, might need to turn back on state */}
-          {!start ? (
-            <h3 className="w-auto my-auto mx-auto">Press Enter to start</h3>
-          ) : (
-            <p className="w-auto my-auto mx-auto text-muted">
-              Stuck? Press '=' for a hint
-            </p>
-          )}
+          <p className="w-auto my-auto mx-auto text-muted">
+            Stuck? Press '=' for a hint
+          </p>
           {/* )} */}
         </Row>
         <Row>
@@ -160,7 +156,7 @@ export default function Home() {
           {errorCount >= 3 && <KeyboardAssist />}
           <KeyboardAssist />
         </Row> */}
-        {/* <KeyboardAssist /> */}
+        <KeyboardAssist />
       </Col>
       {/* {JSON.stringify(eventLog)} */}
       <CompletedModal

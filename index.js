@@ -14,7 +14,9 @@ const authRouter = require('./routes/authRouter');
 const textExcerptRouter = require('./routes/textExcerptRouter');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
+
+// Deploy using: https://levelup.gitconnected.com/how-to-render-react-app-using-express-server-in-node-js-a428ec4dfe2b
 
 app.use(helmet());
 app.use(cors());
@@ -50,32 +52,6 @@ mongoose
   .connect(mongoConnectionURL, options)
   .then(() => console.log('Connected to MongoDB.'))
   .catch((error) => console.log(`Error connecting to MongoDB ${error}`));
-
-// mongoose.connect(mongoConnectionURL, function (err) {
-//   if (err) throw err;
-//   // TypingText.findOne({ language: 'ZH', texts: ['this isnt chinese', 'nihao'] })
-//   //   .then((result) => {
-//   //     console.log(result);
-//   //   })
-//   //   .catch((err) => {
-//   //     res.status(400).json({ message: err.message });
-//   //   });
-
-//   var myobj = { language: 'ZH', texts: ['this isnt chinese', 'nihao'] };
-//   var testUser = { username: 'ml', firstname: 'machine', lastname: 'learning' };
-//   // Users.collection.insertOne(testUser, function(err,res){
-//   //   if (err) throw err;
-//   //   console.log("inserted user");
-//   // });
-//   // TypingText.collection.insertOne(myobj, function(err, res) {
-//   //   if (err) throw err;
-//   //   console.log("1 document inserted");
-//   // });
-//   // TypingText.collection.findOne({ language: 'EN' }).then((result) => {
-//   //   console.log(result);
-//   //   console.log('found english!');
-//   // });
-// });
 
 app.get('/sampletext/:languageCode', (req, res) => {
   res.status(200);
@@ -123,6 +99,8 @@ app.post('/addUser', (req, res) => {
 app.post('/eventlog', (req, res) => {
   EventLogs.collection
     .insertOne({
+      username: req.body.username,
+      language: req.body.language,
       events: req.body.events,
     })
     .then(() => res.end());

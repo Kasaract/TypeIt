@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const EventLogsSchema = new mongoose.Schema({
+  username: String,
+  language: String,
   events: [Object],
 });
 

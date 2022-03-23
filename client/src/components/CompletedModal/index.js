@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import { useHotkeys } from 'react-hotkeys-hook';
+import jwt from 'jsonwebtoken';
 
 import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 
@@ -14,14 +16,17 @@ export default function CompletedModal({ show, time }) {
   const errorPositions = useSelector((state) => state.errorPositions);
   const hintCount = useSelector((state) => state.hintCount);
   const language = useSelector((state) => state.language);
+  const completed = useSelector((state) => state.completed);
 
   const dispatch = useDispatch();
 
   useHotkeys('enter', () => {
+    resetInput();
     onNewExcerpt();
   });
 
   useHotkeys('r', () => {
+    resetInput();
     onPracticeAgain();
   });
 
@@ -46,8 +51,6 @@ export default function CompletedModal({ show, time }) {
 
       speed = Math.round(words.length / (time / 60)) + ' cpm';
       time = min + ':' + sec;
-      console.log(words);
-      console.log('Error', errorPositions);
       accuracy =
         Math.round(((words.length - errorPositions.length) * 100) / words.length) +
         '%';
@@ -57,11 +60,23 @@ export default function CompletedModal({ show, time }) {
     }
   }, [eventLog, words, errorPositions, hintCount]);
 
-  // const postEventLog = async () => {
-  //   await axios
-  //     .post('http://localhost:4000/eventlog', { events: eventLog })
-  //     .then((res) => console.log(res));
-  // };
+  useEffect(() => {
+    if (completed) {
+      const token = localStorage.getItem('token');
+      const username = jwt.decode(token).username;
+      postEventLog(username);
+    }
+  }, [completed]);
+
+  const postEventLog = async (username) => {
+    await axios
+      .post('http://localhost:4000/eventlog', {
+        username,
+        language,
+        events: eventLog,
+      })
+      .then((res) => console.log(res));
+  };
 
   const onPracticeAgain = () => {
     resetInput();
@@ -71,9 +86,9 @@ export default function CompletedModal({ show, time }) {
   };
 
   const onNewExcerpt = () => {
+    resetInput();
     const getNewExcerptThunk = getNewExcerpt(language);
     dispatch(getNewExcerptThunk);
-    resetInput();
   };
 
   const onHide = () => {
