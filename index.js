@@ -25,8 +25,7 @@ const PORT = process.env.PORT || 4000;
 const whitelist = [
   'http://localhost:3000/',
   'http://localhost:4000/',
-  'https://typeit-server.herokuapp.com/',
-  'https://whispering-bastion-09973.herokuapp.com',
+  'https://typeit-prototype.herokuapp.com',
 ];
 const corsOptions = {
   origin: (origin, callback) => {
