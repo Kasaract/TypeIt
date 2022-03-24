@@ -8,6 +8,8 @@ const TypingText = require('./src/models/TypingText');
 const Users = require('./src/models/user');
 const EventLogs = require('./src/models/EventLogs');
 
+require('dotenv').config();
+
 // const sampleText = require('./sampleText');
 
 const authRouter = require('./src/routes/authRouter');
@@ -68,9 +70,19 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const mongoConnectionURL =
-  // 'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-  'mongodb://localhost:27017/typeit-dev';
+let mongoConnectionURL;
+
+if (process.env.NODE_ENV === 'production') {
+  mongoConnectionURL =
+    'mongodb+srv://' +
+    process.env.MONGODB_USERNAME +
+    ':' +
+    process.env.MONGODB_PASSWORD +
+    '@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+} else {
+  mongoConnectionURL = process.env.MONGODB_DEV;
+}
+
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
