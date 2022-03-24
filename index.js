@@ -41,8 +41,17 @@ const corsOptions = {
   },
 };
 
-app.use(helmet());
+const helmetOptions = {
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      'script-src': ["'self'", "'unsafe-inline'"],
+    },
+  },
+};
+
 app.use(cors(corsOptions));
+app.use(helmet(helmetOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
