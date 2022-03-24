@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const TypingText = require('./src/models/typingText.js');
 const Users = require('./src/models/user.js');
