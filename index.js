@@ -4,9 +4,9 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const TypingText = require('./src/models/TypingText');
-const Users = require('./src/models/user');
-const EventLogs = require('./src/models/EventLogs');
+const TypingText = require('./src/models/typingText.js');
+const Users = require('./src/models/user.js');
+const EventLogs = require('./src/models/EventLogs.js');
 
 require('dotenv').config();
 
