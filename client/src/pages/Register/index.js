@@ -16,7 +16,7 @@ export default function Register() {
 
   const onRegister = () => {
     axios
-      .post('http://localhost:4000/auth/register', { username, password })
+      .post('/api/auth/register', { username, password })
       .then((res) => {
         console.log(res);
         if ('error' in res.data) {

@@ -14,7 +14,7 @@ export default function Login() {
 
   const onLogin = () => {
     axios
-      .post('http://localhost:4000/auth/login', { username, password })
+      .post('/api/auth/login', { username, password })
       .then((res) => {
         console.log(res);
         if ('error' in res.data) {

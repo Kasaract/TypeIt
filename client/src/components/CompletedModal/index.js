@@ -70,7 +70,7 @@ export default function CompletedModal({ show, time }) {
 
   const postEventLog = async (username) => {
     await axios
-      .post('http://localhost:4000/eventlog', {
+      .post('/api/eventlog', {
         username,
         language,
         events: eventLog,

@@ -23,6 +23,7 @@
     "slate-react": "^0.72.4",
     "web-vitals": "^1.0.1"
   },
+  "proxy": "http://localhost:4000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -12,32 +12,61 @@ const sampleText = require('./sampleText');
 
 const authRouter = require('./routes/authRouter');
 const textExcerptRouter = require('./routes/textExcerptRouter');
+const res = require('express/lib/response');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Deploy using: https://levelup.gitconnected.com/how-to-render-react-app-using-express-server-in-node-js-a428ec4dfe2b
 
+// Code by: https://www.youtube.com/watch?v=xgvLP3f2Y7k&t=400s
+const whitelist = [
+  'http://localhost:3000',
+  'http://localhost:4000',
+  'https://typeit-server.herokuapp.com/',
+];
+const corsOptions = {
+  origin: (origin, callback) => {
+    console.log('== Origin of request: ' + origin);
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log('Origin acceptable');
+      callback(null, true);
+    } else {
+      console.log('Origin rejected');
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.setHeader(
+//     'Access-Control-Allow-Methods',
+//     'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+//   );
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     'X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
 
-app.use('/auth', authRouter);
-app.use('/textExcerpt', textExcerptRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/textExcerpt', textExcerptRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 const mongoConnectionURL =
   'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';

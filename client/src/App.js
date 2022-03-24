@@ -12,7 +12,7 @@ function App() {
   //       // setWords(models[model].preprocess(sampleMorse));
   //       // Update typing text
   //       // await axios
-  //       //   .get('http://localhost:4000/sampletext/' + language.toUpperCase())
+  //       //   .get('/api/sampletext/' + language.toUpperCase())
   //       //   .then((response) => {
   //       //     setWords(models[model].preprocess(response.data.text));
   //       //     setPosition(0);
