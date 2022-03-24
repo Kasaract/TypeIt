@@ -4,15 +4,14 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const TypingText = require('./models/TypingText');
-const Users = require('./models/user');
-const EventLogs = require('./models/EventLogs');
+const TypingText = require('./src/models/TypingText');
+const Users = require('./src/models/user');
+const EventLogs = require('./src/models/EventLogs');
 
-const sampleText = require('./sampleText');
+// const sampleText = require('./sampleText');
 
-const authRouter = require('./routes/authRouter');
-const textExcerptRouter = require('./routes/textExcerptRouter');
-const res = require('express/lib/response');
+const authRouter = require('./src/routes/authRouter');
+const textExcerptRouter = require('./src/routes/textExcerptRouter');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -21,8 +20,8 @@ const PORT = process.env.PORT || 4000;
 
 // Code by: https://www.youtube.com/watch?v=xgvLP3f2Y7k&t=400s
 const whitelist = [
-  'http://localhost:3000',
-  'http://localhost:4000',
+  'http://localhost:3000/',
+  'http://localhost:4000/',
   'https://typeit-server.herokuapp.com/',
 ];
 const corsOptions = {
@@ -69,8 +68,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const mongoConnectionURL =
-  'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-// 'mongodb://localhost:27017/typeit-dev';
+  // 'mongodb+srv://nguyeng:Kasaract1!@usereventlogs.wnpds.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  'mongodb://localhost:27017/typeit-dev';
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

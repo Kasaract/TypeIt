@@ -5,7 +5,7 @@ const textExcerptDERouter = require('./textExcerptDERouter');
 
 const textExcerptRouter = express.Router({ mergeParams: true });
 
-textExcerptRouter.use('/ZH', textExcerptZHRouter);
-textExcerptRouter.use('/DE', textExcerptDERouter);
+textExcerptRouter.use('/zh', textExcerptZHRouter);
+textExcerptRouter.use('/de', textExcerptDERouter);
 
 module.exports = textExcerptRouter;

@@ -156,7 +156,7 @@ export default function Home() {
           {errorCount >= 3 && <KeyboardAssist />}
           <KeyboardAssist />
         </Row> */}
-        <KeyboardAssist />
+        {/* <KeyboardAssist /> */}
       </Col>
       {/* {JSON.stringify(eventLog)} */}
       <CompletedModal

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // import { AssistContext, InputContext, LanguageContext } from '../../context';
 
 export default function KeyboardAssist({
@@ -12,7 +12,7 @@ export default function KeyboardAssist({
   // const { input, setInput } = useContext(InputContext);
   // const { language, setLanguage } = useContext(LanguageContext);
   // const { assist, setAssist } = useContext(AssistContext);
-  const [lastchar, setLastchar] = useState('');
+  const [lastchar] = useState('');
 
   // useEffect(() => {
   //   if (assist.length > 0) {
@@ -20,7 +20,7 @@ export default function KeyboardAssist({
   //   }
   // }, [assist]);
 
-  let support = ['en', 'es', 'fr', 'th', 'zh'];
+  // let support = ['en', 'es', 'fr', 'th', 'zh'];
   let keyToCode = require('./KeyboardMappings/ko.js');
   // if (support.includes(language))
   //   keyToCode = require('./KeyboardMappings/' + language + '.js');
