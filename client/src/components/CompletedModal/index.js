@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { Transforms, Editor } from 'slate';
 import axios from 'axios';
 import { useHotkeys } from 'react-hotkeys-hook';
 import jwt from 'jsonwebtoken';
@@ -9,9 +10,8 @@ import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 
 import { ACTIONS } from '../../actions';
 
-export default function CompletedModal({ show, time }) {
+export default function CompletedModal({ editor, show, time }) {
   const eventLog = useSelector((state) => state.eventLog);
-  const resetInput = useSelector((state) => state.resetInput);
   const words = useSelector((state) => state.words);
   const errorPositions = useSelector((state) => state.errorPositions);
   const hintCount = useSelector((state) => state.hintCount);
@@ -21,12 +21,10 @@ export default function CompletedModal({ show, time }) {
   const dispatch = useDispatch();
 
   useHotkeys('enter', () => {
-    resetInput();
     onNewExcerpt();
   });
 
   useHotkeys('r', () => {
-    resetInput();
     onPracticeAgain();
   });
 
@@ -64,18 +62,21 @@ export default function CompletedModal({ show, time }) {
     if (completed) {
       const token = localStorage.getItem('token');
       const username = jwt.decode(token).username;
-      postEventLog(username);
-    }
-  }, [completed]);
-
-  const postEventLog = async (username) => {
-    await axios
-      .post('/api/eventlog', {
+      axios.post('/api/eventlog', {
         username,
         language,
         events: eventLog,
-      })
-      .then((res) => console.log(res));
+      });
+    }
+  }, [completed]);
+
+  const resetInput = () => {
+    Transforms.delete(editor, {
+      at: {
+        anchor: Editor.start(editor, []),
+        focus: Editor.end(editor, []),
+      },
+    });
   };
 
   const onPracticeAgain = () => {

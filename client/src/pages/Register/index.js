@@ -18,7 +18,6 @@ export default function Register() {
     axios
       .post('/api/auth/register', { username, password })
       .then((res) => {
-        console.log(res);
         if ('error' in res.data) {
           console.log('error in res.data');
           let err = res.data;

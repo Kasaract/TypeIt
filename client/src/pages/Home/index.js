@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { withReact } from 'slate-react';
+import { createEditor } from 'slate';
 import { Container, Col, Row } from 'react-bootstrap';
 import jwt from 'jsonwebtoken';
 
@@ -11,7 +13,7 @@ import LanguageSelect from '../../components/LanguageSelect';
 // import TypingText from '../../components/TypingText';
 import Input from '../../components/Input';
 import CompletedModal from '../../components/CompletedModal';
-import KeyboardAssist from '../../components/KeyboardAssist';
+// import KeyboardAssist from '../../components/KeyboardAssist';
 
 import TypingText from '../../components/TypingText';
 import ChineseTypingText from '../../components/TypingText/ChineseTypingText';
@@ -22,10 +24,12 @@ import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 import './Home.css';
 
 export default function Home() {
-  const start = useSelector((state) => state.start);
+  // const start = useSelector((state) => state.start);
   // const eventLog = useSelector((state) => state.eventLog);
   const completed = useSelector((state) => state.completed);
   const language = useSelector((state) => state.language);
+
+  const [editor] = useState(() => withReact(createEditor()));
 
   const dispatch = useDispatch();
 
@@ -137,15 +141,13 @@ export default function Home() {
           
           */}
         </Row>
-        <Row style={{ height: '2.5rem' }}>
+        <Row style={{ height: '2.5rem' }} className="mb-3">
           {/* When adding support for other languages, might need to turn back on state */}
-          <p className="w-auto my-auto mx-auto text-muted">
-            Stuck? Press '=' for a hint
-          </p>
+          <p className="w-auto my-auto mx-auto fs-5">Stuck? Press '=' for a hint</p>
           {/* )} */}
         </Row>
         <Row>
-          <Input onCompleted={onCompleted} />
+          <Input editor={editor} onCompleted={onCompleted} />
         </Row>
         {/* <Row
           className={`d-flex justify-content-center px-5 py-3 ${
@@ -160,6 +162,7 @@ export default function Home() {
       </Col>
       {/* {JSON.stringify(eventLog)} */}
       <CompletedModal
+        editor={editor}
         show={completed}
         // time={time}
         // onHide={onCompletedModalExit}

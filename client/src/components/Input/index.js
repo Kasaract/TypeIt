@@ -2,15 +2,14 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Editable, Slate, withReact } from 'slate-react';
-import { Text, Transforms, Editor, createEditor } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { Editable, Slate } from 'slate-react';
+import { Text } from 'slate';
 // import { useHotkeys } from 'react-hotkeys-hook';
 
 import { STATECODE, STATUSCOLOR } from '../../constants';
 import { ACTIONS } from '../../actions';
 
-export default function Input({ onCompleted }) {
+export default function Input({ editor, onCompleted }) {
   const start = useSelector((state) => state.start);
   const model = useSelector((state) => state.model);
   const words = useSelector((state) => state.words);
@@ -22,26 +21,19 @@ export default function Input({ onCompleted }) {
   const eventLog = useSelector((state) => state.eventLog);
 
   // const [editor] = useState(() => withReact(createEditor()));
-  const [editor] = useState(() => withReact(createEditor()));
+  const [focus, setFocus] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ReactEditor.focus(editor);
+    setTimeout(() => setFocus(true), 200);
   }, []);
 
   useEffect(() => {
-    dispatch({
-      type: ACTIONS.SET_RESETINPUT,
-      payload: () => {
-        Transforms.delete(editor, {
-          at: {
-            anchor: Editor.start(editor, []),
-            focus: Editor.end(editor, []),
-          },
-        });
-      },
-    });
+    // dispatch({
+    //   type: ACTIONS.SET_EDITOR,
+    //   payload: editor,
+    // });
   }, [editor, dispatch]);
 
   // useHotkeys('enter', () => {
@@ -123,7 +115,6 @@ export default function Input({ onCompleted }) {
       onCompleted,
       dispatch
     );
-    console.log(eventLog);
   };
 
   const onKeyDown = (e) => {
@@ -174,7 +165,7 @@ export default function Input({ onCompleted }) {
         }} // Most recent character gets added to last leaf
       >
         <Editable
-          autoFocus
+          autoFocus={focus}
           placeholder="Start typing here..."
           className="px-3 w-100"
           style={{

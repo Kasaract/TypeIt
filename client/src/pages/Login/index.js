@@ -16,7 +16,6 @@ export default function Login() {
     axios
       .post('/api/auth/login', { username, password })
       .then((res) => {
-        console.log(res);
         if ('error' in res.data) {
           console.log('error in res.data');
           let err = res.data;

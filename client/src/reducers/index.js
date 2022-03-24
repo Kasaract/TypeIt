@@ -20,7 +20,7 @@ const initialState = {
   errorPositions: [], // Keep track of word positions where errors occurred
   hintCount: 0, // Keep track of how many hints user requested when typing an excerpt
   pinyinAssist: 0, // Number of letters to reveal in Pinyin assist
-  resetInput: () => {}, // SlateJS function to reset input - updated when Slate editor is initialized
+  editor: {}, // SlateJS editor instance - to be accessed by other components to reset
   time: 10000, // BROKEN - Remaining time to type excerpt
   eventLog: [], // Log of typing events
 };
@@ -134,10 +134,10 @@ const rootReducer = (state = initialState, action) => {
         };
       }
 
-    case ACTIONS.SET_RESETINPUT:
+    case ACTIONS.SET_EDITOR:
       return {
         ...state,
-        resetInput: action.payload,
+        editor: action.payload,
       };
 
     case ACTIONS.COMPLETE:

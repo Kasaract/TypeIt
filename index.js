@@ -146,7 +146,7 @@ app.post('/addUser', (req, res) => {
     .then(() => res.end());
 });
 
-app.post('/eventlog', (req, res) => {
+app.post('/api/eventlog', (req, res) => {
   EventLogs.collection
     .insertOne({
       username: req.body.username,
