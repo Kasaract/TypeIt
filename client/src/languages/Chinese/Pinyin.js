@@ -4,6 +4,8 @@ export const Pinyin = {
   '。': { definition: '', pinyin: '。' },
   '《': { definition: '', pinyin: '《' },
   '》': { definition: '', pinyin: '》' },
+  '：': { definition: '', pinyin: '：' },
+  '；': { definition: '', pinyin: '；' },
 
   '⺮': { definition: 'bamboo; flute', pinyin: 'zhú' },
   㐆: { definition: 'old form of 隱', pinyin: 'yǐn' },

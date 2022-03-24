@@ -15,6 +15,7 @@ const initialState = {
   charPosition: 0, // DEPRECATED
   input: '', // Current user input
   words: '', // Text excerpt (str)
+  excerptID: -1, // ID of excerpt user is typing
   typingStatus: false, // DEPRECATED
   inputStatus: STATECODE.READY, // Current state of input correctness
   errorPositions: [], // Keep track of word positions where errors occurred
@@ -49,7 +50,8 @@ const rootReducer = (state = initialState, action) => {
     case ACTIONS.NEWEXCERPT:
       return {
         ...state,
-        words: action.payload,
+        excerptID: action.payload.id,
+        words: action.payload.words,
       };
 
     case ACTIONS.NEXTSENTENCE:

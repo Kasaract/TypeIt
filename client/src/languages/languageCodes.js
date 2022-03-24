@@ -211,10 +211,10 @@ export const languageCodes = {
   //   name: 'Georgian',
   //   nativeName: 'ქართული',
   // },
-  de: {
-    name: 'German',
-    nativeName: 'Deutsch',
-  },
+  // de: {
+  //   name: 'German',
+  //   nativeName: 'Deutsch',
+  // },
   // el: {
   //   name: 'Greek',
   //   nativeName: 'Ελληνικά',

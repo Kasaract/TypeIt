@@ -18,7 +18,7 @@ export default function Input({ editor, onCompleted }) {
   // const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
   // const time = useSelector((state) => state.time);
-  const eventLog = useSelector((state) => state.eventLog);
+  const excerptID = useSelector((state) => state.excerptID);
 
   // const [editor] = useState(() => withReact(createEditor()));
   const [focus, setFocus] = useState(false);
@@ -124,6 +124,7 @@ export default function Input({ editor, onCompleted }) {
         type: ACTIONS.START,
         payload: {
           type: 'START',
+          excerptID,
           timeStamp: Date.now(),
         },
       });

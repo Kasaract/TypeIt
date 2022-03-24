@@ -5,6 +5,8 @@ import { Transforms, Editor } from 'slate';
 import axios from 'axios';
 import { useHotkeys } from 'react-hotkeys-hook';
 import jwt from 'jsonwebtoken';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 import { getNewExcerpt } from '../../reducers/getNewExcerpt';
 
@@ -62,13 +64,23 @@ export default function CompletedModal({ editor, show, time }) {
     if (completed) {
       const token = localStorage.getItem('token');
       const username = jwt.decode(token).username;
-      axios.post('/api/eventlog', {
-        username,
-        language,
-        events: eventLog,
-      });
+      axios
+        .post('/api/eventlog', {
+          username,
+          language,
+          events: eventLog,
+        })
+        .then((res) => console.log(res));
+      console.log(eventLog);
     }
-  }, [completed]);
+  }, [completed, eventLog, language]);
+
+  // const labelDescriptions = [
+  //   'Excerpt length / Time elapsed',
+  //   'Time elapsed',
+  //   'Correct char typed / Total number of char typed',
+  //   'Num of assisted chars',
+  // ];
 
   const resetInput = () => {
     Transforms.delete(editor, {
@@ -111,14 +123,25 @@ export default function CompletedModal({ editor, show, time }) {
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex ms-3 mb-3">
-          <div className="me-5">
+          <div className="me-3">
             {['Speed:', 'Time:', 'Accuracy:', 'Number of Hints:'].map((label, i) => (
               <h5 key={i}>{label}</h5>
             ))}
           </div>
-          <div>
+          <div className="me-5">
             {Object.values(stats).map((value, i) => (
               <h5 key={i}>{value}</h5>
+            ))}
+          </div>
+          <div className="d-flex flex-column">
+            {Object.values(stats).map((desc, i) => (
+              <div key={i} className="w-100 mb-2" style={{ height: '1.50rem' }}>
+                <FontAwesomeIcon
+                  key={i}
+                  icon={faCircleQuestion}
+                  style={{ color: '#b0b0b0' }}
+                />
+              </div>
             ))}
           </div>
         </div>
