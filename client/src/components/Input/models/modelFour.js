@@ -1,5 +1,13 @@
 // Korean
 
+/***
+ * UNSOLVED BUGS
+ *
+ * - 에사 as a typo when typing 엣나
+ * - ㅇㅇ as a type when typing 잇, can't backspace atm
+ *
+ */
+
 import { ACTIONS } from '../../../actions';
 import { STATECODE } from '../../../constants';
 import { KoreanIntermediate } from '../../../languages/Korean/KoreanIntermediate';
@@ -106,7 +114,8 @@ const onInputChange = (
 
     if (
       KoreanIntermediate[words[position]]['path'].includes(currChar) || // Backspace one character while typing a block
-      currChar === words[position - 1] // Backspace an entire block
+      currChar === words[position - 1] || // Backspace an entire block
+      newInput === '' // Input is empty
     ) {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
     }
@@ -118,7 +127,6 @@ const onInputChange = (
   // Complete Block state for one step
 
   const onCompleteBlock = (newInput) => {
-    const prevBlock = words[position - 1];
     const currBlock = words[position];
 
     // Initial letter of current block does not get added to final consonant of previous block
@@ -128,18 +136,22 @@ const onInputChange = (
       return;
     }
 
-    console.log('Prev:', currChar);
-    console.log('Curr:', currBlock);
+    // A strange occurence happens when there are blocks that need to enter the Complete Block
+    // state where the onInputChange is ran automatically without any user input.
+    // Example that prompted this if-block: 부부가
+    if (currChar === words[position - 1]) {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.COMPLETEBLOCK });
+      return;
+    }
 
     let prevBlockFinal, currBlockInitial;
 
     if (currChar in KoreanIntermediate) {
       prevBlockFinal = KoreanIntermediate[currChar]['finalInitialCode'];
     }
-
     currBlockInitial = KoreanIntermediate[currBlock]['initialCode'];
-    console.log('CODES:', prevBlockFinal, currBlockInitial);
 
+    // Compare last consonant of prev block to first consonant of current block
     if (prevBlockFinal === currBlockInitial) {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
     } else {

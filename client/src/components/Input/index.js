@@ -105,8 +105,6 @@ export default function Input({ editor, onCompleted }) {
     const timeStamp = Date.now();
     const inputState = e;
 
-    console.log('onChange', inputState);
-
     model.onInputChange(
       inputState,
       timeStamp,
