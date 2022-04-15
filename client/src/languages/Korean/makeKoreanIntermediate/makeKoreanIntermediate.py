@@ -1,6 +1,7 @@
 from initial import initial
 from medial import medial
 from final import final
+from finalInitialCode import finalInitialCode
 
 numInitial = 19
 numMedial = 21
@@ -18,8 +19,13 @@ syllables.append('{\n')
 for i in range(numInitial):
   for j in range(numMedial):
     for k in range(numFinal):
+      # Block key
       syllables.append('\t' + getChar(i, j, k) + ': ')
-      syllables.append('[')
+
+      syllables.append('{')
+
+      ### --- Start - Progression Path ---
+      syllables.append("'path': [")
 
       # Add initial consonant
       syllables.append("'" + initial[i] + "', ")
@@ -32,7 +38,16 @@ for i in range(numInitial):
       for consonant in final[k]:
         syllables.append("'" + getChar(i, j, consonant) + "', ")
 
-      syllables.append('],\n')
+      syllables.append('],')
+
+      ### --- End - Progression Path ---
+
+      ### --- Start - Initial & Final Codes ---
+      syllables.append("'initialCode': " + str(i) + ',')
+      syllables.append("'finalInitialCode': " + str(finalInitialCode[k]) + ',')
+      ### --- End - Initial & Final Codes ---
+
+      syllables.append('},\n')
 
 syllables.append('}')
 

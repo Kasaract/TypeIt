@@ -4,7 +4,8 @@ import { useState } from 'react';
 export default function KeyboardAssist({
   char,
   keyCodeMapping,
-  fillColor = '#9eb3f7',
+  // fillColor = '#9eb3f7',
+  fillColor = '#add8e6',
   color = '#9eb3f7',
   defaultFillColor = '#ffffff',
   defaultColor = '#5e5e5e',
@@ -12,7 +13,7 @@ export default function KeyboardAssist({
   // const { input, setInput } = useContext(InputContext);
   // const { language, setLanguage } = useContext(LanguageContext);
   // const { assist, setAssist } = useContext(AssistContext);
-  const [lastchar] = useState('');
+  const [lastchar] = useState('ω');
 
   // useEffect(() => {
   //   if (assist.length > 0) {
@@ -21,14 +22,15 @@ export default function KeyboardAssist({
   // }, [assist]);
 
   // let support = ['en', 'es', 'fr', 'th', 'zh'];
-  let keyToCode = require('./KeyboardMappings/ko.js');
+  let keyToCode = require('./KeyboardMappings/el.js');
   // if (support.includes(language))
   //   keyToCode = require('./KeyboardMappings/' + language + '.js');
   let codeToKey = {};
   Object.keys(keyToCode.KeyCodes).forEach((key) => {
     let codeArray = keyToCode.KeyCodes[key];
     if (codeArray.length === 1) {
-      codeToKey[codeArray[0]] = key.toUpperCase();
+      // codeToKey[codeArray[0]] = key.toUpperCase();
+      codeToKey[codeArray[0]] = key;
     }
   });
   let xyc = {
@@ -83,8 +85,8 @@ export default function KeyboardAssist({
     66: { x: 6.1, y: 3, w: 1, c: ['B'] },
     78: { x: 7.1, y: 3, w: 1, c: ['N'] },
     77: { x: 8.1, y: 3, w: 1, c: ['M'] },
-    188: { x: 9.1, y: 3, w: 1, c: [','] },
-    190: { x: 10.1, y: 3, w: 1, c: ['.'] },
+    // 188: { x: 9.1, y: 3, w: 1, c: [','] },
+    // 190: { x: 10.1, y: 3, w: 1, c: ['.'] },
     // 191: { x: 11.1, y: 3, w: 1, c: ['/'] },
 
     // special buttons
@@ -103,8 +105,8 @@ export default function KeyboardAssist({
     // '16R': { x: 12.1, y: 3, w: 2.5, c: ['shift'] },
   };
 
-  let deltax = [0, -30, 30, 30, -30];
-  let deltay = [0, -30, -30, 30, 30];
+  let deltax = [25, -30, 30, 30, -30];
+  let deltay = [25, -30, -30, 30, 30];
   let size = ['2.75em', '1.25em', '1.25em', '1.25em', '1.25em'];
 
   return (
@@ -132,6 +134,14 @@ export default function KeyboardAssist({
               stroke={keyStroke}
               rx="15"
             />
+            <text
+              x={element.x * 110 + 0 + deltax[index] - 10}
+              y={element.y * 110 + 10 + deltay[index]}
+              fill="#aaaaaa"
+              fontSize={'1.75em'}
+            >
+              {xyc[code]['c'][0]}
+            </text>
             <text
               x={element.x * 110 + 40 + deltax[index] - 10}
               y={element.y * 110 + 60 + deltay[index]}

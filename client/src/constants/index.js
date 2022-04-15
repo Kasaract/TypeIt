@@ -2,8 +2,8 @@ export const STATECODE = {
   READY: 'ready',
   INCORRECT: 'incorrect',
   INPROGRESS: 'in progress',
-  INITIALPROGRESS: 'initial progress', // Testing for Korean only
   END: 'end',
+  COMPLETEBLOCK: 'complete block', // Korean only
 };
 
 export const STATUSCOLOR = {
@@ -11,7 +11,7 @@ export const STATUSCOLOR = {
   CURRENT: '#f5e98e',
   IDLE: 'white',
   INPROGRESS: '#dedede',
-  INITIALPROGRESS: '#dedede',
+  COMPLETEBLOCK: '#dedede',
   INCORRECT: '#faa7a7',
   CORRECT: '#a0d498',
 };

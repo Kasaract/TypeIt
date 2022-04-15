@@ -7,7 +7,7 @@ const textExcerptZHRouter = express.Router({ mergeParams: true });
 const numOfExcerpts = ZHTextExcerpts.length;
 
 textExcerptZHRouter.route('/').get((req, res) => {
-  let excerptID = Math.floor(Math.random() * numOfExcerpts);
+  let excerptID = Math.floor(Math.random() * 1);
   res.status(200).send({
     id: excerptID,
     words: ZHTextExcerpts[excerptID],

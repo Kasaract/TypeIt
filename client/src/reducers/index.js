@@ -9,8 +9,8 @@ import { Pinyin } from '../languages/Chinese/Pinyin';
 const initialState = {
   start: false, // Has user started typing?
   completed: false, // Has user reached end of excerpt?
-  language: 'zh', // Language code
-  model: models.modelThree, // Feedback mechanism based on langauge
+  language: 'ko', // Language code
+  model: models.modelFour, // Feedback mechanism based on langauge
   position: 0, // Which character are they at?
   charPosition: 0, // DEPRECATED
   input: '', // Current user input

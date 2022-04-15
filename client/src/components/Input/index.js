@@ -105,6 +105,8 @@ export default function Input({ editor, onCompleted }) {
     const timeStamp = Date.now();
     const inputState = e;
 
+    console.log('onChange', inputState);
+
     model.onInputChange(
       inputState,
       timeStamp,
@@ -153,7 +155,7 @@ export default function Input({ editor, onCompleted }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 flex-column">
-      <Slate
+      {/* <Slate
         editor={editor}
         value={[
           {
@@ -178,8 +180,25 @@ export default function Input({ editor, onCompleted }) {
           decorate={decorate}
           renderLeaf={(props) => <Leaf {...props} />}
           onKeyDown={onKeyDown}
+          onInput={(e) => {
+            console.log('onInput', e);
+          }}
         />
-      </Slate>
+      </Slate> */}
+      <input
+        type="text"
+        className="px-3 w-100"
+        style={{
+          border: '.15rem solid #636363',
+          borderRadius: '0.5rem',
+          fontFamily: 'Roboto',
+          fontSize: '2rem',
+        }}
+        onKeyDown={onKeyDown}
+        onChange={(e) => {
+          onInputChange(e.target.value);
+        }}
+      />
     </div>
   );
 }

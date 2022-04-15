@@ -1,259 +1,164 @@
 // Korean
 
+import { ACTIONS } from '../../../actions';
 import { STATECODE } from '../../../constants';
-
 import { KoreanIntermediate } from '../../../languages/Korean/KoreanIntermediate';
 
 const onInputChange = (
   newInput,
-  setInput,
+  timeStamp,
   inputStatus,
-  setInputStatus,
   position,
-  setPosition,
   charPosition,
-  setCharPosition,
   words,
-  wordIndex,
-  setWordIndex,
   onCompleted,
-  textLength,
-  timeRunning,
-  setTimeRunning,
-  errorCount,
-  setErrorCount,
-  assist,
-  setAssist
+  dispatch
 ) => {
+  console.log('Status:', inputStatus);
+  newInput = newInput.replace(/\uFEFF/g, '');
   // ****** READY ******
 
   const onReady = (newInput) => {
-    // Type backspace
-    if (newInput.length < charPosition) {
-      setPosition(position - 1);
-      setCharPosition(charPosition - 1);
-    }
+    // Type character(s)
+    // for (let i = charPosition; i < newInput.length; i++) {
+    // Correct character
+    // console.log('words', words);
+    // console.log('position', position);
+    // console.log('progression path', KoreanIntermediate[words[position]]);
 
-    // Type initial consonant of next block (results in initial consonant being the final consonant of previous block)
-    else if (newInput.length === charPosition) {
-      setInputStatus(STATECODE.INITIALPROGRESS);
-    }
-
-    // Type character
-    else {
-      const inputChar = newInput.charAt(newInput.length - 1);
-      const correctChar = words[wordIndex].charAt(charPosition);
-
-      // Type correct character
-      if (inputChar === correctChar) {
-        setPosition(position + 1);
-        setCharPosition(charPosition + 1);
-
-        // Type last char of entire text
-        if (
-          position === textLength - 1 &&
-          charPosition === words[wordIndex].length - 1
-        ) {
-          onCompleted();
-          setInputStatus(STATECODE.END); // Should actually make input be disabled to protect from unwanted behavior
-        }
-
-        // Type last char of word. Transition to END state.
-        else if (charPosition === words[wordIndex].length - 1) {
-          setInputStatus(STATECODE.END);
-        }
-      }
-
-      // Type intermediate character
-      else if (KoreanIntermediate[correctChar].includes(inputChar)) {
-        setInputStatus(STATECODE.INPROGRESS);
-      }
-
-      // Typed incorrect character
-      else {
-        setInputStatus(STATECODE.INCORRECT);
-      }
-    }
-  };
-
-  // ****** INITIAL PROGRESS ******
-
-  const onInitialProgress = (newInput) => {
-    // NOTE: Can only stay in this state for one time step!
-    if (newInput.length - 1 === charPosition) {
-      const inputChar = newInput.charAt(newInput.length - 1);
-      const correctChar = words[wordIndex].charAt(charPosition);
-
-      // In progress block is correct, proceed to next block
-      if (inputChar === correctChar) {
-        setPosition(position + 1);
-        setCharPosition(charPosition + 1);
-
-        if (charPosition === words[wordIndex].length - 1) {
-          setInputStatus(STATECODE.END);
-
-          // Last block of text
-          if (wordIndex === words.length - 1) {
-            onCompleted();
-          }
+    const currChar = newInput.charAt(newInput.length - 1);
+    console.log('CurrChar', currChar);
+    if (
+      position < words.length &&
+      (words[position] === ' ' ||
+        KoreanIntermediate[words[position]]['path'].includes(currChar)) // NEED TO SUPPORT NUMBERS
+    ) {
+      dispatch({
+        type: ACTIONS.EVENTLOG,
+        payload: {
+          type: 'CORRECT',
+          word: words[position],
+          input: currChar,
+          timeStamp,
+        },
+      });
+      if (currChar === words[position]) {
+        // Once a block is finished, transition to 'Complete Block' state if next char
+        // is a block to watch for the first character of the next block. Its intermediate
+        // state might be temporarily considered as the final consonant of previous block.
+        if (words[position + 1] === ' ') {
+          dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
         } else {
-          setInputStatus(STATECODE.READY);
+          console.log('Do I make it here?');
+          dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.COMPLETEBLOCK });
         }
-      } else if (KoreanIntermediate[correctChar].includes(inputChar)) {
-        setInputStatus(STATECODE.INPROGRESS);
+
+        dispatch({
+          type: ACTIONS.NEXTCHARACTER,
+        });
+      }
+    }
+
+    // Incorrect character
+    else {
+      // Error detection for Korean is a bit more complex - Gary 04/14
+      // dispatch({ type: ACTIONS.ERROR, payload: position }); // Keep track of word position where error is made
+      if (currChar === words[position - 1] || newInput === '') {
+        return; // Should be an EventLog dispatch here - Gary 04/14
       } else {
-        setInputStatus(STATECODE.INCORRECT);
+        dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
+        dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: { type: 'INCORRECT', word: words[position], timeStamp }, // Need to account for character - Gary 04/14
+        });
       }
     }
-  };
+    // }
 
-  const onProgress = () => {
-    // Type backspace
-    if (newInput.length < charPosition) {
-      setPosition(position - 1);
-      setCharPosition(charPosition - 1);
-    }
+    if (
+      position + newInput.length - charPosition === words.length &&
+      currChar === words[position + newInput.length - charPosition - 1]
+    ) {
+      // Attempt to add timer - Gary 11/22
+      // dispatch({
+      //   type: ACTIONS.END,
+      //   payload: {
+      //     type: 'END',
+      //     timeStamp,
+      //   },
+      // });
 
-    // Type character
-    else {
-      const inputChar = newInput.charAt(newInput.length - 1);
-      const correctChar = words[wordIndex].charAt(charPosition);
-
-      // Type correct character
-      if (inputChar === correctChar) {
-        setPosition(position + 1);
-        setCharPosition(charPosition + 1);
-
-        // Type last char of word. Transition to END state.
-        if (charPosition === words[wordIndex].length - 1) {
-          setInputStatus(STATECODE.END);
-
-          if (wordIndex === words.length - 1) {
-            onCompleted();
-          }
-        } else {
-          setInputStatus(STATECODE.READY);
-        }
-      }
-
-      // Type another intermediate character
-      else if (KoreanIntermediate[correctChar].includes(inputChar)) {
-        setInputStatus(STATECODE.INPROGRESS);
-      }
-
-      // Typed incorrect character
-      else {
-        setInputStatus(STATECODE.INCORRECT);
-      }
+      // STATE CODE END is deprecated
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
+      dispatch({
+        type: ACTIONS.EVENTLOG,
+        payload: { type: 'END', timeStamp },
+      });
+      onCompleted();
+      // dispatch({ type: ACTIONS.RESETINPUT });
     }
   };
 
   // ****** INCORRECT ******
 
   const onIncorrect = (newInput) => {
-    // Type wrong character for space
+    const currChar = newInput.charAt(newInput.length - 1);
+
     if (
-      newInput.length - 1 < charPosition &&
-      charPosition === words[wordIndex].length
+      KoreanIntermediate[words[position]]['path'].includes(currChar) || // Backspace one character while typing a block
+      currChar === words[position - 1] // Backspace an entire block
     ) {
-      setInputStatus(STATECODE.END);
-    }
-
-    // Backspaced to typo position
-    else if (newInput.length - 1 === charPosition) {
-      const inputChar = newInput.charAt(newInput.length - 1);
-      const correctChar = words[wordIndex].charAt(charPosition);
-
-      // Type correct character
-      if (inputChar === correctChar) {
-        setPosition(position + 1);
-        setCharPosition(charPosition + 1);
-        setInputStatus(STATECODE.READY);
-      } else if (KoreanIntermediate[correctChar].includes(inputChar)) {
-        setInputStatus(STATECODE.INPROGRESS);
-      }
-    }
-
-    // Backspaced characters before typo (previously correct characters)
-    else if (newInput.length - 1 < charPosition) {
-      setInputStatus(STATECODE.READY);
-    }
-
-    // Backspaced current in-progress syllable block
-    // else if (newInput.length === charPosition && newInput.length > 0) {
-    //   const inputChar = newInput.charAt(newInput.length - 1);
-    //   const correctChar = words[wordIndex].charAt(charPosition);
-
-    //   // For typos like 필요 vs 피라
-    //   if (inputChar !== correctChar) {
-    //     // setPosition(position - 1);
-    //     // setCharPosition(charPosition - 1);
-    //     setInputStatus(stateCode.INCORRECT);
-    //   } else {
-    //     setInputStatus(stateCode.READY);
-    //   }
-    // }
-
-    // Typed incorrect letter (current block is not a valid intermediate)
-    else if (newInput.length === charPosition) {
-      const inputChar = newInput.charAt(newInput.length - 1);
-      const correctChar = words[wordIndex].charAt(charPosition);
-
-      // Backspaced to a valid intermediate block
-      if (KoreanIntermediate[correctChar].includes(inputChar)) {
-        setInputStatus(STATECODE.INPROGRESS);
-      }
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
     }
   };
 
-  // ****** END ******
+  // ****** COMPLETE BLOCK ******
+  // This state exists only for Korean to handle the cases where the initial letter of the next block
+  // is temporarily added to the final consonant of the previous block. Users should only be in the
+  // Complete Block state for one step
 
-  const onEnd = (newInput) => {
-    // Type backspace
-    if (newInput.length < charPosition) {
-      setPosition(position - 1);
-      setCharPosition(charPosition - 1);
-      setInputStatus(STATECODE.READY);
+  const onCompleteBlock = (newInput) => {
+    const prevBlock = words[position - 1];
+    const currBlock = words[position];
+
+    // Initial letter of current block does not get added to final consonant of previous block
+    const currChar = newInput.charAt(newInput.length - 1);
+    if (KoreanIntermediate[currBlock]['path'].includes(currChar)) {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
+      return;
     }
 
-    // Type character
-    else {
-      // Type space
-      if (newInput.charAt(newInput.length - 1) === ' ') {
-        setPosition(position + 1);
-        setWordIndex(wordIndex + 1);
-        setCharPosition(0);
-        setInput('');
-        setInputStatus(STATECODE.READY);
-      }
-      // Did not type space
-      else {
-        setInputStatus(STATECODE.INCORRECT);
-      }
+    console.log('Prev:', currChar);
+    console.log('Curr:', currBlock);
+
+    let prevBlockFinal, currBlockInitial;
+
+    if (currChar in KoreanIntermediate) {
+      prevBlockFinal = KoreanIntermediate[currChar]['finalInitialCode'];
+    }
+
+    currBlockInitial = KoreanIntermediate[currBlock]['initialCode'];
+    console.log('CODES:', prevBlockFinal, currBlockInitial);
+
+    if (prevBlockFinal === currBlockInitial) {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
+    } else {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.INCORRECT });
     }
   };
 
   // STATE-BASED LOGIC
-  setInput(newInput);
-  if (newInput.length === 1) {
-    setTimeRunning(true);
-  }
+  dispatch({ type: ACTIONS.INPUT, payload: newInput });
 
   switch (inputStatus) {
     case STATECODE.READY:
       onReady(newInput);
       break;
-    case STATECODE.INITIALPROGRESS:
-      onInitialProgress(newInput);
-      break;
-    case STATECODE.INPROGRESS:
-      onProgress(newInput);
-      break;
     case STATECODE.INCORRECT:
       onIncorrect(newInput);
       break;
-    case STATECODE.END:
-      onEnd(newInput);
+    case STATECODE.COMPLETEBLOCK:
+      onCompleteBlock(newInput);
       break;
     default:
       throw new Error('Should not get here');
@@ -262,6 +167,6 @@ const onInputChange = (
 
 export const modelFour = {
   onInputChange: onInputChange,
-  preprocess: (text) => text.split(' '),
-  display: (words) => words.join(' '),
+  preprocess: (text) => text,
+  display: (words) => words,
 };
