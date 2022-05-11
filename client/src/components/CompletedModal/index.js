@@ -83,12 +83,15 @@ export default function CompletedModal({ editor, show, time }) {
   // ];
 
   const resetInput = () => {
-    Transforms.delete(editor, {
-      at: {
-        anchor: Editor.start(editor, []),
-        focus: Editor.end(editor, []),
-      },
-    });
+    if (language === 'ZH') {
+      // Can only reset SlateJS if language checker uses Slate.
+      Transforms.delete(editor, {
+        at: {
+          anchor: Editor.start(editor, []),
+          focus: Editor.end(editor, []),
+        },
+      });
+    }
   };
 
   const onPracticeAgain = () => {

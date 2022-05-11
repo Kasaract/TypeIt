@@ -22,20 +22,20 @@ const onInputChange = (
   onCompleted,
   dispatch
 ) => {
-  console.log('Status:', inputStatus);
+  // console.log('Status:', inputStatus, newInput);
+  console.log('Position', newInput.length, position, words.length);
   newInput = newInput.replace(/\uFEFF/g, '');
   // ****** READY ******
 
   const onReady = (newInput) => {
-    // Type character(s)
-    // for (let i = charPosition; i < newInput.length; i++) {
-    // Correct character
-    // console.log('words', words);
-    // console.log('position', position);
-    // console.log('progression path', KoreanIntermediate[words[position]]);
+    // Unfortunately, we have to account for backspaces. There are some strange behavior that users are able to do if we don't...
+    // Maybe we can. As of now the pair '다.' Creates weird behavior.
+    // if (newInput.length < position + 1) {
+    //   dispatch({ type: ACTIONS.BACKSPACE });
+    // }
 
     const currChar = newInput.charAt(newInput.length - 1);
-    console.log('CurrChar', currChar);
+
     if (
       position < words.length &&
       (words[position] === ' ' ||
@@ -57,7 +57,6 @@ const onInputChange = (
         if (words[position + 1] === ' ') {
           dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
         } else {
-          console.log('Do I make it here?');
           dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.COMPLETEBLOCK });
         }
 
@@ -112,9 +111,12 @@ const onInputChange = (
   const onIncorrect = (newInput) => {
     const currChar = newInput.charAt(newInput.length - 1);
 
+    if (currChar === words[position - 1]) {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.COMPLETEBLOCK });
+    }
+
     if (
       KoreanIntermediate[words[position]]['path'].includes(currChar) || // Backspace one character while typing a block
-      currChar === words[position - 1] || // Backspace an entire block
       newInput === '' // Input is empty
     ) {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
@@ -128,9 +130,26 @@ const onInputChange = (
 
   const onCompleteBlock = (newInput) => {
     const currBlock = words[position];
+    const currChar = newInput.charAt(newInput.length - 1);
+    console.log('currBlock', currBlock);
+
+    // Punctuations
+    if (currBlock === currChar) {
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
+      dispatch({ type: ACTIONS.NEXTCHARACTER });
+
+      // Last character of excerpt is a punctuation mark
+      if (newInput.length === words.length) {
+        dispatch({
+          type: ACTIONS.EVENTLOG,
+          payload: { type: 'END', timeStamp },
+        });
+        onCompleted();
+      }
+      return;
+    }
 
     // Initial letter of current block does not get added to final consonant of previous block
-    const currChar = newInput.charAt(newInput.length - 1);
     if (KoreanIntermediate[currBlock]['path'].includes(currChar)) {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
       return;
@@ -141,6 +160,14 @@ const onInputChange = (
     // Example that prompted this if-block: 부부가
     if (currChar === words[position - 1]) {
       dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.COMPLETEBLOCK });
+      return;
+    }
+
+    // Backspace after completing a block
+    const prevBlock = words[position - 1];
+    if (KoreanIntermediate[prevBlock]['path'].at(-2) === currChar) {
+      dispatch({ type: ACTIONS.BACKSPACE });
+      dispatch({ type: ACTIONS.INPUTSTATUS, payload: STATECODE.READY });
       return;
     }
 

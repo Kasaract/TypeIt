@@ -2,7 +2,7 @@
 // import { combineReducers } from 'redux';
 import { ACTIONS } from '../actions';
 
-import { models } from '../components/Input/models';
+import { models, checkerModels } from '../components/Input/models';
 import { STATECODE } from '../constants';
 import { Pinyin } from '../languages/Chinese/Pinyin';
 
@@ -83,7 +83,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         position: state.position - 1,
         charPosition: state.charPosition - 1,
-        inputStatus: STATECODE.READY,
+        // inputStatus: STATECODE.READY,
       };
 
     case ACTIONS.RESETINPUT:
@@ -157,6 +157,16 @@ const rootReducer = (state = initialState, action) => {
         charPosition: 0,
         input: '',
         inputStatus: STATECODE.READY,
+        start: false,
+        completed: false,
+
+        model: checkerModels[action.payload.toUpperCase()],
+        words: '',
+        excerptID: -1,
+        hintCount: 0, // Keep track of how many hints user requested when typing an excerpt
+        pinyinAssist: 0, // Number of letters to reveal in Pinyin assist
+        editor: {}, // SlateJS editor instance - to be accessed by other components to reset
+        eventLog: [], // Log of typing events
       };
 
     case ACTIONS.UPDATETIME:

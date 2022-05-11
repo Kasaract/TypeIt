@@ -14,4 +14,4 @@ export const models = {
   modelSix: modelSix, // Morse
 };
 
-export * from './modelGroups';
+export * from './checkerModels';

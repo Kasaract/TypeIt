@@ -11,16 +11,17 @@ import { ACTIONS } from '../../actions';
 
 export default function Input({ editor, onCompleted }) {
   const start = useSelector((state) => state.start);
+  const language = useSelector((state) => state.language);
   const model = useSelector((state) => state.model);
   const words = useSelector((state) => state.words);
   const position = useSelector((state) => state.position);
   const charPosition = useSelector((state) => state.charPosition);
-  // const input = useSelector((state) => state.input);
+  const input = useSelector((state) => state.input);
   const inputStatus = useSelector((state) => state.inputStatus);
   // const time = useSelector((state) => state.time);
   const excerptID = useSelector((state) => state.excerptID);
 
-  // const [editor] = useState(() => withReact(createEditor()));
+  // const [editor] = useState(() => withReact(createEditor())); -- DELETE? - Gary 05/11/22
   const [focus, setFocus] = useState(false);
 
   const dispatch = useDispatch();
@@ -30,10 +31,11 @@ export default function Input({ editor, onCompleted }) {
   }, []);
 
   useEffect(() => {
-    // dispatch({
-    //   type: ACTIONS.SET_EDITOR,
-    //   payload: editor,
-    // });
+    dispatch({
+      type: ACTIONS.SET_EDITOR,
+      payload: editor,
+    });
+    //  -- DELETE? - Gary 05/11/22
   }, [editor, dispatch]);
 
   // useHotkeys('enter', () => {
@@ -153,50 +155,56 @@ export default function Input({ editor, onCompleted }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center px-5 flex-column">
-      {/* <Slate
-        editor={editor}
-        value={[
-          {
-            type: 'paragraph',
-            children: [{ text: '' }],
-          },
-        ]} // Input is array of leaves
-        onChange={(e) => {
-          onInputChange(e[0].children[0].text);
-        }} // Most recent character gets added to last leaf
-      >
-        <Editable
-          autoFocus={focus}
-          placeholder="Start typing here..."
+      {/* Need to make separate components for Chinese and Korean (maybe even Japanese) - Gary 5/11/22*/}
+      {language !== 'ko' && (
+        <Slate
+          editor={editor}
+          value={[
+            {
+              type: 'paragraph',
+              children: [{ text: '' }],
+            },
+          ]} // Input is array of leaves
+          onChange={(e) => {
+            onInputChange(e[0].children[0].text);
+          }} // Most recent character gets added to last leaf
+        >
+          <Editable
+            autoFocus={focus}
+            placeholder="Start typing here..."
+            className="px-3 w-100"
+            style={{
+              border: '.15rem solid #636363',
+              borderRadius: '0.5rem',
+              fontFamily: 'Roboto',
+              fontSize: '2rem',
+            }}
+            decorate={decorate}
+            renderLeaf={(props) => <Leaf {...props} />}
+            onKeyDown={onKeyDown}
+            onInput={(e) => {
+              console.log('onInput', e);
+            }}
+          />
+        </Slate>
+      )}
+      {language === 'ko' && (
+        <input
+          type="text"
           className="px-3 w-100"
+          value={input}
           style={{
             border: '.15rem solid #636363',
             borderRadius: '0.5rem',
             fontFamily: 'Roboto',
             fontSize: '2rem',
           }}
-          decorate={decorate}
-          renderLeaf={(props) => <Leaf {...props} />}
           onKeyDown={onKeyDown}
-          onInput={(e) => {
-            console.log('onInput', e);
+          onChange={(e) => {
+            onInputChange(e.target.value);
           }}
         />
-      </Slate> */}
-      <input
-        type="text"
-        className="px-3 w-100"
-        style={{
-          border: '.15rem solid #636363',
-          borderRadius: '0.5rem',
-          fontFamily: 'Roboto',
-          fontSize: '2rem',
-        }}
-        onKeyDown={onKeyDown}
-        onChange={(e) => {
-          onInputChange(e.target.value);
-        }}
-      />
+      )}
     </div>
   );
 }

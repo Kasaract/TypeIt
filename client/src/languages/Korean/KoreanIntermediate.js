@@ -1,6 +1,6 @@
 export const KoreanIntermediate = {
   ' ': { path: [' '], initialCode: null, finalInitialCode: null },
-  '.': { path: ['.'], initialCode: null, finalInitialCode: null },
+  // '.': { path: ['.'], initialCode: null, finalInitialCode: null },
   가: { path: ['ㄱ', '가'], initialCode: 0, finalInitialCode: null },
   각: { path: ['ㄱ', '가', '각'], initialCode: 0, finalInitialCode: 0 },
   갂: { path: ['ㄱ', '가', '갂'], initialCode: 0, finalInitialCode: 1 },
