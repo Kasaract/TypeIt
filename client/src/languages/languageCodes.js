@@ -703,10 +703,10 @@ export const languageCodes = {
   //   name: 'Venda',
   //   nativeName: 'Tshivenḓa',
   // },
-  // vi: {
-  //   name: 'Vietnamese',
-  //   nativeName: 'Tiếng Việt',
-  // },
+  vi: {
+    name: 'Vietnamese',
+    nativeName: 'Tiếng Việt',
+  },
   // vo: {
   //   name: 'Volapük',
   //   nativeName: 'Volapük',

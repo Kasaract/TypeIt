@@ -7,7 +7,7 @@ const textExcerptKORouter = express.Router({ mergeParams: true });
 const numOfExcerpts = KOTextExcerpts.length;
 
 textExcerptKORouter.route('/').get((req, res) => {
-  let excerptID = Math.floor(Math.random() * 1);
+  let excerptID = Math.floor(Math.random() * 17);
   res.status(200).send({
     id: excerptID,
     words: KOTextExcerpts[excerptID],
